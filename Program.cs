@@ -30,5 +30,6 @@ app.MapControllerRoute(
 
 app.Run();
 
+//coneccion MYSQL NO CAMBIAR
 builder.Services.AddDbContext<SkyInitContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("SkyInitDB")));
