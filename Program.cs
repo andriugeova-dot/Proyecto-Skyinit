@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Proyecto_SkyInit.Models;
+using SkyInitContext = Proyecto_SkyInit.Models.SkyInitContext;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,3 +29,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+builder.Services.AddDbContext<SkyInitContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("SkyInitDB")));
