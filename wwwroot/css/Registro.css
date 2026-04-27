@@ -1,0 +1,123 @@
+﻿@font-face {
+    font-family: 'Cooper';
+    src: url('fonts/CooperBlack.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    font-family: Arial, sans-serif;
+}
+
+/* IZQUIERDA */
+.left {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* IMÁGENES */
+.bg img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+    .bg img.active {
+        opacity: 1;
+    }
+
+/* OVERLAY */
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.35);
+}
+
+/* TEXTO */
+.left-content {
+    position: relative;
+    z-index: 2;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+    /* SKYINIT */
+    .left-content h1 {
+        font-family: 'Cooper';
+        font-size: 54px;
+        color: white;
+        letter-spacing: 2px;
+        line-height: 1.1;
+        margin: 0;
+    }
+
+    /* SLOGAN */
+    .left-content p {
+        margin: 0;
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 18px;
+        color: #f5f5dc;
+        letter-spacing: 0.5px;
+        font-style: italic;
+    }
+
+/* DERECHA */
+.right {
+    flex: 1;
+    background: #f5f5dc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* FORM */
+.form-box {
+    width: 320px;
+}
+
+    .form-box h2 {
+        color: #2e7d32;
+    }
+
+/* INPUTS */
+.input-group {
+    margin-bottom: 15px;
+}
+
+    .input-group input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+/* BOTÓN */
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .btn:hover {
+        background: #1b5e20;
+    }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .left {
+        display: none;
+    }
+}
