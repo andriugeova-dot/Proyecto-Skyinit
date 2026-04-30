@@ -7,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//coneccion MYSQL NO CAMBIAR
+builder.Services.AddDbContext<SkyInitContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("SkyInitDB")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +34,3 @@ app.MapControllerRoute(
 
 app.Run();
 
-//coneccion MYSQL NO CAMBIAR
-builder.Services.AddDbContext<SkyInitContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("SkyInitDB")));

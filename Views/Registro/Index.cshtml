@@ -21,10 +21,10 @@
     <div class="form-box">
         <h2>Crear cuenta</h2>
 
-        @using (Html.BeginForm("Registro", "Account", FormMethod.Post))
+        @using (Html.BeginForm("Registrar", "Registro", FormMethod.Post))
         {
             <div class="input-group">
-                @Html.TextBox("NombreCompleto", null, new { placeholder = "Nombre completo", @class = "form-control", required = "required" })
+                @Html.TextBox("Nombre", null, new { placeholder = "Nombre", @class = "form-control", required = "required" })
             </div>
 
             <div class="input-group">
@@ -32,15 +32,22 @@
             </div>
 
             <div class="input-group">
-                @Html.Password("Contraseña", null, new { placeholder = "Contraseña", @class = "form-control", required = "required" })
+                @Html.Password("contraseña", null, new { placeholder = "Contraseña", @class = "form-control", required = "required" })
             </div>
 
             <div class="input-group">
-                @Html.Password("ConfirmarContraseña", null, new { placeholder = "Confirmar contraseña", @class = "form-control", required = "required" })
+                @Html.Password("confirmarcontraseña", null, new { placeholder = "Confirmar contraseña", @class = "form-control", required = "required" })
             </div>
 
             <div class="input-group">
-                @Html.TextBox("Telefono", null, new {placeholder = "Telefono(opcional)", @class= "form-control"})
+                @Html.TextBox("Telefono", null, new { placeholder = "Telefono", @class = "form-control", required = "required" })
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="invalid-feedback" style="display:block">
+                        @ViewBag.Error
+                    </div>
+                }
             </div>
 
             <button type="submit" class="btn">Registrarse</button>
@@ -58,5 +65,30 @@
             i = (i + 1) % imgs.length;
             imgs[i].classList.add("active");
         }, 4000);
+
+        const input = document.getElementById("Contraseña");
+        const barra = document.getElementById("NivelSeguridad");
+
+        input.addEventListener("input", () => {
+            let valor = input.value;
+            let fuerza = 0;
+
+            if(valor.length >= 8) fuerza += 25;
+            if(/[A-Z]/.test(valor)) fuerza += 25;
+            if(/[0-9]/.test(valor)) fuerza += 25;
+            if(/[^A-Za-z0-9]/.test(valor)) fuerza += 25;
+
+            barra.style.width = fuerza + "%";
+
+            if(fuerza < 50){
+                barra.className = "progress-bar bg-danger";
+            } else if (fuerza < 75)
+            {
+                barra.className = "progress-bar bg-warning";
+            } else
+            {
+                barra.className = "progress-bar bg-success";
+            }
+        });
     </script>
 }

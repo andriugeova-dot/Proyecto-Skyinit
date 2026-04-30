@@ -1,0 +1,71 @@
+﻿body {
+    font-family: 'Georgia', serif;
+    background: url('../img/fondo-terminos.png') no-repeat center center fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.terminos-form {
+    width: 500px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.terminos-title {
+    color: #2e7d32;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.terminos-text {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.terminos-check {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.btn-continuar {
+    width: 100%;
+    padding: 10px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    padding: 12px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+    .btn-continuar:hover {
+        background: #256628;
+    }
+
+.terminos-text h3 {
+    font-weight: bold;
+    margin-top: 15px;
+    color: #2e7d32;
+}

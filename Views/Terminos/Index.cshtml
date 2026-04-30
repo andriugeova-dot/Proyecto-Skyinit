@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutTerminos.cshtml";
+}
+
+<form asp-controller="Registro" asp-action="ConfirmarRegistro" method="post" class="terminos-form">
+
+    <h2 class="terminos-title">Términos y Condiciones</h2>
+
+    <div class="terminos-text">
+        <p>Version 1.0</p>
+        <h3><strong>Aceptación de las condiciones</strong></h3>
+        <p>Al acceder y utilizar SkyInit, usted acepta haber leído, comprendido y aceptado estos Términos y Condiciones...</p>
+
+        <h3><strong>Registro y acceso</strong></h3>
+        <p>El usuario debe proporcionar información veraz y actualizada al registrarse...</p>
+
+        <h3><strong>Uso de la plataforma</strong></h3>
+        <p>SkyInit está destinado a usuarios mayores de 18 años...</p>
+
+        <h3><strong>Propiedad intelectual</strong></h3>
+        <p>Todo el contenido, diseño, software y marca de SkyInit son propiedad exclusiva...</p>
+
+        <h3><strong>Tratamiento de datos personales</strong></h3>
+        <p>SkyInit recopila y procesa datos personales conforme a la legislación colombiana...</p>
+
+        <h3><strong>Responsabilidad</strong></h3>
+        <p>SkyInit no se hace responsable por interrupciones del servicio ocasionadas por causas externas...</p>
+
+        <h3><strong>Actividades prohibidas</strong></h3>
+        <ul>
+            <li>Publicar información falsa o engañosa sobre propiedades.</li>
+            <li>Utilizar la plataforma para fines comerciales no autorizados.</li>
+            <li>Intentar acceder mediante bots, scripts u otros medios automatizados.</li>
+            <li>Realizar actividades que afecten la seguridad o funcionamiento de SkyInit.</li>
+        </ul>
+
+        <h3><strong>Contribuciones de los usuarios</strong></h3>
+        <p>Los comentarios, reseñas o aportes realizados en SkyInit deben ser veraces y respetuosos...</p>
+
+        <h3><strong>Modificaciones</strong></h3>
+        <p>SkyInit puede actualizar los Términos y Condiciones en cualquier momento...</p>
+
+        <h3><strong>Legislación aplicable</strong></h3>
+        <p>Estos términos se rigen por las leyes de Colombia...</p>
+
+        <h3><strong>Contacto</strong></h3>
+        <p>Para dudas o reclamaciones, el usuario puede comunicarse con el área de servicio al cliente...</p>
+        <p>Al registrarte en SkyInit aceptas el uso de tus datos...</p>
+        <p>No compartiremos tu información sin consentimiento...</p>
+        <p>Ultima actualizacion: 30/04/2026</p>
+    </div>
+
+
+
+    <!--CHECKBOX -->
+    <div class="terminos-check">
+        <input type="checkbox" id="acepta" required>
+        <label for="acepta">Acepto los términos y condiciones</label>
+    </div>
+
+    <button type="submit" class="btn-continuar" id="btnContinuar" disabled>
+        Continuar
+    </button>
+    <div id="mensajeExito" class="mensaje-exito" style="display:none;">
+        ✅ La creación de la cuenta fue exitosa
+    </div>
+</form>
+
+<script>
+    document.getElementById("btnContinuar").addEventListener("click", function (event) {
+           document.getElementById("mensajeExito").style.display = "block";
+       });
+</script>
+
+@section Scripts {
+    <script>
+        const check = document.getElementById("acepta");
+        const btn = document.getElementById("btnContinuar");
+
+        check.addEventListener("change", () => {
+            btn.disabled = !check.checked;
+        });
+    </script>
+}
