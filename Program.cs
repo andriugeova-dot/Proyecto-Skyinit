@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 //coneccion MYSQL NO CAMBIAR
 builder.Services.AddDbContext<SkyInitContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("SkyInitDB")));
@@ -26,11 +27,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Registro}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();
 

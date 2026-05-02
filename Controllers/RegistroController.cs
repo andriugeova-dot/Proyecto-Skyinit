@@ -1,7 +1,4 @@
-﻿using AspNetCoreGeneratedDocument;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Org.BouncyCastle.Crypto.Generators;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proyecto_SkyInit.Models;
 
 namespace Proyecto_SkyInit.Controllers
@@ -44,6 +41,11 @@ namespace Proyecto_SkyInit.Controllers
             }
 
             var rolUsuario = _context.Roles.FirstOrDefault(r => r.NombreRol == "Usuario");
+                if (rolUsuario == null)
+                {
+                    ViewBag.Error = "Error de configuración: rol no encontrado.";
+                    return View("Index");
+                }
             var usuario = new Usuario
             {
                 Nombre = Nombre,
@@ -52,7 +54,7 @@ namespace Proyecto_SkyInit.Controllers
                 ContraseñaHash = BCrypt.Net.BCrypt.HashPassword(Contraseña),
                 FechaRegistro = DateTime.Now,
                 EstadoCuenta = "Activa",
-                RolID = 3
+                RolID = rolUsuario.RolID
 
             };
             _context.Usuarios.Add(usuario);

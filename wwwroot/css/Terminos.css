@@ -39,13 +39,6 @@
 }
 
 .btn-continuar {
-    width: 100%;
-    padding: 10px;
-    background: #2e7d32;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
     display: block;
     margin: 0 auto;
     width: 200px;

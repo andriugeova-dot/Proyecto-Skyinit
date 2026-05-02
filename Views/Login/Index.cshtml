@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "_LayoutLogin";
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="login-container">
+    <h2>SkyInit</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div style="color:#ff6b6b; margin-bottom:10px; font-size:13px;">
+            @ViewBag.Error
+        </div>
+    }
+
+    <form asp-controller="Login" asp-action="Autenticar" method="post">
+        <div class="input-group">
+            <label>Correo</label>
+            <input type="email" name="Correo" placeholder="ejemplo@email.com" required />
+        </div>
+
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" name="Contraseña" placeholder="********" required />
+        </div>
+
+        <button type="submit" class="btn">Iniciar Sesión</button>
+    </form>
+
+    <div class="extra">
+        <p>¿No tienes cuenta? <a asp-controller="Registro" asp-action="Index">Regístrate</a></p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const images = [
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+            "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be"
+        ];
+        let index = 0;
+        function changeBackground() {
+            document.body.style.backgroundImage = `url(${images[index]})`;
+            index = (index + 1) % images.length;
+        }
+        changeBackground();
+        setInterval(changeBackground, 5000);
+    </script>
+}
