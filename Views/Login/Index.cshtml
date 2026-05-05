@@ -8,28 +8,42 @@
 
     @if (ViewBag.Error != null)
     {
-        <div style="color:#ff6b6b; margin-bottom:10px; font-size:13px;">
+        <div class="colorerror">
             @ViewBag.Error
         </div>
     }
 
     <form asp-controller="Login" asp-action="Autenticar" method="post">
+
         <div class="input-group">
             <label>Correo</label>
-            <input type="email" name="Correo" placeholder="ejemplo@email.com" required />
+            <input type="email" name="Correo" placeholder="ejemplo@email.com" required>
         </div>
 
         <div class="input-group">
             <label>Contraseña</label>
-            <input type="password" name="Contraseña" placeholder="********" required />
+            <input type="password" name="Contraseña" placeholder="****" required>
         </div>
 
-        <button type="submit" class="btn">Iniciar Sesión</button>
+        <!-- BOTÓN LOGIN -->
+        <button type="submit" class="btn btn-login">Iniciar Sesión</button>
+
+        <!-- SEPARADOR -->
+        <div class="divider">── o continuar con ──</div>
+
+        <!-- BOTÓN GOOGLE -->
+        <a href="/Login/LoginWithGoogle" class="btn google-btn">
+            <img src="https://developers.google.com/identity/images/g-logo.png">
+            <span>Continuar con Google</span>
+        </a>
+
     </form>
 
     <div class="extra">
-        <p>¿No tienes cuenta? <a asp-controller="Registro" asp-action="Index">Regístrate</a></p>
+        ¿No tienes cuenta?
+        <a asp-controller="Registro" asp-action="Index">Regístrate</a>
     </div>
+
 </div>
 
 @section Scripts {

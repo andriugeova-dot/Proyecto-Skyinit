@@ -349,32 +349,32 @@
         public class Rol
         {
             public int RolID { get; set; }
-            public string NombreRol { get; set; }
+            public string NombreRol { get; set; } = null!;
             // Navegación
-            public ICollection<Usuario> Usuarios { get; set; }
+            public ICollection<Usuario> Usuarios { get; set; } = null!;
         }
 
         public class Usuario
         {
             public int UsuarioID { get; set; }
-            public string Nombre { get; set; }
-            public string Correo { get; set; }
-            public string ContraseñaHash { get; set; }
+            public string Nombre { get; set; } = null!;
+            public string Correo { get; set; } = null!;
+            public string ContraseñaHash { get; set; } = null!;
             public string? Telefono { get; set; }
             public DateTime FechaRegistro { get; set; }
-            public string EstadoCuenta { get; set; }
+            public string EstadoCuenta { get; set; } = null!;
             public int RolID { get; set; }
             // Navegación
-            public Rol Rol { get; set; }
-            public ICollection<Sesion> Sesiones { get; set; }
-            public ICollection<RedSocial> RedesSociales { get; set; }
-            public ICollection<Agenda> Agendas { get; set; }
-            public ICollection<Favorito> Favoritos { get; set; }
-            public ICollection<Comentario> Comentarios { get; set; }
-            public ICollection<HistorialPropiedad> Historial { get; set; }
-            public ICollection<Reparacion> Reparaciones { get; set; }
-            public ICollection<Reporte> Reportes { get; set; }
-            public ICollection<Propiedad> PropiedadesComoAgente { get; set; }
+            public Rol Rol { get; set; } = null!;
+            public ICollection<Sesion> Sesiones { get; set; } = null!;  
+            public ICollection<RedSocial> RedesSociales { get; set; } = null!;
+            public ICollection<Agenda> Agendas { get; set; } = null!;
+            public ICollection<Favorito> Favoritos { get; set; } = null!;
+            public ICollection<Comentario> Comentarios { get; set; }= null!;
+            public ICollection<HistorialPropiedad> Historial { get; set; } = null!;
+            public ICollection<Reparacion> Reparaciones { get; set; } = null!;
+            public ICollection<Reporte> Reportes { get; set; } = null!;
+            public ICollection<Propiedad> PropiedadesComoAgente { get; set; } = null!;
         }
 
         public class Sesion
@@ -383,17 +383,17 @@
             public int UsuarioID { get; set; }
             public DateTime FechaInicio { get; set; }
             public DateTime? FechaFin { get; set; }
-            public string Token { get; set; }
+            public string Token { get; set; } = null!;
             // Navegación
-            public Usuario Usuario { get; set; }
+            public Usuario Usuario { get; set; } = null!;
         }
 
         public class Plataforma
         {
             public int PlataformaID { get; set; }
-            public string NombrePlataforma { get; set; }
+            public string NombrePlataforma { get; set; } = null!;
             // Navegación
-            public ICollection<RedSocial> RedesSociales { get; set; }
+            public ICollection<RedSocial> RedesSociales { get; set; } = null!;
         }
 
         public class RedSocial
@@ -401,95 +401,95 @@
             public int RedID { get; set; }
             public int UsuarioID { get; set; }
             public int PlataformaID { get; set; }
-            public string URL { get; set; }
+            public string URL { get; set; } = null!;
             // Navegación
-            public Usuario Usuario { get; set; }
-            public Plataforma Plataforma { get; set; }
+            public Usuario Usuario { get; set; } = null!;
+            public Plataforma Plataforma { get; set; } = null!;
         }
 
         public class TipoOperacion
         {
             public int TipoOperacionID { get; set; }
-            public string Descripcion { get; set; }
+            public string Descripcion { get; set; } = null!;
             // Navegación
-            public ICollection<Propiedad> Propiedades { get; set; }
+            public ICollection<Propiedad> Propiedades { get; set; } = null!;
         }
 
         public class Constructora
         {
             public int ConstructoraID { get; set; }
-            public string Nombre { get; set; }
+            public string Nombre { get; set; } = null!;
             public string? Contacto { get; set; }
             public string? Telefono { get; set; }
             public string? Correo { get; set; }
             // Navegación
-            public ICollection<Propiedad> Propiedades { get; set; }
-            public ICollection<Proyecto> Proyectos { get; set; }
+            public ICollection<Propiedad> Propiedades { get; set; } = null!;
+            public ICollection<Proyecto> Proyectos { get; set; } = null!;
         }
 
         public class Propiedad
         {
             public int PropiedadID { get; set; }
-            public string Titulo { get; set; }
+            public string Titulo { get; set; } = null!;
             public string? Descripcion { get; set; }
             public decimal Precio { get; set; }
             public int TipoOperacionID { get; set; }
             public int? Habitaciones { get; set; }
-            public string Direccion { get; set; }
+            public string Direccion { get; set; } = null!;
             public string? Ciudad { get; set; }
             public int? ConstructoraID { get; set; }
             public int? AgenteID { get; set; }
             // Navegación
-            public TipoOperacion TipoOperacion { get; set; }
+            public TipoOperacion TipoOperacion { get; set; } = null!;
             public Constructora? Constructora { get; set; }
             public Usuario? Agente { get; set; }
-            public ICollection<ImagenPropiedad> Imagenes { get; set; }
-            public ICollection<Agenda> Agendas { get; set; }
-            public ICollection<Favorito> Favoritos { get; set; }
-            public ICollection<Comentario> Comentarios { get; set; }
-            public ICollection<HistorialPropiedad> Historial { get; set; }
-            public ICollection<Reparacion> Reparaciones { get; set; }
-            public ICollection<Estadistica> Estadisticas { get; set; }
+            public ICollection<ImagenPropiedad> Imagenes { get; set; } = null!;
+             public DbSet<Agenda> Agendas { get; set; } = null!;
+        public ICollection<Favorito> Favoritos { get; set; } = null!;
+            public ICollection<Comentario> Comentarios { get; set; } = null!;
+            public ICollection<HistorialPropiedad> Historial { get; set; } = null!;
+            public ICollection<Reparacion> Reparaciones { get; set; } = null!;
+            public ICollection<Estadistica> Estadisticas { get; set; } = null!;
         }
 
         public class ImagenPropiedad
         {
             public int ImagenID { get; set; }
             public int PropiedadID { get; set; }
-            public string URL { get; set; }
+            public string URL { get; set; } = null!;
             // Navegación
-            public Propiedad Propiedad { get; set; }
+            public Propiedad Propiedad { get; set; } = null!;
         }
 
         public class EstadoProyecto
         {
             public int EstadoProyectoID { get; set; }
-            public string Descripcion { get; set; }
+            public string Descripcion { get; set; } = null!;
             // Navegación
-            public ICollection<Proyecto> Proyectos { get; set; }
+            public ICollection<Proyecto> Proyectos { get; set; } = null!;
         }
 
         public class Proyecto
         {
             public int ProyectoID { get; set; }
-            public string Nombre { get; set; }
+            public string Nombre { get; set; } = null!;
             public int EstadoProyectoID { get; set; }
             public DateOnly? FechaInicio { get; set; }
             public DateOnly? FechaFin { get; set; }
             public int? ConstructoraID { get; set; }
             // Navegación
-            public EstadoProyecto EstadoProyecto { get; set; }
+            public EstadoProyecto EstadoProyecto { get; set; } = null!;
             public Constructora? Constructora { get; set; }
-            public ICollection<Estadistica> Estadisticas { get; set; }
+            public ICollection<Estadistica> Estadisticas { get; set; } = null!;
         }
 
         public class EstadoAgenda
         {
             public int EstadoAgendaID { get; set; }
-            public string Descripcion { get; set; }
-            // Navegación
-            public ICollection<Agenda> Agendas { get; set; }
-        }
+            public string Descripcion { get; set; } = null!;
+        // Navegación
+            public DbSet<Agenda> Agendas { get; set; } = null!;
+         }
 
         public class Agenda
         {
@@ -498,10 +498,10 @@
             public int PropiedadID { get; set; }
             public DateTime FechaVisita { get; set; }
             public int EstadoAgendaID { get; set; }
-            // Navegación
-            public Usuario Usuario { get; set; }
-            public Propiedad Propiedad { get; set; }
-            public EstadoAgenda EstadoAgenda { get; set; }
+        // Navegación
+            public Usuario Usuario { get; set; } = null!;
+            public Propiedad Propiedad { get; set; } = null!;
+            public EstadoAgenda EstadoAgenda { get; set; } = null!;
         }
 
         public class Favorito
@@ -511,8 +511,8 @@
             public int PropiedadID { get; set; }
             public DateTime FechaAgregado { get; set; }
             // Navegación
-            public Usuario Usuario { get; set; }
-            public Propiedad Propiedad { get; set; }
+            public Usuario Usuario { get; set; } = null!;
+            public Propiedad Propiedad { get; set; } = null!;
         }
 
         public class Comentario
@@ -520,11 +520,11 @@
             public int ComentarioID { get; set; }
             public int UsuarioID { get; set; }
             public int PropiedadID { get; set; }
-            public string Contenido { get; set; }
+            public string Contenido { get; set; } = null!;
             public DateTime FechaComentario { get; set; }
             // Navegación
-            public Usuario Usuario { get; set; }
-            public Propiedad Propiedad { get; set; }
+            public Usuario Usuario { get; set; } = null!;
+            public Propiedad Propiedad { get; set; } = null!;
         }
 
         public class HistorialPropiedad
@@ -534,16 +534,16 @@
             public int PropiedadID { get; set; }
             public DateTime FechaAcceso { get; set; }
             // Navegación
-            public Usuario Usuario { get; set; }
-            public Propiedad Propiedad { get; set; }
+            public Usuario Usuario { get; set; } = null!;
+            public Propiedad Propiedad { get; set; } = null!;
         }
 
         public class EstadoReparacion
         {
             public int EstadoReparacionID { get; set; }
-            public string Descripcion { get; set; }
+            public string Descripcion { get; set; } = null!;
             // Navegación
-            public ICollection<Reparacion> Reparaciones { get; set; }
+            public ICollection<Reparacion> Reparaciones { get; set; } = null!;
         }
 
         public class Reparacion
@@ -551,13 +551,13 @@
             public int ReparacionID { get; set; }
             public int UsuarioID { get; set; }
             public int? PropiedadID { get; set; }
-            public string Descripcion { get; set; }
+            public string Descripcion { get; set; } = null!;
             public int EstadoReparacionID { get; set; }
             public DateTime FechaSolicitud { get; set; }
             // Navegación
-            public Usuario Usuario { get; set; }
+            public Usuario Usuario { get; set; } = null!;
             public Propiedad? Propiedad { get; set; }
-            public EstadoReparacion EstadoReparacion { get; set; }
+            public EstadoReparacion EstadoReparacion { get; set; } = null!;
         }
 
         public class Reporte
@@ -566,17 +566,17 @@
             public int UsuarioID { get; set; }
             public DateTime FechaReporte { get; set; }
             // Navegación
-            public Usuario Usuario { get; set; }
-            public ICollection<DetalleReporte> Detalles { get; set; }
+            public Usuario Usuario { get; set; } = null!;
+            public ICollection<DetalleReporte> Detalles { get; set; } = null!;
         }
 
         public class DetalleReporte
         {
             public int DetalleID { get; set; }
             public int ReporteID { get; set; }
-            public string Descripcion { get; set; }
+            public string Descripcion { get; set; } = null!; 
             // Navegación
-            public Reporte Reporte { get; set; }
+            public Reporte Reporte { get; set; } = null!;
         }
 
         public class Estadistica
@@ -587,8 +587,8 @@
             public int Visitas { get; set; }
             public int Favoritos { get; set; }
             public int Comentarios { get; set; }
-            // Navegación
-            public Propiedad? Propiedad { get; set; }
+        // Navegación
+        public Propiedad? Propiedad { get; set; }
             public Proyecto? Proyecto { get; set; }
         }
     }
