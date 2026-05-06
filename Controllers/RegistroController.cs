@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proyecto_SkyInit.Models;
+using Proyecto_SkyInit.Data;
 
 namespace Proyecto_SkyInit.Controllers
 {
     public class RegistroController : Controller
     {
-        private readonly SkyInitContext _context;
-        public RegistroController(SkyInitContext context)
+        private readonly SkyinitContext _context;
+        public RegistroController(SkyinitContext context)
         {
             _context = context;
         }
@@ -51,7 +52,7 @@ namespace Proyecto_SkyInit.Controllers
                 Nombre = Nombre,
                 Correo = Correo,
                 Telefono = Telefono,
-                ContraseñaHash = BCrypt.Net.BCrypt.HashPassword(Contraseña),
+                ContrasenaHash = BCrypt.Net.BCrypt.HashPassword(Contraseña),
                 FechaRegistro = DateTime.Now,
                 EstadoCuenta = "Activa",
                 RolID = rolUsuario.RolID

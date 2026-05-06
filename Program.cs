@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Proyecto_SkyInit.Models;
-using SkyInitContext = Proyecto_SkyInit.Models.SkyInitContext;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google; // IMPORTANTE
+using Proyecto_SkyInit.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Conexión a MySQL (no cambiar)
-builder.Services.AddDbContext<SkyInitContext>(options =>
+builder.Services.AddDbContext<SkyinitContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("SkyInitDB")));
 
 // Configuración de autenticación con Google

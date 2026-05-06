@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_SkyInit.Models;
+using Proyecto_SkyInit.Data;
 
 namespace Proyecto_SkyInit.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly SkyInitContext _context;
+        private readonly SkyinitContext _context;
 
-        public LoginController(SkyInitContext context)
+        public LoginController(SkyinitContext context)
         {
             _context = context;
         }
@@ -35,7 +36,7 @@ namespace Proyecto_SkyInit.Controllers
             var usuario = _context.Usuarios
                 .FirstOrDefault(u => u.Correo == Correo && u.EstadoCuenta == "Activa");
 
-            if (usuario == null || !BCrypt.Net.BCrypt.Verify(Contraseña, usuario.ContraseñaHash))
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(Contraseña, usuario.ContrasenaHash))
             {
                 ViewBag.Error = "Correo o contraseña incorrectos.";
                 return View("Index");
