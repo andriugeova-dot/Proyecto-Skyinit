@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "_LayoutMenu";
+    ViewData["Title"] = "Menu";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyInit Inmobiliaria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header id="header">
+        <div class="topbar">
+            <div class="logo">SkyInit</div>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu">
+                <a asp-controller="Menu" asp-action="Index">Inicio</a>
+                <a asp-controller="Menu" asp-action="Buscar">Buscar</a>
+                <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+                <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
+                <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
+                <a asp-controller="Menu" asp-action="Registrar" class="btn-registrar">Iniciar Sesión</a>
+            </nav>
+        </div>
+        <div class="hero">
+            <h1>Encuentra tu hogar ideal</h1>
+            <p>Compra, vende o arrienda con SkyInit</p>
+        </div>
+    </header>
+    <section class="contenedor">
+        <h2 class="titulo">Propiedades Destacadas</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994">
+                <div class="card-body">
+                    <div class="precio">$350,000</div>
+                    <div class="ubicacion">Bogotá</div>
+                    <p>Casa moderna con jardín.</p>
+                    <a href="#" class="boton">Ver más</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be">
+                <div class="card-body">
+                    <div class="precio">$420,000</div>
+                    <div class="ubicacion">Medellín</div>
+                    <p>Casa con piscina.</p>
+                    <a href="#" class="boton">Ver más</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
+                <div class="card-body">
+                    <div class="precio">$290,000</div>
+                    <div class="ubicacion">Cali</div>
+                    <p>Zona tranquila.</p>
+                    <a href="#" class="boton">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+        const images = [
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+            "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be"
+        ];
+        let index = 0;
+        const header = document.getElementById("header");
+        function changeBackground() {
+            header.style.backgroundImage = `url(${images[index]})`;
+            index = (index + 1) % images.length;
+        }
+        changeBackground();
+        setInterval(changeBackground, 5000);
+    </script>
+</body>
+</html>

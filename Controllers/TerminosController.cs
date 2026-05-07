@@ -12,7 +12,7 @@ namespace Proyecto_SkyInit.Controllers
         [HttpPost]
         public IActionResult ConfirmarRegistro()
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Menu");
         }
     }
 }

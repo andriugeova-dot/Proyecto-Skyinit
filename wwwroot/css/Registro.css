@@ -3,21 +3,20 @@
     src: url('fonts/CooperBlack.ttf') format('truetype');
 }
 
-body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     height: 100vh;
-    display: flex;
-    font-family: Arial, sans-serif;
-}
-
-/* IZQUIERDA */
-.left {
-    flex: 1;
-    position: relative;
     overflow: hidden;
+    font-family: Arial,sans-serif;
+    position: relative;
 }
 
-/* IMÁGENES */
+/* FONDO */
 .bg img {
     position: absolute;
     width: 100%;
@@ -27,97 +26,176 @@ body {
     transition: opacity 1.5s ease-in-out;
 }
 
+    /* IMAGEN ACTIVA */
     .bg img.active {
         opacity: 1;
+        transform: scale(1.08);
     }
 
 /* OVERLAY */
 .overlay {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.35);
+    inset: 0;
+    background: rgba(0,0,0,0.40);
+    z-index: 1;
 }
 
 /* TEXTO */
 .left-content {
-    position: relative;
-    z-index: 2;
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    z-index: 3;
 }
 
-    /* SKYINIT */
     .left-content h1 {
         font-family: 'Cooper';
-        font-size: 54px;
+        font-size: 58px;
         color: white;
-        letter-spacing: 2px;
-        line-height: 1.1;
-        margin: 0;
     }
 
-    /* SLOGAN */
     .left-content p {
-        margin: 0;
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        font-size: 18px;
         color: #f5f5dc;
-        letter-spacing: 0.5px;
+        font-size: 18px;
         font-style: italic;
     }
 
-/* DERECHA */
-.right {
-    flex: 1;
-    background: #f5f5dc;
+/* FORM WRAPPER */
+.form-wrapper {
+    position: absolute;
+    inset: 0;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    padding-right: 6%;
+    z-index: 3;
 }
 
 /* FORM */
 .form-box {
-    width: 320px;
+    width: 470px;
+    padding: 45px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.14);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.30);
+    animation: slideIn 1s ease;
 }
 
+    /* TITULO */
     .form-box h2 {
-        color: #2e7d32;
+        color: white;
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
     }
 
 /* INPUTS */
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
-    .input-group input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
+.form-control {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    background: rgba(255,255,255,0.92);
+}
 
-/* BOTÓN */
+/* BOTON */
 .btn {
     width: 100%;
-    padding: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
     background: #2e7d32;
     color: white;
-    border: none;
-    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
     cursor: pointer;
+    transition: .3s;
+    margin-top: 10px;
 }
 
     .btn:hover {
         background: #1b5e20;
+        transform: translateY(-2px);
     }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .left {
-        display: none;
+/* PROGRESS */
+.progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: -10px;
+    margin-bottom: 18px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    transition: .3s;
+}
+
+/* COLORES */
+.bg-danger {
+    background: #d32f2f;
+}
+
+.bg-warning {
+    background: #f9a825;
+}
+
+.bg-success {
+    background: #2e7d32;
+}
+
+/* ERROR */
+.invalid-feedback {
+    color: #ffb3b3;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* ANIMACION */
+@keyframes slideIn {
+
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
+
+/* RESPONSIVE */
+@media(max-width:900px) {
+
+    .form-wrapper {
+        justify-content: center;
+        padding-right: 0;
+    }
+
+    .form-box {
+        width: 90%;
+    }
+
+    .left-content {
+        left: 30px;
+        top: 30px;
+    }
+
+        .left-content h1 {
+            font-size: 42px;
+        }
+}
+
+[CSS REGISTRO]
