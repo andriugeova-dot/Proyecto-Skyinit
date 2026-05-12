@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Proyecto_SkyInit.Models
 {
@@ -7,16 +8,22 @@ namespace Proyecto_SkyInit.Models
         [Key]
         public int PropiedadID { get; set; }
 
+        [Required(ErrorMessage = "El título es obligatorio")]
         public string Titulo { get; set; } = null!;
 
         public string? Descripcion { get; set; }
 
+        [Required(ErrorMessage = "El precio es obligatorio")]
+        [Range(0, double.MaxValue, ErrorMessage = "El precio debe ser mayor o igual a 0")]
         public decimal Precio { get; set; }
 
+        [Required(ErrorMessage = "El tipo de operación es obligatorio")]
         public int TipoOperacionID { get; set; }
 
+        [Range(0, 99, ErrorMessage = "El número de habitaciones no es válido")]
         public int? Habitaciones { get; set; }
 
+        [Required(ErrorMessage = "La dirección es obligatoria")]
         public string Direccion { get; set; } = null!;
 
         public string? Ciudad { get; set; }
@@ -25,25 +32,35 @@ namespace Proyecto_SkyInit.Models
 
         public int? AgenteID { get; set; }
 
-        // ── Propiedades de navegación ─────────────────────────────
+        // ── Propiedades de navegación — NO validar desde el formulario ──────
+        [ValidateNever]
         public TipoOperacion TipoOperacion { get; set; } = null!;
 
+        [ValidateNever]
         public Constructora? Constructora { get; set; }
 
+        [ValidateNever]
         public Usuario? Agente { get; set; }
 
-        public ICollection<ImagenPropiedad> Imagenes { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<ImagenPropiedad> Imagenes { get; set; } = new List<ImagenPropiedad>();
 
-        public ICollection<Agenda> Agendas { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<Agenda> Agendas { get; set; } = new List<Agenda>();
 
-        public ICollection<Favorito> Favoritos { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<Favorito> Favoritos { get; set; } = new List<Favorito>();
 
-        public ICollection<Comentario> Comentarios { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
-        public ICollection<HistorialPropiedad> Historial { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<HistorialPropiedad> Historial { get; set; } = new List<HistorialPropiedad>();
 
-        public ICollection<Reparacion> Reparaciones { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<Reparacion> Reparaciones { get; set; } = new List<Reparacion>();
 
-        public ICollection<Estadistica> Estadisticas { get; set; } = null!;
+        [ValidateNever]
+        public ICollection<Estadistica> Estadisticas { get; set; } = new List<Estadistica>();
     }
 }

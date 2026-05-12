@@ -1,0 +1,221 @@
+﻿@{
+    Layout = "_LayoutAdministrador";
+    ViewData["Title"] = "Panel Administrativo";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vista Administrador - SkyInit</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+
+    <div class="admin-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>SkyInit</h2>
+                <span>Administrador</span>
+            </div>
+
+            <nav>
+                <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
+                <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
+                <a asp-controller="Administrador" asp-action="Agentes">👨‍💼 Agentes</a>
+                <a asp-controller="Administrador" asp-action="Mantenimiento">🛠️ Mantenimiento</a>
+                <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+                <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+                <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
+                <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+                <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
+
+            </nav>
+
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="content">
+
+            <!-- TOPBAR -->
+            <div class="topbar">
+
+                <div>
+                    <h1>Panel de Control</h1>
+
+                    <p>
+                        Bienvenido al sistema administrativo de SkyInit
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ESTADISTICAS -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <h3>120</h3>
+                    <p>Propiedades</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>45</h3>
+                    <p>Proyectos</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>18</h3>
+                    <p>Agentes</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>320</h3>
+                    <p>Usuarios</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>12</h3>
+                    <p>Mantenimientos</p>
+                </div>
+
+            </section>
+
+            <!-- ACCIONES RAPIDAS -->
+            <section class="card">
+
+                <div class="card-header">
+
+                    <h2>Acciones Rápidas</h2>
+
+                </div>
+
+                <div class="projects-grid">
+
+                    <!-- PUBLICAR PROPIEDAD -->
+                    <div class="project-card">
+
+                        <h3>🏡 Publicar Propiedad</h3>
+
+                        <p>
+                            Registra una nueva propiedad en la plataforma con imágenes, detalles y ubicación.
+                        </p>
+
+                        <div class="actions">
+                            <a asp-controller="Administrador" asp-action="PublicarPropiedad" class="admin-btn">
+                                Publicar propiedad
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- PUBLICAR PROYECTO -->
+                    <div class="project-card">
+
+                        <h3>🏗️ Publicar Proyecto</h3>
+
+                        <p>
+                            Crea un nuevo proyecto inmobiliario y gestiona toda su información.
+                        </p>
+
+                        <div class="actions">
+                            <a asp-controller="Administrador" asp-action="PublicarProyecto" class="admin-btn">
+                                Publicar Proyecto
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- REGISTRAR AGENTE -->
+                    <div class="project-card">
+
+                        <h3>👨‍💼 Registrar Agente</h3>
+
+                        <p>
+                            Añade nuevos agentes inmobiliarios y asígnales permisos dentro del sistema.
+                        </p>
+
+                        <div class="actions">
+                            <a asp-controller="Administrador" asp-action="RegistrarAgente" class="admin-btn">
+                                Registrar Agente
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- HISTORIAL -->
+            <section class="card">
+
+                <div class="card-header">
+
+                    <h2>Historial de Publicaciones</h2>
+
+                </div>
+
+                <ul class="history">
+
+                    <li>
+                        ✔ Casa Moderna publicada hace 2 horas
+                    </li>
+
+                    <li>
+                        ✔ Proyecto Sky Towers actualizado
+                    </li>
+
+                    <li>
+                        ✔ Nuevo agente registrado en el sistema
+                    </li>
+
+                    <li>
+                        ✔ Propiedad en Medellín eliminada
+                    </li>
+
+                    <li>
+                        ✔ Proyecto Green House creado correctamente
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- NOTIFICACIONES -->
+            <section class="card">
+
+                <div class="card-header">
+
+                    <h2>Notificaciones</h2>
+
+                </div>
+
+                <div class="notification">
+
+                    🔔 Nueva consulta pendiente.
+
+                </div>
+
+                <div class="notification">
+
+                    🔔 Nueva propiedad registrada.
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
