@@ -47,7 +47,7 @@ namespace Proyecto_SkyInit.Controllers
             await GuardarImagenes(modelo.PropiedadID, Imagenes);
 
             TempData["Mensaje"] = "✅ Propiedad publicada correctamente";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","GestionPropiedades");
         }
 
         //GuardarBorrador

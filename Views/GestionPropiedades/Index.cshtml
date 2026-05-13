@@ -1,0 +1,235 @@
+﻿@using System.Linq
+@model List<Proyecto_SkyInit.Models.Propiedad>
+
+@{
+    Layout = "_LayoutGestionPropiedades";
+    
+}
+
+
+<html lang="es">
+<head>
+  
+
+   
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    @* ── Toast de confirmación ─────────────────────────── *@
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="toast @TempData["TipoMensaje"]" id="toast">
+            @TempData["Mensaje"]
+        </div>
+        <script>
+            setTimeout(() => {
+                const t = document.getElementById('toast');
+                if (t) t.style.opacity = '0';
+                setTimeout(() => t?.remove(), 400);
+            }, 3500);
+        </script>
+    }
+    @* ── Navbar ───────────────────────────────────────── *@
+    <div class="actions">
+    </div>
+
+    <div class="navbar">
+        <button type="button" class="btn volver" onclick="location.href='@Url.Action("Index", "Administrador")'">
+            Volver
+        </button>
+        <div class="logo">SkyInit</div>
+        <div class="admin">
+            <div><strong>Administrador</strong></div>
+        </div>
+    </div>
+
+    @* ── Contenido principal ──────────────────────────── *@
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1>Gestión de Propiedades</h1>
+                <p>Administra, edita y elimina propiedades registradas.</p>
+            </div>
+        </div>
+
+        @* ── Buscador + botón ─────────────────────────── *@
+        <form method="get" action="@Url.Action("Index", "GestionPropiedades")">
+            <div class="top-actions">
+                <div class="search">
+                    <input type="text"
+                           name="buscar"
+                           value="@ViewBag.Buscar"
+                           placeholder="Buscar por título, ciudad o dirección..." />
+                </div>
+                <button type="submit" class="add-btn" style="background:#073b4c;">
+                     Buscar
+                </button>
+                <a href="@Url.Action("Index", "PublicarPropiedad")" class="add-btn">
+                    + Nueva Propiedad
+                </a>
+            </div>
+        </form>
+
+        @* ── Contador ─────────────────────────────────── *@
+        <div style="margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+            <span class="count-badge">
+                @Model.Count propiedad@(Model.Count == 1 ? "" : "es") encontrada@(Model.Count == 1 ? "" : "s")
+            </span>
+            @if (!string.IsNullOrWhiteSpace(ViewBag.Buscar as string))
+            {
+                <a href="@Url.Action("Index", "GestionPropiedades")"
+                   style="font-size:13px; color:#118ab2; text-decoration:none;">
+                    ✕ Limpiar búsqueda
+                </a>
+            }
+        </div>
+
+        @* ── Tabla ────────────────────────────────────── *@
+        <div class="table-card">
+            @if (!Model.Any())
+            {
+                <div class="empty-state">
+                    <strong>No hay propiedades registradas</strong>
+                    <p>Crea tu primera propiedad usando el botón "+ Nueva Propiedad".</p>
+                </div>
+
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Propiedad</th>
+                            <th>Ubicación</th>
+                            <th>Precio</th>
+                            <th>Tipo</th>
+                            <th>Agente</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            @* Primera imagen de la propiedad (o placeholder) *@
+                            var primeraImg = p.Imagenes.FirstOrDefault();
+                            var imgSrc = primeraImg?.URL ?? "";
+
+                            <tr>
+                                <td>
+                                    <div class="property">
+                                        @if (!string.IsNullOrEmpty(imgSrc))
+                                        {
+                                            <img src="@imgSrc"
+                                                 alt="@p.Titulo"
+                                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                                            <div class="no-img" style="display:none;">🏠</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="no-img">🏠</div>
+                                        }
+                                        <div>
+                                            <strong>@p.Titulo</strong>
+                                            @if (p.Habitaciones.HasValue && p.Habitaciones > 0)
+                                            {
+                                                <p>@p.Habitaciones hab.</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @(p.Ciudad ?? "—")<br />
+                                    <small style="color:#6c757d;">@p.Direccion</small>
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        $@p.Precio.ToString("N0", new System.Globalization.CultureInfo("es-CO"))
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="status available">
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @(p.Agente != null
+                                        ? $"{p.Agente.Nombre} (ID: {p.AgenteID})"
+                                        : (p.AgenteID.HasValue ? $"ID: {p.AgenteID}" : "Sin agente"))
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <a href="@Url.Action("Index", "EditarPropiedad", new { id = p.PropiedadID })"
+                                           class="btn edit">
+                                            Editar
+                                        </a>
+                                        <button class="btn delete"
+                                                onclick="abrirModal(@p.PropiedadID, '@Html.Raw(p.Titulo.Replace("'", "\\'"))')">
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+    </div>
+            <div id="modalEliminar" class="modal">
+                <div class="modal-box">
+                    <h3>¿Eliminar propiedad?</h3>
+                    <p>Esta acción no se puede deshacer.</p>
+                    <div class="actions">
+                        <button type="button" onclick="cerrarModal()">Cancelar</button>
+                        <button type="button" id="btnConfirmarEliminar">Sí, eliminar</button>
+                    </div>
+                </div>
+            </div>
+
+    @* ── Formulario oculto para eliminar (POST) ───────── *@
+    <form id="formEliminar" method="post" action="@Url.Action("Eliminar", "GestionPropiedades")" style="display:none;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" />
+    </form>
+
+
+    <script>
+                       let propiedadIdAEliminar = null;
+
+        function abrirModal(id, titulo) {
+            propiedadIdAEliminar = id;
+            document.querySelector('#modalEliminar .modal-box h3').textContent =
+                `¿Eliminar "${titulo}"?`;
+            document.getElementById('modalEliminar').classList.add('open');
+        }
+
+        document.getElementById('btnConfirmarEliminar').addEventListener('click', function () {
+            if (!propiedadIdAEliminar) return;
+            const form = document.getElementById('formEliminar');
+            form.querySelector('input[name="id"]').value = propiedadIdAEliminar;
+            form.submit();
+        });
+                function cerrarModal() {
+            document.getElementById('modalEliminar').classList.remove('open');
+            propiedadIdAEliminar = null; // limpiar el id para evitar errores
+        }
+                document.getElementById('modalEliminar').addEventListener('click', function(e) {
+            if (e.target.id === 'modalEliminar') {
+                cerrarModal();
+            }
+        });
+
+      
+    </script>
+
+</body>
+</html>

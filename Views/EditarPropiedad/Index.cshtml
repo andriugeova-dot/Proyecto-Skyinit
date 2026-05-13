@@ -1,0 +1,140 @@
+﻿@model Proyecto_SkyInit.Models.Propiedad
+@{
+    Layout = "~/Views/Shared/_LayoutEditarPropiedad.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Publicar Propiedad - SkyInit</title>
+    <link rel="stylesheet" href="~/css/PublicarPropiedad.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo">SkyInit</div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="container">
+        <div class="layout">
+
+            <!-- FORMULARIO -->
+            <div class="main-card">
+                <div class="hero">
+                    <div class="hero-content">
+                        <h2>Publicar propiedad</h2>
+                        <p>Publica propiedades modernas y conecta con más clientes dentro de SkyInit.</p>
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <form asp-controller="EditarPropiedad" asp-action="Index" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="PropiedadID" />
+                        <div class="form-grid">
+                            <div class="input-box">
+                                <label>Título</label>
+                                <input asp-for="Titulo" class="form-control" />
+                                <span asp-validation-for="Titulo" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Precio</label>
+                                <input asp-for="Precio" type="number" min="0" class="form-control" />
+                                <span asp-validation-for="Precio" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box full">
+                                <label>Ubicación</label>
+                                <input asp-for="Direccion" class="form-control" />
+                                <span asp-validation-for="Direccion" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box full">
+                                <label>Descripción</label>
+                                <textarea asp-for="Descripcion" class="form-control"></textarea>
+                                <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="section-title">Fotos de la propiedad</div>
+                        <div class="upload">
+                            <input type="file" name="Imagenes" multiple />
+                        </div>
+                        <div class="preview" id="preview"></div>
+
+                        <div class="section-title">Detalles</div>
+                        <div class="form-grid">
+                            <div class="input-box">
+                                <label>Tipo de operación</label>
+                                <select asp-for="TipoOperacionID" asp-items="ViewBag.TiposOperacion" class="form-control"></select>
+                                <span asp-validation-for="TipoOperacionID" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Habitaciones</label>
+                                <input asp-for="Habitaciones" type="number" class="form-control" />
+                                <span asp-validation-for="Habitaciones" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Ciudad</label>
+                                <input asp-for="Ciudad" class="form-control" />
+                                <span asp-validation-for="Ciudad" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Agente</label>
+                                <select asp-for="AgenteID" asp-items="ViewBag.Agentes" class="form-control"></select>
+                                <span asp-validation-for="AgenteID" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Constructora</label>
+                                <select asp-for="ConstructoraID" asp-items="ViewBag.constructoras" class="form-control"></select>
+                                <span asp-validation-for="ConstructoraID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="btn btn-primary">Aceptar</button>
+                            <button type="button" class="btn volver" onclick="location.href='@Url.Action("Index", "GestionPropiedades")'">
+                                Volver
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <div class="side-card">
+                    <h3>Estado</h3>
+                    <span class="tag">En edición</span>
+                </div>
+
+                <div class="side-card">
+                    <h3>Disponibilidad</h3>
+                    <span class="tag">Disponible</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector("input[name='Imagenes']").addEventListener("change", function () {
+            const preview = document.getElementById("preview");
+            preview.innerHTML = "";
+            for (let file of this.files) {
+                if (!file.type.startsWith("image/")) continue;
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.style.width = "120px";
+                img.style.margin = "5px";
+                preview.appendChild(img);
+            }
+        });
+    </script>
+</body>
+</html>
