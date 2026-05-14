@@ -138,10 +138,12 @@ body {
     cursor: pointer;
     font-weight: 600;
     transition: .3s;
+    text-decoration: none;
 }
 
     .add-btn:hover {
         background: #0a6f90;
+        text-decoration: none;
     }
 
 /* TABLE CARD */
@@ -317,10 +319,12 @@ td {
 .edit {
     background: #dff6fb;
     color: #118ab2;
+    text-decoration:none;
 }
 
     .edit:hover {
         background: #c6edf7;
+        text-decoration:none;
     }
 
 .delete {

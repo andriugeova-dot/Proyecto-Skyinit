@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Manrope',sans-serif;
-    background: #edf2ea;
+    background: #f6f3eb;
     min-height: 100vh;
     color: #222;
 }
@@ -14,7 +14,7 @@ body {
 /* NAVBAR */
 
 .navbar {
-    background: #2e7d32;
+    background: #118ab2;
     padding: 22px 45px;
     color: white;
     display: flex;
@@ -59,7 +59,7 @@ body {
 .hero {
     position: relative;
     height: 240px;
-    background: linear-gradient(to right, rgba(46,125,50,0.88), rgba(46,125,50,0.55)), url('https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=2070&auto=format&fit=crop');
+    background: linear-gradient(to right, rgba(17,138,178,0.88), rgba(17,138,178,0.55)), url('https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=2070&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -103,7 +103,7 @@ body {
 label {
     display: block;
     margin-bottom: 8px;
-    color: #2e7d32;
+    color: #118ab2;
     font-size: 14px;
     font-weight: 700;
 }
@@ -133,8 +133,8 @@ select {
     textarea:focus,
     select:focus {
         background: white;
-        border-color: #2e7d32;
-        box-shadow: 0 0 0 5px rgba(46,125,50,0.10);
+        border-color: #118ab2;
+        box-shadow: 0 0 0 5px rgba(17,138,178,0.10);
     }
 
 textarea {
@@ -147,14 +147,14 @@ textarea {
 .section-title {
     margin: 38px 0 18px;
     font-size: 20px;
-    color: #2e7d32;
+    color: #118ab2;
     font-weight: 800;
 }
 
 /* UPLOAD */
 
 .upload {
-    border: 2px dashed #81c784;
+    border: 2px dashed #118ab2;
     border-radius: 24px;
     padding: 50px;
     text-align: center;
@@ -169,7 +169,7 @@ textarea {
         position: absolute;
         width: 180px;
         height: 180px;
-        background: rgba(46,125,50,0.05);
+        background: rgba(17,138,178,0.05);
         border-radius: 50%;
         top: -80px;
         right: -80px;
@@ -218,23 +218,27 @@ textarea {
 }
 
 .primary {
-    background: #2e7d32;
+    background: #118ab2;
     color: white;
-    box-shadow: 0 10px 25px rgba(46,125,50,0.22);
+    box-shadow: 0 10px 25px rgba(17,138,178,0.22);
 }
 
     .primary:hover {
-        background: #25692a;
+        background: #0f6f8f;
         transform: translateY(-3px);
     }
 
 .secondary {
     background: #ececec;
     color: #333;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
 }
 
     .secondary:hover {
         background: #dfdfdf;
+        text-decoration: none;
     }
 
 /* SIDEBAR */
@@ -261,14 +265,14 @@ textarea {
         position: absolute;
         width: 130px;
         height: 130px;
-        background: rgba(46,125,50,0.05);
+        background: rgba(17,138,178,0.05);
         border-radius: 50%;
         bottom: -60px;
         right: -60px;
     }
 
     .side-card h3 {
-        color: #2e7d32;
+        color: #118ab2;
         margin-bottom: 15px;
         font-size: 20px;
         position: relative;
@@ -279,8 +283,8 @@ textarea {
 
 .tag {
     display: inline-block;
-    background: #dff1e0;
-    color: #2e7d32;
+    background: #d0ecf7;
+    color: #118ab2;
     padding: 8px 16px;
     border-radius: 30px;
     font-size: 13px;

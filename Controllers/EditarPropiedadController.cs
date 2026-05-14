@@ -52,7 +52,7 @@ namespace Proyecto_SkyInit.Controllers
                     TempData["TipoMensaje"] = "success";
 
                     // 🔑 Mantener la estética y volver a la misma vista
-                    return RedirectToAction("Index", new { id = propiedad.PropiedadID });
+                    return RedirectToAction("Index","GestionPropiedades");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -66,6 +66,7 @@ namespace Proyecto_SkyInit.Controllers
             PoblarCombos(propiedad);
             return View(propiedad);
         }
+
         private void PoblarCombos(Propiedad propiedad)
         {
             ViewBag.TiposOperacion = new SelectList(_context.TiposOperacion, "TipoOperacionID", "Descripcion", propiedad.TipoOperacionID);

@@ -50,31 +50,12 @@ namespace Proyecto_SkyInit.Controllers
             return RedirectToAction("Index","GestionPropiedades");
         }
 
-        //GuardarBorrador
+        //Cancelar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GuardarBorrador(Propiedad modelo, List<IFormFile> Imagenes)
+        public IActionResult Cancelar()
         {
-            // El borrador no exige validación completa del modelo
-            ModelState.ClearValidationState(nameof(modelo.Titulo));
-            ModelState.ClearValidationState(nameof(modelo.Direccion));
-            ModelState.ClearValidationState(nameof(modelo.Precio));
-            ModelState.ClearValidationState(nameof(modelo.TipoOperacionID));
-
-            if (string.IsNullOrWhiteSpace(modelo.Titulo))
-            {
-                CargarViewBags();
-                TempData["Mensaje"] = "❌ El título es obligatorio para guardar un borrador";
-                return View("Index", modelo);
-            }
-
-            _context.Propiedades.Add(modelo);
-            await _context.SaveChangesAsync();
-
-            await GuardarImagenes(modelo.PropiedadID, Imagenes);
-
-            TempData["Mensaje"] = "Borrador guardado correctamente";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Administrador");
         }
 
         // Método privado para guardar imágenes 
