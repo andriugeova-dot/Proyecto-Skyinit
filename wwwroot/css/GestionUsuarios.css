@@ -1,0 +1,450 @@
+﻿/* wwwroot/css/GestionUsuarios.css
+   Paleta: #0f4c5c (sidebar) | #118ab2 (acción) | #f6f3eb (fondo)
+   Fuente de referencia: Administrador.css + Gestionpropiedades.css
+   ------------------------------------------------------------------ */
+
+/* RESET */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f6f3eb;
+    color: #333;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.gu-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar {
+    width: 260px;
+    background: #0f4c5c;
+    color: #fff;
+    padding: 25px 20px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.logo h2 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+    .logo h2 span {
+        color: #b8e3ea;
+    }
+
+.rol-badge {
+    font-size: 11px;
+    background: rgba(255,255,255,0.15);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: background .25s;
+}
+
+    .sidebar a:hover,
+    .sidebar a.active {
+        background: rgba(255,255,255,0.15);
+    }
+
+/* ── CONTENIDO ───────────────────────────────────────────── */
+.content {
+    margin-left: 260px;
+    width: 100%;
+    padding: 35px 40px;
+}
+
+/* ── TOPBAR ──────────────────────────────────────────────── */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+    .topbar h1 {
+        font-size: 30px;
+        color: #0f4c5c;
+        font-weight: 700;
+    }
+
+    .topbar p {
+        color: #777;
+        margin-top: 4px;
+        font-size: 14px;
+    }
+
+/* ── FILTROS ─────────────────────────────────────────────── */
+.filtros-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.resultados-count {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+}
+
+/* ── INPUTS / SELECTS ────────────────────────────────────── */
+.gu-input,
+.gu-select {
+    padding: 10px 14px;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    outline: none;
+    transition: border-color .2s;
+}
+
+    .gu-input:focus,
+    .gu-select:focus {
+        border-color: #118ab2;
+        box-shadow: 0 0 0 3px rgba(17,138,178,0.12);
+    }
+
+/* ── BOTONES ─────────────────────────────────────────────── */
+.gu-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .gu-btn:active {
+        transform: scale(.97);
+    }
+
+    .gu-btn.primary {
+        background: #118ab2;
+        color: #fff;
+    }
+
+    .gu-btn.secondary {
+        background: #e8e8e8;
+        color: #444;
+    }
+
+    .gu-btn.warning {
+        background: #e89418;
+        color: #fff;
+    }
+
+    .gu-btn.success {
+        background: #1b8f3d;
+        color: #fff;
+    }
+
+    .gu-btn.danger {
+        background: #d32f2f;
+        color: #fff;
+    }
+
+    .gu-btn.primary:hover {
+        background: #0a6f90;
+    }
+
+    .gu-btn.secondary:hover {
+        background: #d5d5d5;
+    }
+
+    .gu-btn.warning:hover {
+        background: #c47a10;
+    }
+
+    .gu-btn.success:hover {
+        background: #15702f;
+    }
+
+    .gu-btn.danger:hover {
+        background: #b71c1c;
+    }
+
+    .gu-btn.sm {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+
+/* ── TABLA ───────────────────────────────────────────────── */
+.table-wrapper {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+    overflow: hidden;
+}
+
+.gu-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+    .gu-table thead {
+        background: #0f4c5c;
+        color: #fff;
+    }
+
+    .gu-table th {
+        padding: 14px 16px;
+        text-align: left;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    .gu-table td {
+        padding: 13px 16px;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .gu-table tbody tr:hover {
+        background: #f8fbfd;
+    }
+
+    .gu-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+.acciones {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.empty-state {
+    text-align: center;
+    color: #aaa;
+    padding: 40px;
+    font-style: italic;
+}
+
+/* ── BADGES ESTADO ───────────────────────────────────────── */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.badge-activa {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-inactiva {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.badge-bloqueada {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ── TOAST ───────────────────────────────────────────────── */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    background: #118ab2;
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 9999;
+    transition: opacity .4s ease;
+}
+
+    .toast.success {
+        background: #1b8f3d;
+    }
+
+    .toast.warning {
+        background: #e89418;
+    }
+
+    .toast.error {
+        background: #d32f2f;
+    }
+
+/* ── MODALES ─────────────────────────────────────────────── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+.modal-box {
+    background: #fff;
+    border-radius: 18px;
+    width: min(600px, 95vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: slideUp .25s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 28px;
+    border-bottom: 1px solid #eee;
+}
+
+    .modal-header h2 {
+        font-size: 20px;
+        color: #0f4c5c;
+    }
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+    transition: color .2s;
+}
+
+    .modal-close:hover {
+        color: #d32f2f;
+    }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    padding: 24px 28px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+    .form-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .form-group .gu-input,
+    .form-group .gu-select {
+        width: 100%;
+    }
+
+.required {
+    color: #d32f2f;
+}
+
+.optional {
+    color: #aaa;
+    font-weight: 400;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 18px 28px;
+    border-top: 1px solid #eee;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .sidebar {
+        display: none;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filtros-bar {
+        flex-direction: column;
+    }
+
+        .filtros-bar .gu-input,
+        .filtros-bar .gu-select {
+            width: 100%;
+        }
+}

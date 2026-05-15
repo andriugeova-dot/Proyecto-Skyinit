@@ -1,0 +1,305 @@
+﻿@* Views/GestionUsuarios/Index.cshtml *@
+@model IEnumerable<Proyecto_SkyInit.Models.Usuario>
+@{
+    Layout = "_LayoutGestionUsuarios";
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<div class="gu-container">
+
+    <!-- ── SIDEBAR (igual al panel de Administrador) ── -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Sky<span>Init</span></h2>
+            <span class="rol-badge">Administrador</span>
+        </div>
+        <nav>
+            <a asp-controller="Administrador" asp-action="Index">🏠 Panel</a>
+            <a asp-controller="Administrador" asp-action="Propiedades">🏢 Propiedades</a>
+            <a asp-controller="Administrador" asp-action="Proyectos">📐 Proyectos</a>
+            <a asp-controller="Administrador" asp-action="Agentes">👥 Agentes</a>
+            <a asp-controller="GestionUsuarios" asp-action="Index" class="active">👤 Usuarios</a>
+            <a asp-controller="Administrador" asp-action="Mantenimiento">🔧 Mantenimiento</a>
+            <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <!-- ── CONTENIDO PRINCIPAL ── -->
+    <main class="content">
+
+        <!-- Toast de notificación -->
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="toast @TempData["TipoMsg"]" id="toast">@TempData["Mensaje"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="toast error" id="toast">@TempData["Error"]</div>
+        }
+
+        <!-- Topbar -->
+        <div class="topbar">
+            <div>
+                <h1>Gestión de Agentes</h1>
+                <p>Administra cuentas, roles y estados del sistema.</p>
+            </div>
+            <button class="gu-btn primary" onclick="abrirModalCrear()">＋ Nuevo usuario</button>
+        </div>
+
+        <!-- Filtros -->
+        <form method="get" class="filtros-bar">
+            <input type="text" name="buscar" placeholder="Buscar por nombre o correo…"
+                   value="@ViewBag.Buscar" class="gu-input" />
+
+            <select name="filtroRol" class="gu-select">
+                <option value="">— Todos los roles —</option>
+                @foreach (var rol in (IEnumerable<Proyecto_SkyInit.Models.Rol>)ViewBag.Roles)
+                {
+                    <option value="@rol.NombreRol"
+                            selected="@(ViewBag.FiltroRol == rol.NombreRol ? "selected" : null)">
+                        @rol.NombreRol
+                    </option>
+                }
+            </select>
+
+            <select name="filtroEstado" class="gu-select">
+                <option value="">— Todos los estados —</option>
+                <option value="Activa" selected="@(ViewBag.FiltroEstado == "Activa" ? "selected" : null)">Activa</option>
+                <option value="Inactiva" selected="@(ViewBag.FiltroEstado == "Inactiva" ? "selected" : null)">Inactiva</option>
+                <option value="Bloqueada" selected="@(ViewBag.FiltroEstado == "Bloqueada" ? "selected" : null)">Bloqueada</option>
+            </select>
+
+            <button type="submit" class="gu-btn primary">Filtrar</button>
+            <a asp-action="Index" class="gu-btn secondary">Limpiar</a>
+        </form>
+
+        <!-- Contador de resultados (RF82) -->
+        <p class="resultados-count">@Model.Count() usuario(s) encontrado(s)</p>
+
+        <!-- Tabla de usuarios (RF234 – RF247) -->
+        <div class="table-wrapper">
+            <table class="gu-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Fecha Registro</th>
+                        <th>Estado</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="empty-state">No se encontraron usuarios.</td>
+                        </tr>
+                    }
+                    @foreach (var u in Model)
+                    {
+                        <tr>
+                            <td>@u.Nombre</td>
+                            <td>@u.Correo</td>
+                            <td>@(u.Telefono ?? "—")</td>
+                            <td>@u.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge badge-@u.EstadoCuenta.ToLower()">
+                                    @u.EstadoCuenta
+                                </span>
+                            </td>
+                            <td>@u.Rol?.NombreRol</td>
+                            <td class="acciones">
+                                <!-- Editar -->
+                                <button class="gu-btn sm primary"
+                                        onclick="abrirModalEditar(
+                                                @u.UsuarioID,
+                                                '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
+                                                '@Html.Raw(u.Correo.Replace("'", "\\'"))',
+                                                '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
+                                                '@u.EstadoCuenta',
+                                                @u.RolID)">
+                                    ✏️ Editar
+                                </button>
+
+                                <!-- Activar / Desactivar -->
+                                @if (u.EstadoCuenta == "Activa" || u.EstadoCuenta == "Bloqueada")
+                                {
+                                    <form asp-action="Desactivar" asp-route-id="@u.UsuarioID"
+                                          method="post" style="display:inline"
+                                          onsubmit="return confirm('¿Desactivar a @u.Nombre?')">
+                                        @Html.AntiForgeryToken()
+                                        <button class="gu-btn sm warning">⏸ Desactivar</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-action="Activar" asp-route-id="@u.UsuarioID"
+                                          method="post" style="display:inline">
+                                        @Html.AntiForgeryToken()
+                                        <button class="gu-btn sm success">▶ Activar</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     MODAL CREAR USUARIO
+══════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalCrear">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>Nuevo usuario</h2>
+            <button class="modal-close" onclick="cerrarModal('modalCrear')">✕</button>
+        </div>
+        <form asp-action="Crear" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nombre <span class="required">*</span></label>
+                    <input type="text" name="Nombre" class="gu-input" required placeholder="Nombre completo" />
+                </div>
+                <div class="form-group">
+                    <label>Correo <span class="required">*</span></label>
+                    <input type="email" name="Correo" class="gu-input" required placeholder="correo@ejemplo.com" />
+                </div>
+                <div class="form-group">
+                    <label>Contraseña <span class="required">*</span></label>
+                    <input type="password" name="Contrasena" class="gu-input" required
+                           minlength="8" placeholder="Mínimo 8 caracteres" />
+                </div>
+                <div class="form-group">
+                    <label>Teléfono <span class="optional">(opcional)</span></label>
+                    <input type="tel" name="Telefono" class="gu-input" placeholder="3001234567" />
+                </div>
+                <div class="form-group">
+                    <label>Estado <span class="required">*</span></label>
+                    <select name="EstadoCuenta" class="gu-select" required>
+                        <option value="Activa">Activa</option>
+                        <option value="Inactiva">Inactiva</option>
+                        <option value="Bloqueada">Bloqueada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Rol <span class="required">*</span></label>
+                    <select name="RolID" class="gu-select" required>
+                        @foreach (var rol in (IEnumerable<Proyecto_SkyInit.Models.Rol>)ViewBag.Roles)
+                        {
+                            <option value="@rol.RolID">@rol.NombreRol</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gu-btn secondary" onclick="cerrarModal('modalCrear')">Cancelar</button>
+                <button type="submit" class="gu-btn primary">Guardar usuario</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     MODAL EDITAR USUARIO
+══════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalEditar">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>Editar usuario</h2>
+            <button class="modal-close" onclick="cerrarModal('modalEditar')">✕</button>
+        </div>
+        <form asp-action="Editar" method="post" id="formEditar">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" id="editId" />
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nombre <span class="required">*</span></label>
+                    <input type="text" name="Nombre" id="editNombre" class="gu-input" required />
+                </div>
+                <div class="form-group">
+                    <label>Correo <span class="required">*</span></label>
+                    <input type="email" name="Correo" id="editCorreo" class="gu-input" required />
+                </div>
+                <div class="form-group">
+                    <label>Nueva contraseña <span class="optional">(dejar en blanco para no cambiar)</span></label>
+                    <input type="password" name="NuevaContrasena" class="gu-input"
+                           minlength="8" placeholder="Mínimo 8 caracteres" />
+                </div>
+                <div class="form-group">
+                    <label>Teléfono <span class="optional">(opcional)</span></label>
+                    <input type="tel" name="Telefono" id="editTelefono" class="gu-input" />
+                </div>
+                <div class="form-group">
+                    <label>Estado <span class="required">*</span></label>
+                    <select name="EstadoCuenta" id="editEstado" class="gu-select" required>
+                        <option value="Activa">Activa</option>
+                        <option value="Inactiva">Inactiva</option>
+                        <option value="Bloqueada">Bloqueada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Rol <span class="required">*</span></label>
+                    <select name="RolID" id="editRol" class="gu-select" required>
+                        @foreach (var rol in (IEnumerable<Proyecto_SkyInit.Models.Rol>)ViewBag.Roles)
+                        {
+                            <option value="@rol.RolID">@rol.NombreRol</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="gu-btn secondary" onclick="cerrarModal('modalEditar')">Cancelar</button>
+                <button type="submit" class="gu-btn primary">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // ── Toast ──────────────────────────────────────────────
+        const toast = document.getElementById('toast');
+        if (toast) {
+            setTimeout(() => toast.style.opacity = '0', 3500);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        // ── Modal helpers ──────────────────────────────────────
+        function abrirModalCrear() {
+            document.getElementById('modalCrear').classList.add('open');
+        }
+
+        function abrirModalEditar(id, nombre, correo, telefono, estado, rolId) {
+            document.getElementById('editId').value       = id;
+            document.getElementById('editNombre').value   = nombre;
+            document.getElementById('editCorreo').value   = correo;
+            document.getElementById('editTelefono').value = telefono;
+            document.getElementById('editEstado').value   = estado;
+            document.getElementById('editRol').value      = rolId;
+
+            // Ajustar el action del formulario con el id correcto
+            document.getElementById('formEditar').action =
+                '/GestionUsuarios/Editar/' + id;
+
+            document.getElementById('modalEditar').classList.add('open');
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        // Cerrar al hacer clic fuera del modal
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) overlay.classList.remove('open');
+            });
+        });
+    </script>
+}

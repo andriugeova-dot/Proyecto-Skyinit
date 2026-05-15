@@ -26,7 +26,7 @@ namespace Proyecto_SkyInit.Controllers
         }
         public IActionResult Agentes()
         {
-            return RedirectToAction("Index", "GestionAgentes");
+            return RedirectToAction("Index", "GestionUsuarios");
         }
         public IActionResult Mantenimiento()
         {

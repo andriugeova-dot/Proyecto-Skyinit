@@ -1,14 +1,11 @@
-﻿// Controllers/LoginController.cs
-// CORRECCIÓN E08: Todas las referencias a RedirectToAction("Index", "Home")
-//                 cambiadas a RedirectToAction("Index", "Menu").
-// La integración con Google API permanece INTACTA y sin modificar.
-
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
-using Proyecto_SkyInit.Models;
+using Microsoft.EntityFrameworkCore;
 using Proyecto_SkyInit.Data;
+using Proyecto_SkyInit.Models;
+using System.Security.Claims;
 
 namespace Proyecto_SkyInit.Controllers
 {
@@ -30,7 +27,7 @@ namespace Proyecto_SkyInit.Controllers
 
         // POST /Login/Autenticar (login tradicional con correo/contraseña)
         [HttpPost]
-        public IActionResult Autenticar(string Correo, string Contraseña)
+        public async Task<IActionResult> Autenticar(string Correo, string Contraseña)
         {
             if (string.IsNullOrWhiteSpace(Correo) || string.IsNullOrWhiteSpace(Contraseña))
             {
@@ -39,23 +36,50 @@ namespace Proyecto_SkyInit.Controllers
             }
 
             var usuario = _context.Usuarios
+                .Include(u => u.Rol)   // 👈 Cargar también el rol
                 .FirstOrDefault(u => u.Correo == Correo && u.EstadoCuenta == "Activa");
 
-            if (usuario == null || !BCrypt.Net.BCrypt.Verify(Contraseña, usuario.ContrasenaHash))
+            if (usuario == null || usuario.Rol == null ||
+                !BCrypt.Net.BCrypt.Verify(Contraseña, usuario.ContrasenaHash))
             {
-                ViewBag.Error = "Correo o contraseña incorrectos.";
+                ViewBag.Error = "Correo, contraseña o rol inválido.";
                 return View("Index");
             }
 
-            // E08 CORREGIDO: redirige a Menu/Index en lugar de Home/Index
-            return RedirectToAction("Index", "Menu");
+            var claims = new List<Claim>
+    {
+        new(ClaimTypes.Name, usuario.Nombre),
+        new(ClaimTypes.Email, usuario.Correo),
+        new("UsuarioID", usuario.UsuarioID.ToString()),
+        new("Rol", usuario.Rol.NombreRol)
+    };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties { IsPersistent = false });
+
+            switch (usuario.Rol.NombreRol)
+            {
+                case "Administrador":
+                    return RedirectToAction("Index", "Administrador");
+                case "Agente":
+                    return RedirectToAction("Panel", "Agente");
+                case "Cliente":
+                    return RedirectToAction("Index", "Menu");
+                default:
+                    return RedirectToAction("Index", "Menu");
+            }
         }
+
 
         // ════════════════════════════════════════════════════════════
         // GOOGLE OAUTH — ⚠️ NO MODIFICAR — Integración Google API
         // ════════════════════════════════════════════════════════════
 
-        // GET /Login/LoginWithGoogle
         [HttpGet]
         public IActionResult LoginWithGoogle()
         {
@@ -69,9 +93,7 @@ namespace Proyecto_SkyInit.Controllers
 
         public async Task<IActionResult> GoogleResponse()
         {
-            // ✅ CORRECTO: leer del scheme externo de Google, no de la cookie
-            var result = await HttpContext.AuthenticateAsync(
-                GoogleDefaults.AuthenticationScheme);
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
             if (!result.Succeeded)
             {
@@ -79,12 +101,8 @@ namespace Proyecto_SkyInit.Controllers
                 return View("Index");
             }
 
-            // Extraer el correo desde los claims de Google
-            var email = result.Principal?
-                .FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-
-            var nombre = result.Principal?
-                .FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+            var email = result.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            var nombre = result.Principal?.FindFirst(ClaimTypes.Name)?.Value;
 
             if (string.IsNullOrEmpty(email))
             {
@@ -92,45 +110,55 @@ namespace Proyecto_SkyInit.Controllers
                 return View("Index");
             }
 
-            // Buscar usuario en la base de datos
             var usuario = _context.Usuarios
+                .Include(u => u.Rol)   // 👈 Cargar también el rol
                 .FirstOrDefault(u => u.Correo == email && u.EstadoCuenta == "Activa");
 
-            if (usuario == null)
+            if (usuario == null || usuario.Rol == null)
             {
-                ViewBag.Error = "Tu correo no está registrado. Regístrate primero.";
+                ViewBag.Error = "Tu correo no está registrado o no tiene rol asignado.";
                 return View("Index");
             }
 
-            // ✅ CORRECTO: crear la sesión en la cookie de la app
-            var claims = new List<System.Security.Claims.Claim>
-    {
-        new(System.Security.Claims.ClaimTypes.Name,  usuario.Nombre),
-        new(System.Security.Claims.ClaimTypes.Email, usuario.Correo),
-        new("UsuarioID", usuario.UsuarioID.ToString())
-    };
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Name, usuario.Nombre),
+                new(ClaimTypes.Email, usuario.Correo),
+                new("UsuarioID", usuario.UsuarioID.ToString()),
+            new("Rol", usuario.Rol.NombreRol)
+            };
 
-            var identity = new System.Security.Claims.ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new System.Security.Claims.ClaimsPrincipal(identity);
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal,
                 new AuthenticationProperties { IsPersistent = false });
 
-            return RedirectToAction("Index", "Menu");
+            // 🚀 Redirigir según rol
+            switch (usuario.Rol.NombreRol)
+            {
+                case "Administrador":
+                    return RedirectToAction("Index", "Administrador");
+                case "Agente":
+                    return RedirectToAction("Panel", "Agente");
+                case "Cliente":
+                    return RedirectToAction("Index", "Menu");
+                default:
+                    return RedirectToAction("Index", "Menu");
+            }
         }
+
+
 
         // ════════════════════════════════════════════════════════════
         // FIN bloque Google API
         // ════════════════════════════════════════════════════════════
 
-        // GET /Login/Logout
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index");
         }
     }
