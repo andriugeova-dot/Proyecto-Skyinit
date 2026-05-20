@@ -1,9 +1,4 @@
-﻿// Controllers/GestionUsuariosController.cs
-// RF234-RF247 | Solo el Administrador puede crear, editar y desactivar usuarios.
-// NOTA: el login tradicional (Autenticar) no registra claims; se usa UsuarioID
-//       almacenado en cookie para verificar el rol contra la BD (ver error E01).
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_SkyInit.Data;
 using Proyecto_SkyInit.Models;
@@ -35,9 +30,7 @@ namespace Proyecto_SkyInit.Controllers
         }
 
         // ─── GET: /GestionUsuarios/Index ────────────────────────────────────────
-        // RF234 – Mostrar listado de usuarios
-        // RF238 – Mostrar roles
-        // RF240 – Mostrar estado de cada cuenta
+      
         public async Task<IActionResult> Index(string? buscar, string? filtroRol, string? filtroEstado)
         {
             if (!await EsAdministradorAsync())
@@ -137,7 +130,7 @@ namespace Proyecto_SkyInit.Controllers
         }
 
         // ─── GET: /GestionUsuarios/Editar/5 ────────────────────────────────────
-        // RF236 – Permitir editar usuarios
+     
         public async Task<IActionResult> Editar(int id)
         {
             if (!await EsAdministradorAsync())
@@ -213,7 +206,7 @@ namespace Proyecto_SkyInit.Controllers
         }
 
         // ─── POST: /GestionUsuarios/Activar/5 ──────────────────────────────────
-        // RF241 – Activar usuario
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Activar(int id)
@@ -233,7 +226,6 @@ namespace Proyecto_SkyInit.Controllers
         }
 
         // ─── POST: /GestionUsuarios/Desactivar/5 ───────────────────────────────
-        // RF237 / RF242 – Desactivar usuario (no eliminar físicamente)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Desactivar(int id)

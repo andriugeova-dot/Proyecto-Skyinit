@@ -53,8 +53,9 @@ body {
     transition: .3s;
 }
 
-    .sidebar a:hover {
-        background: rgba(255,255,255,0.1);
+    .sidebar a:hover,
+    .sidebar a.active {
+        background: rgba(255,255,255,0.15);
     }
 
 /* CONTENIDO */
