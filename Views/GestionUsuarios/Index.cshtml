@@ -118,12 +118,12 @@
                                 <!-- Editar -->
                                 <button class="gu-btn sm primary"
                                         onclick="abrirModalEditar(
-                                                @u.UsuarioID,
-                                                '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
-                                                '@Html.Raw(u.Correo.Replace("'", "\\'"))',
-                                                '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
-                                                '@u.EstadoCuenta',
-                                                @u.RolID)">
+                                                        @u.UsuarioID,
+                                                        '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
+                                                        '@Html.Raw(u.Correo.Replace("'", "\\'"))',
+                                                        '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
+                                                        '@u.EstadoCuenta',
+                                                        @u.RolID)">
                                     ✏️ Editar
                                 </button>
 

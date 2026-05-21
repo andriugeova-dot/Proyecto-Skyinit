@@ -27,6 +27,7 @@ namespace Proyecto_SkyInit.Controllers
         {
             return RedirectToAction("Index", "GestionUsuarios");
         }
+
         public IActionResult Propiedades()
         {
             return RedirectToAction("Index", "GestionPropiedades");
