@@ -58,6 +58,49 @@ body {
         background: rgba(255,255,255,0.15);
     }
 
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        padding: 15px;
+    }
+
+    .logo h2 {
+        font-size: 24px;
+    }
+
+    .sidebar a {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+        .sidebar nav {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .sidebar a {
+            flex: 1 1 auto;
+            min-width: 100px;
+            text-align: center;
+        }
+}
+
 /* ── CONTENIDO ───────────────────────────────────────────── */
 .content {
     margin-left: 260px;
