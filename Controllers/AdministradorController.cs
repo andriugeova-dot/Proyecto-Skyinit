@@ -31,6 +31,7 @@ namespace Proyecto_SkyInit.Controllers
         {
             return RedirectToAction("Index", "GestionPropiedades");
         }
+
         public IActionResult Proyectos()
         {
             return RedirectToAction("Index", "GestionProyectos");
