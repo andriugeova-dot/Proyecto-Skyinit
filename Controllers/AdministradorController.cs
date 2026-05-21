@@ -1,31 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Proyecto_SkyInit.Data;
 using Proyecto_SkyInit.Models;
 
 namespace Proyecto_SkyInit.Controllers
 {
     public class AdministradorController : Controller
+
     {
         private readonly SkyinitContext _context;
 
         public AdministradorController(SkyinitContext context)
         {
             _context = context;
-        }
-
-        public IActionResult Index()
-        {
-            var model = new DashboardViewModel
-            {
-                TotalPropiedades = _context.Propiedades.Count(),
-                TotalProyectos = _context.Proyectos.Count(),
-                TotalUsuarios = _context.Usuarios.Count(),
-                TotalAgentes = _context.Usuarios.Count(u => u.RolID == 2),
-                TotalReparaciones = _context.Reparaciones.Count() 
-            };
-
-            return View(model);
-
         }
 
         public IActionResult PublicarPropiedad()
@@ -45,6 +32,7 @@ namespace Proyecto_SkyInit.Controllers
         {
             return RedirectToAction("Index", "GestionPropiedades");
         }
+
         public IActionResult Proyectos()
         {
             return RedirectToAction("Index", "GestionProyectos");
@@ -77,6 +65,18 @@ namespace Proyecto_SkyInit.Controllers
         {
             return RedirectToAction("Index", "GestionNotificaciones");
         }
-       
+        public IActionResult Index()
+        {
+            var model = new DashboardViewModel
+            {
+                TotalPropiedades = _context.Propiedades.Count(),
+                TotalProyectos = _context.Proyectos.Count(),
+                TotalUsuarios = _context.Usuarios.Count(),
+                TotalAgentes = _context.Usuarios.Count(u => u.RolID == 2), 
+                TotalReparaciones = _context.Reparaciones.Count()
+            };
+
+            return View(model);
+        }
     }
 }

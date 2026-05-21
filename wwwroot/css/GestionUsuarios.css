@@ -24,16 +24,10 @@ body {
     padding: 25px;
     position: fixed;
     height: 100vh;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
 }
 
-/* LOGO */
 .logo {
     margin-bottom: 40px;
-    text-align: center;
 }
 
     .logo h2 {
@@ -57,9 +51,6 @@ body {
     padding: 12px;
     border-radius: 10px;
     transition: .3s;
-    display: flex;
-    align-items: center;
-    gap: 10px; /* espacio entre ícono y texto */
 }
 
     .sidebar a:hover,

@@ -8,6 +8,6 @@ namespace Proyecto_SkyInit.Models
         public int EstadoProyectoID { get; set; }
         public string Descripcion { get; set; } = null!;
         // Navegación
-        public ICollection<Proyecto> Proyectos { get; set; } = null!;
+        public ICollection<Proyecto>? Proyectos { get; set; }
     }
 }
