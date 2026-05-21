@@ -1,5 +1,4 @@
-﻿@model Proyecto_SkyInit.Models.DashboardViewModel
-@{
+﻿@{
     Layout = "_LayoutAdministrador";
     ViewData["Title"] = "Panel Administrativo";
 }
@@ -25,20 +24,22 @@
         <aside class="sidebar">
 
             <div class="logo">
-                <h2>SkyInit</h2>
-                <span>Administrador</span>
+                <h2>Sky<span>Init</span></h2>
+                <span class="rol-badge">Administrador</span>
             </div>
 
             <nav>
+                <a asp-controller="Administrador" asp-action="Index" class="active">📝 Panel de control</a>
                 <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
                 <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
-                <a asp-controller="Administrador" asp-action="Agentes">👨‍💼 Agentes</a>
+                <a asp-controller="Administrador" asp-action="Agentes">👤 Usuarios</a>
                 <a asp-controller="Administrador" asp-action="Mantenimiento">🛠️ Mantenimiento</a>
                 <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
                 <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
                 <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
                 <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
                 <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
+                <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
 
             </nav>
 
@@ -62,6 +63,7 @@
 
             <!-- ESTADISTICAS -->
             <section class="stats-grid">
+
 
                 <div class="stat-card">
                     <h3>@Model.TotalPropiedades</h3>
@@ -145,7 +147,7 @@
                         </p>
 
                         <div class="actions">
-                            <a asp-controller="Administrador" asp-action="RegistrarAgente" class="admin-btn">
+                            <a asp-controller="Views" asp-action="GestionUsurios" class="admin-btn">
                                 Gestiona usuario
                             </a>
                         </div>

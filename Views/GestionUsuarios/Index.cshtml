@@ -14,13 +14,16 @@
             <span class="rol-badge">Administrador</span>
         </div>
         <nav>
-            <a asp-controller="Administrador" asp-action="Index">🏠 Panel</a>
-            <a asp-controller="Administrador" asp-action="Propiedades">🏢 Propiedades</a>
-            <a asp-controller="Administrador" asp-action="Proyectos">📐 Proyectos</a>
-            <a asp-controller="Administrador" asp-action="Agentes">👥 Agentes</a>
+            <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
+            <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
+            <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
             <a asp-controller="GestionUsuarios" asp-action="Index" class="active">👤 Usuarios</a>
-            <a asp-controller="Administrador" asp-action="Mantenimiento">🔧 Mantenimiento</a>
+            <a asp-controller="Administrador" asp-action="Mantenimiento">🛠️ Mantenimiento</a>
             <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+            <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+            <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
+            <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+            <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
             <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
         </nav>
     </aside>
@@ -41,7 +44,7 @@
         <!-- Topbar -->
         <div class="topbar">
             <div>
-                <h1>Gestión de Agentes</h1>
+                <h1>Gestión de Usuarios</h1>
                 <p>Administra cuentas, roles y estados del sistema.</p>
             </div>
             <button class="gu-btn primary" onclick="abrirModalCrear()">＋ Nuevo usuario</button>
@@ -115,12 +118,12 @@
                                 <!-- Editar -->
                                 <button class="gu-btn sm primary"
                                         onclick="abrirModalEditar(
-                                                @u.UsuarioID,
-                                                '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
-                                                '@Html.Raw(u.Correo.Replace("'", "\\'"))',
-                                                '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
-                                                '@u.EstadoCuenta',
-                                                @u.RolID)">
+                                                        @u.UsuarioID,
+                                                        '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
+                                                        '@Html.Raw(u.Correo.Replace("'", "\\'"))',
+                                                        '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
+                                                        '@u.EstadoCuenta',
+                                                        @u.RolID)">
                                     ✏️ Editar
                                 </button>
 
