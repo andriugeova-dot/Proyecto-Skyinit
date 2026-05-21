@@ -1,4 +1,5 @@
-﻿// Data/SkyinitContext.cs
+﻿
+// Data/SkyinitContext.cs
 using Microsoft.EntityFrameworkCore;
 using Proyecto_SkyInit.Models;
 
