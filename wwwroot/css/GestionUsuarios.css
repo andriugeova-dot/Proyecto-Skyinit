@@ -22,60 +22,99 @@ body {
     min-height: 100vh;
 }
 
-/* ── SIDEBAR ─────────────────────────────────────────────── */
+/* SIDEBAR */
 .sidebar {
     width: 260px;
     background: #0f4c5c;
-    color: #fff;
-    padding: 25px 20px;
+    color: white;
+    padding: 25px;
     position: fixed;
     height: 100vh;
-    overflow-y: auto;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
-    gap: 30px;
 }
 
-.logo h2 {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+/* LOGO */
+.logo {
+    margin-bottom: 40px;
+    text-align: center;
 }
 
-    .logo h2 span {
+    .logo h2 {
+        font-size: 32px;
+    }
+
+    .logo span {
         color: #b8e3ea;
     }
 
-.rol-badge {
-    font-size: 11px;
-    background: rgba(255,255,255,0.15);
-    padding: 3px 10px;
-    border-radius: 20px;
-    display: inline-block;
-    margin-top: 6px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
+/* NAV */
 .sidebar nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .sidebar a {
-    color: #fff;
+    color: white;
     text-decoration: none;
-    padding: 11px 14px;
+    padding: 12px;
     border-radius: 10px;
-    font-size: 14px;
-    transition: background .25s;
+    transition: .3s;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espacio entre ícono y texto */
 }
 
     .sidebar a:hover,
     .sidebar a.active {
         background: rgba(255,255,255,0.15);
     }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        padding: 15px;
+    }
+
+    .logo h2 {
+        font-size: 24px;
+    }
+
+    .sidebar a {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+        .sidebar nav {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .sidebar a {
+            flex: 1 1 auto;
+            min-width: 100px;
+            text-align: center;
+        }
+}
 
 /* ── CONTENIDO ───────────────────────────────────────────── */
 .content {

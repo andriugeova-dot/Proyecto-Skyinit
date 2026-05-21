@@ -1,0 +1,91 @@
+﻿@model Proyecto_SkyInit.Models.Proyecto
+@{
+    Layout = "~/Views/Shared/_LayoutPublicarProyecto.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Publicar Proyecto - SkyInit</title>
+    <link rel="stylesheet" href="~/css/PublicarProyecto.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo">SkyInit</div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="container">
+        <div class="layout">
+
+            <!-- FORMULARIO -->
+            <div class="main-card">
+                <div class="hero">
+                    <div class="hero-content">
+                        <h2>Publicar proyecto</h2>
+                        <p>Registra proyectos modernos y gestiona su estado dentro de SkyInit.</p>
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <form asp-controller="PublicarProyecto" asp-action="Index" method="post" enctype="multipart/form-data">
+
+                        <div class="form-grid">
+                            <div class="input-box">
+                                <label>Nombre del proyecto</label>
+                                <input asp-for="Nombre" class="form-control" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Estado del proyecto</label>
+                                <select asp-for="EstadoProyectoID" asp-items="ViewBag.EstadosProyecto" class="form-control"></select>
+                                <span asp-validation-for="EstadoProyectoID" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Fecha de inicio</label>
+                                <input asp-for="FechaInicio" type="date" class="form-control" />
+                                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Fecha de finalización</label>
+                                <input asp-for="FechaFin" type="date" class="form-control" />
+                                <span asp-validation-for="FechaFin" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Constructora</label>
+                                <select asp-for="ConstructoraID" asp-items="ViewBag.Constructoras" class="form-control"></select>
+                                <span asp-validation-for="ConstructoraID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="buttons">
+                            <button type="submit" class="btn primary">Publicar proyecto</button>
+                            <a asp-controller="GestionProyectos" asp-action="Index" class="btn secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <div class="side-card">
+                    <h3>Estado</h3>
+                    <span class="tag">En edición</span>
+                </div>
+
+                <div class="side-card">
+                    <h3>Disponibilidad</h3>
+                    <span class="tag">Activo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
