@@ -14,7 +14,19 @@ namespace Proyecto_SkyInit.Controllers
         {
             _context = context;
         }
+        public IActionResult Index()
+        {
+            var model = new DashboardViewModel
+            {
+                TotalPropiedades = _context.Propiedades.Count(),
+                TotalProyectos = _context.Proyectos.Count(),
+                TotalUsuarios = _context.Usuarios.Count(),
+                TotalAgentes = _context.Usuarios.Count(u => u.RolID == 2),
+                TotalReparaciones = _context.Reparaciones.Count()
+            };
 
+            return View(model);
+        }
         public IActionResult PublicarPropiedad()
         {
             return RedirectToAction("Index", "PublicarPropiedad");
@@ -64,19 +76,6 @@ namespace Proyecto_SkyInit.Controllers
         public IActionResult Notificaciones()
         {
             return RedirectToAction("Index", "GestionNotificaciones");
-        }
-        public IActionResult Index()
-        {
-            var model = new DashboardViewModel
-            {
-                TotalPropiedades = _context.Propiedades.Count(),
-                TotalProyectos = _context.Proyectos.Count(),
-                TotalUsuarios = _context.Usuarios.Count(),
-                TotalAgentes = _context.Usuarios.Count(u => u.RolID == 2), 
-                TotalReparaciones = _context.Reparaciones.Count()
-            };
-
-            return View(model);
-        }
+        }  
     }
 }

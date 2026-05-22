@@ -33,7 +33,7 @@ body {
 /* LOGO */
 .logo {
     margin-bottom: 40px;
-    text-align: center;
+    text-align: start;
 }
 
     .logo h2 {

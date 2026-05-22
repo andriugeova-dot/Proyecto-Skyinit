@@ -33,7 +33,7 @@
                 <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
                 <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
                 <a asp-controller="Administrador" asp-action="Agentes">👤 Usuarios</a>
-                <a asp-controller="Administrador" asp-action="Mantenimiento">🛠️ Mantenimiento</a>
+                <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
                 <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
                 <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
                 <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
@@ -147,7 +147,7 @@
                         </p>
 
                         <div class="actions">
-                            <a asp-controller="Views" asp-action="GestionUsurios" class="admin-btn">
+                            <a asp-controller="Administrador" asp-action="GestionUsurios" class="admin-btn">
                                 Gestiona usuario
                             </a>
                         </div>
