@@ -31,7 +31,6 @@ body {
     height: 100vh;
 }
 
-
 /* LOGO */
 .logo {
     margin-bottom: 40px;
@@ -45,6 +44,20 @@ body {
     .logo span {
         color: #b8e3ea;
     }
+
+/* [C4] ROL BADGE en sidebar */
+.rol-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
 
 /* NAV */
 .sidebar nav {
@@ -66,7 +79,7 @@ body {
         background: rgba(255,255,255,0.15);
     }
 
-/* RESPONSIVE */
+/* RESPONSIVE SIDEBAR */
 @media (max-width: 768px) {
     .sidebar {
         width: 200px;

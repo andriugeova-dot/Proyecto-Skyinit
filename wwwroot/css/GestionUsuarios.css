@@ -26,7 +26,6 @@ body {
     height: 100vh;
 }
 
-
 /* LOGO */
 .logo {
     margin-bottom: 40px;
@@ -40,6 +39,20 @@ body {
     .logo span {
         color: #b8e3ea;
     }
+
+/* [C4] ROL BADGE en sidebar */
+.rol-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
 
 /* NAV */
 .sidebar nav {
@@ -61,7 +74,7 @@ body {
         background: rgba(255,255,255,0.15);
     }
 
-/* RESPONSIVE */
+/* RESPONSIVE SIDEBAR */
 @media (max-width: 768px) {
     .sidebar {
         width: 200px;
@@ -120,7 +133,7 @@ body {
 }
 
     .topbar h1 {
-        font-size: 24px; /* reducido para coincidir con la imagen */
+        font-size: 24px;
         color: #0f4c5c;
         font-weight: 700;
     }
@@ -149,10 +162,10 @@ body {
 /* ── INPUTS / SELECTS ────────────────────────────────────── */
 .gu-input,
 .gu-select {
-    padding: 8px 12px; /* más compacto */
+    padding: 8px 12px;
     border: 1.5px solid #d0d0d0;
     border-radius: 10px;
-    font-size: 13px; /* reducido */
+    font-size: 13px;
     font-family: inherit;
     background: #fff;
     outline: none;
@@ -184,7 +197,7 @@ body {
     }
 
     .gu-btn.primary {
-        background: #0f4c5c; /* mismo color que encabezado */
+        background: #0f4c5c;
         color: #fff;
         font-weight: 700;
     }
@@ -241,7 +254,7 @@ body {
     border-radius: 18px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.07);
     overflow: hidden;
-    overflow-x: auto; /* scroll horizontal en móviles */
+    overflow-x: auto;
 }
 
 .gu-table {
@@ -269,7 +282,7 @@ body {
     }
 
     .gu-table tbody tr:hover {
-        background: #f1f7f9; /* hover más suave */
+        background: #f1f7f9;
     }
 
     .gu-table tbody tr:last-child td {
@@ -285,7 +298,7 @@ body {
 /* ── BADGES ESTADO ───────────────────────────────────────── */
 .badge {
     display: inline-block;
-    padding: 6px 14px; /* más grande */
+    padding: 6px 14px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
@@ -308,7 +321,191 @@ body {
     color: #721c24;
 }
 
-/* ── RESPONSIVE ──────────────────────────────────────────── */
+/* [C4] ESTADO VACÍO ─────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #999;
+    font-size: 15px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   [C1] MODALES  ─  BLOQUE COMPLETAMENTE NUEVO
+   Problema original: sin estos estilos, los modales son
+   visibles en todo momento y los botones no pueden
+   mostrarlos/ocultarlos con classList.add('open').
+════════════════════════════════════════════════════════════ */
+
+/* Overlay de fondo */
+.modal-overlay {
+    display: none; /* oculto por defecto */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+    /* Se muestra cuando JS añade la clase .open */
+    .modal-overlay.open {
+        display: flex;
+    }
+
+/* Caja central del modal */
+.modal-box {
+    background: #fff;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 620px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+    animation: modalEntra .25s ease;
+}
+
+@keyframes modalEntra {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Encabezado del modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+    .modal-header h2 {
+        font-size: 18px;
+        color: #0f4c5c;
+        font-weight: 700;
+    }
+
+/* Botón cerrar (✕) */
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background .2s, color .2s;
+}
+
+    .modal-close:hover {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+/* Pie del modal */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid #eee;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   [C2] FORMULARIO EN GRID  ─  BLOQUE COMPLETAMENTE NUEVO
+   Problema original: .form-grid solo existía dentro de
+   @media (max-width: 900px) como regla de override, nunca
+   como estilo base → los campos se apilaban sin grid.
+════════════════════════════════════════════════════════════ */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+    .form-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #444;
+    }
+
+/* [C4] Indicadores de campo requerido/opcional */
+.required {
+    color: #c0392b;
+    margin-left: 2px;
+}
+
+.optional {
+    color: #999;
+    font-weight: 400;
+    font-size: 11px;
+    margin-left: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   [C3] TOAST DE NOTIFICACIÓN  ─  BLOQUE COMPLETAMENTE NUEVO
+   Problema original: clase .toast usada en la vista pero
+   no definida en este CSS → mensajes invisibles o sin estilo.
+════════════════════════════════════════════════════════════ */
+
+.toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 2000;
+    animation: slideUp .3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    background: #333;
+    color: #fff;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.toast.success {
+    background: #2e9e6e;
+    color: #fff;
+}
+
+.toast.error {
+    background: #c0392b;
+    color: #fff;
+}
+
+.toast.warning {
+    background: #e5a020;
+    color: #fff;
+}
+
+/* ── RESPONSIVE GENERAL ──────────────────────────────────── */
 @media (max-width: 900px) {
     .sidebar {
         display: none;
@@ -328,6 +525,7 @@ body {
     .form-grid {
         grid-template-columns: 1fr;
     }
+    /* override a 1 columna */
 
     .filtros-bar {
         flex-direction: column;
