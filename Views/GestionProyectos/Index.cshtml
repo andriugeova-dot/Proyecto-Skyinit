@@ -20,11 +20,11 @@
     </div>
 
     <nav>
-        <a asp-controller="Administrador" asp-action="Index" class="active">📝 Panel de control</a>
+        <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
         <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
-        <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
+        <a asp-controller="Administrador" asp-action="Proyectos" class="active">🏗️ Proyectos</a>
         <a asp-controller="Administrador" asp-action="Agentes">👤 Usuarios</a>
-        <a asp-controller="Administrador" asp-action="Mantenimiento">🛠️ Mantenimiento</a>
+        <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
         <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
         <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
         <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
@@ -52,13 +52,13 @@
         </script>
     }
 
-    <!-- Navbar -->
+   @*  <!-- Navbar -->
     <div class="navbar">
         <div class="logo">SkyInit</div>
         <div class="admin">
             <div><strong>Administrador</strong></div>
         </div>
-    </div>
+    </div> *@
 
     <!-- Contenido -->
     <div class="container">

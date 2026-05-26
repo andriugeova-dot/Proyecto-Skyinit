@@ -33,7 +33,7 @@
                 <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
                 <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
                 <a asp-controller="Administrador" asp-action="Agentes">👤 Usuarios</a>
-                <a asp-controller="Administrador" asp-action="Mantenimiento">🛠️ Mantenimiento</a>
+                <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
                 <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
                 <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
                 <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
@@ -64,28 +64,29 @@
             <!-- ESTADISTICAS -->
             <section class="stats-grid">
 
+
                 <div class="stat-card">
-                    <h3>120</h3>
+                    <h3>@Model.TotalPropiedades</h3>
                     <p>Propiedades</p>
                 </div>
 
                 <div class="stat-card">
-                    <h3>45</h3>
+                    <h3>@Model.TotalProyectos</h3>
                     <p>Proyectos</p>
                 </div>
 
                 <div class="stat-card">
-                    <h3>18</h3>
+                    <h3>@Model.TotalAgentes</h3>
                     <p>Agentes</p>
                 </div>
 
                 <div class="stat-card">
-                    <h3>320</h3>
+                    <h3>@Model.TotalUsuarios</h3>
                     <p>Usuarios</p>
                 </div>
 
                 <div class="stat-card">
-                    <h3>12</h3>
+                    <h3>@Model.TotalReparaciones</h3>
                     <p>Mantenimientos</p>
                 </div>
 
@@ -146,7 +147,7 @@
                         </p>
 
                         <div class="actions">
-                            <a asp-controller="Administrador" asp-action="RegistrarAgente" class="admin-btn">
+                            <a asp-controller="Administrador" asp-action="GestionUsurios" class="admin-btn">
                                 Gestiona usuario
                             </a>
                         </div>

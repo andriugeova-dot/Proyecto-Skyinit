@@ -1,17 +1,11 @@
-﻿/* wwwroot/css/GestionUsuarios.css
-   Paleta: #0f4c5c (sidebar) | #118ab2 (acción) | #f6f3eb (fondo)
-   Fuente de referencia: Administrador.css + Gestionpropiedades.css
-   ------------------------------------------------------------------ */
-
-/* RESET */
-*, *::before, *::after {
+﻿*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI',sans-serif;
     background: #f6f3eb;
     color: #333;
 }
@@ -30,16 +24,12 @@ body {
     padding: 25px;
     position: fixed;
     height: 100vh;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 /* LOGO */
 .logo {
     margin-bottom: 40px;
-    text-align: center;
+    text-align: start;
 }
 
     .logo h2 {
@@ -49,6 +39,20 @@ body {
     .logo span {
         color: #b8e3ea;
     }
+
+/* [C4] ROL BADGE en sidebar */
+.rol-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
 
 /* NAV */
 .sidebar nav {
@@ -63,9 +67,6 @@ body {
     padding: 12px;
     border-radius: 10px;
     transition: .3s;
-    display: flex;
-    align-items: center;
-    gap: 10px; /* espacio entre ícono y texto */
 }
 
     .sidebar a:hover,
@@ -73,7 +74,7 @@ body {
         background: rgba(255,255,255,0.15);
     }
 
-/* RESPONSIVE */
+/* RESPONSIVE SIDEBAR */
 @media (max-width: 768px) {
     .sidebar {
         width: 200px;
@@ -132,7 +133,7 @@ body {
 }
 
     .topbar h1 {
-        font-size: 30px;
+        font-size: 24px;
         color: #0f4c5c;
         font-weight: 700;
     }
@@ -161,10 +162,10 @@ body {
 /* ── INPUTS / SELECTS ────────────────────────────────────── */
 .gu-input,
 .gu-select {
-    padding: 10px 14px;
+    padding: 8px 12px;
     border: 1.5px solid #d0d0d0;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
     font-family: inherit;
     background: #fff;
     outline: none;
@@ -196,8 +197,9 @@ body {
     }
 
     .gu-btn.primary {
-        background: #118ab2;
+        background: #0f4c5c;
         color: #fff;
+        font-weight: 700;
     }
 
     .gu-btn.secondary {
@@ -221,7 +223,7 @@ body {
     }
 
     .gu-btn.primary:hover {
-        background: #0a6f90;
+        background: #0c3a47;
     }
 
     .gu-btn.secondary:hover {
@@ -252,6 +254,7 @@ body {
     border-radius: 18px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.07);
     overflow: hidden;
+    overflow-x: auto;
 }
 
 .gu-table {
@@ -279,7 +282,7 @@ body {
     }
 
     .gu-table tbody tr:hover {
-        background: #f8fbfd;
+        background: #f1f7f9;
     }
 
     .gu-table tbody tr:last-child td {
@@ -292,19 +295,12 @@ body {
     flex-wrap: wrap;
 }
 
-.empty-state {
-    text-align: center;
-    color: #aaa;
-    padding: 40px;
-    font-style: italic;
-}
-
 /* ── BADGES ESTADO ───────────────────────────────────────── */
 .badge {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -325,62 +321,52 @@ body {
     color: #721c24;
 }
 
-/* ── TOAST ───────────────────────────────────────────────── */
-.toast {
-    position: fixed;
-    top: 20px;
-    right: 25px;
-    background: #118ab2;
-    color: #fff;
-    padding: 14px 22px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-    font-weight: 600;
-    font-size: 14px;
-    z-index: 9999;
-    transition: opacity .4s ease;
+/* [C4] ESTADO VACÍO ─────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #999;
+    font-size: 15px;
 }
 
-    .toast.success {
-        background: #1b8f3d;
-    }
+/* ═══════════════════════════════════════════════════════════
+   [C1] MODALES  ─  BLOQUE COMPLETAMENTE NUEVO
+   Problema original: sin estos estilos, los modales son
+   visibles en todo momento y los botones no pueden
+   mostrarlos/ocultarlos con classList.add('open').
+════════════════════════════════════════════════════════════ */
 
-    .toast.warning {
-        background: #e89418;
-    }
-
-    .toast.error {
-        background: #d32f2f;
-    }
-
-/* ── MODALES ─────────────────────────────────────────────── */
+/* Overlay de fondo */
 .modal-overlay {
-    display: none;
+    display: none; /* oculto por defecto */
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0, 0, 0, 0.55);
     z-index: 1000;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
+    /* Se muestra cuando JS añade la clase .open */
     .modal-overlay.open {
         display: flex;
     }
 
+/* Caja central del modal */
 .modal-box {
     background: #fff;
     border-radius: 18px;
-    width: min(600px, 95vw);
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    animation: slideUp .25s ease;
+    width: 100%;
+    max-width: 620px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+    animation: modalEntra .25s ease;
 }
 
-@keyframes slideUp {
+@keyframes modalEntra {
     from {
-        transform: translateY(30px);
+        transform: translateY(-20px);
         opacity: 0;
     }
 
@@ -390,37 +376,60 @@ body {
     }
 }
 
+/* Encabezado del modal */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 22px 28px;
+    padding: 20px 24px 16px;
     border-bottom: 1px solid #eee;
 }
 
     .modal-header h2 {
-        font-size: 20px;
+        font-size: 18px;
         color: #0f4c5c;
+        font-weight: 700;
     }
 
+/* Botón cerrar (✕) */
 .modal-close {
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
     color: #999;
-    transition: color .2s;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background .2s, color .2s;
 }
 
     .modal-close:hover {
-        color: #d32f2f;
+        background: #f0f0f0;
+        color: #333;
     }
+
+/* Pie del modal */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid #eee;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   [C2] FORMULARIO EN GRID  ─  BLOQUE COMPLETAMENTE NUEVO
+   Problema original: .form-grid solo existía dentro de
+   @media (max-width: 900px) como regla de override, nunca
+   como estilo base → los campos se apilaban sin grid.
+════════════════════════════════════════════════════════════ */
 
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    padding: 24px 28px;
+    gap: 16px;
+    padding: 20px 24px;
 }
 
 .form-group {
@@ -432,32 +441,71 @@ body {
     .form-group label {
         font-size: 13px;
         font-weight: 600;
-        color: #555;
+        color: #444;
     }
 
-    .form-group .gu-input,
-    .form-group .gu-select {
-        width: 100%;
-    }
-
+/* [C4] Indicadores de campo requerido/opcional */
 .required {
-    color: #d32f2f;
+    color: #c0392b;
+    margin-left: 2px;
 }
 
 .optional {
-    color: #aaa;
+    color: #999;
     font-weight: 400;
+    font-size: 11px;
+    margin-left: 4px;
 }
 
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    padding: 18px 28px;
-    border-top: 1px solid #eee;
+/* ═══════════════════════════════════════════════════════════
+   [C3] TOAST DE NOTIFICACIÓN  ─  BLOQUE COMPLETAMENTE NUEVO
+   Problema original: clase .toast usada en la vista pero
+   no definida en este CSS → mensajes invisibles o sin estilo.
+════════════════════════════════════════════════════════════ */
+
+.toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 2000;
+    animation: slideUp .3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    background: #333;
+    color: #fff;
 }
 
-/* ── RESPONSIVE ──────────────────────────────────────────── */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.toast.success {
+    background: #2e9e6e;
+    color: #fff;
+}
+
+.toast.error {
+    background: #c0392b;
+    color: #fff;
+}
+
+.toast.warning {
+    background: #e5a020;
+    color: #fff;
+}
+
+/* ── RESPONSIVE GENERAL ──────────────────────────────────── */
 @media (max-width: 900px) {
     .sidebar {
         display: none;
@@ -477,6 +525,7 @@ body {
     .form-grid {
         grid-template-columns: 1fr;
     }
+    /* override a 1 columna */
 
     .filtros-bar {
         flex-direction: column;

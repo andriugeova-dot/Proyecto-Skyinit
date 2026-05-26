@@ -1,26 +1,33 @@
-﻿@* Views/GestionUsuarios/Index.cshtml *@
+﻿@* Views/GestionUsuarios/Index.cshtml  –  VERSIÓN CORREGIDA *@
 @model IEnumerable<Proyecto_SkyInit.Models.Usuario>
 @{
     Layout = "_LayoutGestionUsuarios";
     ViewData["Title"] = "Gestión de Usuarios";
+
+    @* [C5] URL base calculada en servidor para evitar rutas hardcodeadas *@
+    var urlEditar = Url.Action("Editar", "GestionUsuarios");
+    var urlCrear = Url.Action("Crear", "GestionUsuarios");
 }
 
 <div class="gu-container">
 
-    <!-- ── SIDEBAR (igual al panel de Administrador) ── -->
+    <!-- ── SIDEBAR ── -->
     <aside class="sidebar">
         <div class="logo">
             <h2>Sky<span>Init</span></h2>
             <span class="rol-badge">Administrador</span>
         </div>
         <nav>
-            <a asp-controller="Administrador" asp-action="Index">🏠 Panel</a>
-            <a asp-controller="Administrador" asp-action="Propiedades">🏢 Propiedades</a>
-            <a asp-controller="Administrador" asp-action="Proyectos">📐 Proyectos</a>
-            <a asp-controller="Administrador" asp-action="Agentes">👥 Agentes</a>
+            <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
+            <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
+            <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
             <a asp-controller="GestionUsuarios" asp-action="Index" class="active">👤 Usuarios</a>
-            <a asp-controller="Administrador" asp-action="Mantenimiento">🔧 Mantenimiento</a>
+            <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
             <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+            <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+            <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
+            <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+            <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
             <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
         </nav>
     </aside>
@@ -28,26 +35,26 @@
     <!-- ── CONTENIDO PRINCIPAL ── -->
     <main class="content">
 
-        <!-- Toast de notificación -->
+        @* [C6] Toast: IDs únicos para evitar duplicado cuando ambos TempData existen *@
         @if (TempData["Mensaje"] != null)
         {
-            <div class="toast @TempData["TipoMsg"]" id="toast">@TempData["Mensaje"]</div>
+            <div class="toast @TempData["TipoMsg"]" id="toast-ok">@TempData["Mensaje"]</div>
         }
         @if (TempData["Error"] != null)
         {
-            <div class="toast error" id="toast">@TempData["Error"]</div>
+            <div class="toast error" id="toast-err">@TempData["Error"]</div>
         }
 
         <!-- Topbar -->
         <div class="topbar">
             <div>
-                <h1>Gestión de Agentes</h1>
+                <h1>Gestión de Usuarios</h1>
                 <p>Administra cuentas, roles y estados del sistema.</p>
             </div>
             <button class="gu-btn primary" onclick="abrirModalCrear()">＋ Nuevo usuario</button>
         </div>
 
-        <!-- Filtros -->
+        <!-- Filtros (RF62 / RF76 / RF259) -->
         <form method="get" class="filtros-bar">
             <input type="text" name="buscar" placeholder="Buscar por nombre o correo…"
                    value="@ViewBag.Buscar" class="gu-input" />
@@ -112,19 +119,19 @@
                             </td>
                             <td>@u.Rol?.NombreRol</td>
                             <td class="acciones">
-                                <!-- Editar -->
+                                <!-- Editar (RF202 / RF236) -->
                                 <button class="gu-btn sm primary"
                                         onclick="abrirModalEditar(
-                                                @u.UsuarioID,
-                                                '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
-                                                '@Html.Raw(u.Correo.Replace("'", "\\'"))',
-                                                '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
-                                                '@u.EstadoCuenta',
-                                                @u.RolID)">
+                                                        @u.UsuarioID,
+                                                        '@Html.Raw(u.Nombre.Replace("'", "\\'"))',
+                                                        '@Html.Raw(u.Correo.Replace("'", "\\'"))',
+                                                        '@Html.Raw((u.Telefono ?? "").Replace("'", "\\'"))',
+                                                        '@u.EstadoCuenta',
+                                                        @u.RolID)">
                                     ✏️ Editar
                                 </button>
 
-                                <!-- Activar / Desactivar -->
+                                <!-- Activar / Desactivar (RF241 / RF242) -->
                                 @if (u.EstadoCuenta == "Activa" || u.EstadoCuenta == "Bloqueada")
                                 {
                                     <form asp-action="Desactivar" asp-route-id="@u.UsuarioID"
@@ -152,7 +159,7 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     MODAL CREAR USUARIO
+     MODAL CREAR USUARIO  (RF235)
 ══════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modalCrear">
     <div class="modal-box">
@@ -207,7 +214,7 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     MODAL EDITAR USUARIO
+     MODAL EDITAR USUARIO  (RF236)
 ══════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modalEditar">
     <div class="modal-box">
@@ -215,7 +222,12 @@
             <h2>Editar usuario</h2>
             <button class="modal-close" onclick="cerrarModal('modalEditar')">✕</button>
         </div>
-        <form asp-action="Editar" method="post" id="formEditar">
+        @*
+           [C5] action del form se construye con Url.Action() en Razor
+           para no hardcodear '/GestionUsuarios/Editar/' en el JS.
+           El JS solo agrega el ID al final de esa URL base.
+        *@
+        <form method="post" id="formEditar">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" id="editId" />
             <div class="form-grid">
@@ -264,12 +276,20 @@
 
 @section Scripts {
     <script>
+        // ── URL base generada por Razor (no hardcodeada) ──────
+        // [C5] Evita ruta absoluta '/GestionUsuarios/Editar/' que
+        //      fallaría si la app corre en un subdirectorio virtual.
+        const URL_EDITAR = '@urlEditar';   // ej. "/GestionUsuarios/Editar"
+
         // ── Toast ──────────────────────────────────────────────
-        const toast = document.getElementById('toast');
-        if (toast) {
-            setTimeout(() => toast.style.opacity = '0', 3500);
-            setTimeout(() => toast.remove(), 4000);
-        }
+        // [C6] Maneja los dos posibles IDs distintos
+        ['toast-ok', 'toast-err'].forEach(tid => {
+            const t = document.getElementById(tid);
+            if (t) {
+                setTimeout(() => t.style.opacity = '0', 3500);
+                setTimeout(() => t.remove(), 4000);
+            }
+        });
 
         // ── Modal helpers ──────────────────────────────────────
         function abrirModalCrear() {
@@ -284,9 +304,8 @@
             document.getElementById('editEstado').value   = estado;
             document.getElementById('editRol').value      = rolId;
 
-            // Ajustar el action del formulario con el id correcto
-            document.getElementById('formEditar').action =
-                '/GestionUsuarios/Editar/' + id;
+            // [C5] URL construida con la variable Razor, no con string hardcodeado
+            document.getElementById('formEditar').action = URL_EDITAR + '/' + id;
 
             document.getElementById('modalEditar').classList.add('open');
         }

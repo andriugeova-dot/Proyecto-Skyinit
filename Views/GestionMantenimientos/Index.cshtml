@@ -1,0 +1,286 @@
+﻿@model IEnumerable<Proyecto_SkyInit.Models.Reparacion>
+@{
+    Layout = "_LayoutGestionMantenimientos";
+    ViewData["Title"] = "Gestión de Mantenimientos";
+}
+
+<div class="gm-container">
+
+    <!-- ── SIDEBAR (igual al panel de Administrador) ── -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Sky<span>Init</span></h2>
+            <span class="rol-badge">Administrador</span>
+        </div>
+        <nav>
+            <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
+            <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
+            <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
+            <a asp-controller="GestionUsuarios" asp-action="Index">👤 Usuarios</a>
+            <a asp-controller="Administrador" asp-action="Mantenimiento" class="active">🛠️ Mantenimiento</a>
+            <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+            <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+            <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
+            <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+            <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
+            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <!-- ▌CONTENIDO ▐ -->
+    <main class="content">
+
+        <!-- Toast RF41 / RF284 -->
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="toast @TempData["TipoMensaje"]" id="toast">@TempData["Mensaje"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="toast error" id="toastErr">@TempData["Error"]</div>
+        }
+
+        <!-- Topbar RF281 -->
+        <div class="topbar">
+            <div>
+                <h1>🔧 Gestión de Mantenimientos</h1>
+                <p>Administra solicitudes de mantenimiento y su estado de atención.</p>
+            </div>
+            <button class="gm-btn primary" onclick="abrirModalCrear()">
+                ➕ Nueva solicitud
+            </button>
+        </div>
+
+        <!-- Filtros RF149, RF258, RF294 -->
+        <form method="get" class="filtros-bar">
+            <input type="text" name="buscar" placeholder="Buscar por usuario o descripción..."
+                   value="@ViewBag.Buscar" class="gm-input" style="min-width:220px" />
+
+            <select name="filtroEstado" class="gm-select">
+                <option value="">Todos los estados</option>
+                @foreach (var e in (IEnumerable<Proyecto_SkyInit.Models.EstadoReparacion>)ViewBag.Estados)
+                {
+                    <option value="@e.EstadoReparacionID"
+                            selected="@(ViewBag.FiltroEstado?.ToString() == e.EstadoReparacionID.ToString() ? "selected" : null)">
+                        @e.Descripcion
+                    </option>
+                }
+            </select>
+
+            <button type="submit" class="gm-btn primary">🔍 Filtrar</button>
+            <a asp-action="Index" class="gm-btn secondary">✖ Limpiar</a>
+        </form>
+
+        <!-- Conteo RF82 -->
+        <p class="resultados-count">
+            @Model.Count() resultado(s) encontrado(s)
+        </p>
+
+        <!-- Tabla RF281, RF282 -->
+        <div class="gm-table-wrapper">
+            @if (!Model.Any())
+            {
+                <div class="empty-state">
+                    <span>🔧</span>
+                    No hay solicitudes de mantenimiento registradas.
+                </div>
+            }
+            else
+            {
+                <table class="gm-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Usuario</th>
+                            <th>Propiedad</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Fecha solicitud</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var badgeClass = item.EstadoReparacion?.Descripcion switch
+                            {
+                                "Pendiente" => "badge-pendiente",
+                                "En proceso" => "badge-proceso",
+                                "Finalizada" => "badge-finalizada",
+                                _ => ""
+                            };
+
+                            <tr>
+                                <td>@item.ReparacionID</td>
+                                <td>@item.Usuario?.Nombre</td>
+                                <td>
+                                    @(item.Propiedad != null
+                                                                ? item.Propiedad.Titulo
+                                                                : "<em style='color:#aaa'>Sin propiedad</em>")
+                        </td>
+                        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                            title="@item.Descripcion">
+                            @item.Descripcion
+                        </td>
+                        <td>
+                            <span class="badge @badgeClass">
+                                @item.EstadoReparacion?.Descripcion
+                            </span>
+                        </td>
+                        <td>@item.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <div class="acciones">
+                                <!-- RF284 – Editar/cambiar estado -->
+                                <button class="gm-btn warning"
+                                        onclick="abrirModalEditar(
+                                                    @item.ReparacionID,
+                                                    '@Html.Raw(item.Descripcion?.Replace("'", "\\'") ?? "")' ,
+                                                    @item.EstadoReparacionID,
+                                                    @(item.PropiedadID?.ToString() ?? "null"))">
+                                    ✏️ Editar
+                                </button>
+                                <!-- RF204 / RF220 – Eliminar -->
+                                <form asp-action="Eliminar" asp-route-id="@item.ReparacionID"
+                                      method="post" style="display:inline"
+                                      onsubmit="return confirm('¿Eliminar esta solicitud?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="gm-btn danger">🗑️ Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+    </main>
+</div>
+
+<!-- ▌MODAL CREAR (RF283) ▐ -->
+<div class="modal-overlay" id="modalCrear">
+    <div class="modal-box">
+        <h2>➕ Nueva solicitud de mantenimiento</h2>
+        <form asp-action="Crear" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-row">
+                <label for="UsuarioID">Usuario *</label>
+                <select name="UsuarioID" id="UsuarioID" class="gm-select" style="width:100%" required>
+                    <option value="">Seleccionar usuario...</option>
+                    @foreach (var u in (IEnumerable<Proyecto_SkyInit.Models.Usuario>)ViewBag.Usuarios)
+                    {
+                        <option value="@u.UsuarioID">@u.Nombre (@u.Correo)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="PropiedadID">Propiedad</label>
+                <select name="PropiedadID" id="PropiedadID" class="gm-select" style="width:100%">
+                    <option value="">Sin propiedad asociada</option>
+                    @foreach (var p in (IEnumerable<Proyecto_SkyInit.Models.Propiedad>)ViewBag.Propiedades)
+                    {
+                        <option value="@p.PropiedadID">@p.Titulo – @p.Direccion</option>
+                    }
+                </select>
+                <small>Opcional. Asocia la solicitud a un inmueble registrado.</small>
+            </div>
+
+            <div class="form-row">
+                <label for="Descripcion">Descripción *</label>
+                <textarea name="Descripcion" id="Descripcion" class="gm-textarea"
+                          placeholder="Describe el problema o servicio requerido..." required></textarea>
+            </div>
+
+            <div class="form-row">
+                <label for="EstadoReparacionID">Estado inicial *</label>
+                <select name="EstadoReparacionID" id="EstadoReparacionID"
+                        class="gm-select" style="width:100%" required>
+                    @foreach (var e in (IEnumerable<Proyecto_SkyInit.Models.EstadoReparacion>)ViewBag.Estados)
+                    {
+                        <option value="@e.EstadoReparacionID">@e.Descripcion</option>
+                    }
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="gm-btn secondary"
+                        onclick="cerrarModal('modalCrear')">
+                    Cancelar
+                </button>
+                <button type="submit" class="gm-btn success">✅ Registrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ▌MODAL EDITAR (RF284) ▐ -->
+<div class="modal-overlay" id="modalEditar">
+    <div class="modal-box">
+        <h2>✏️ Editar solicitud</h2>
+        <form asp-action="Editar" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" id="editId" />
+
+            <div class="form-row">
+                <label for="editDescripcion">Descripción *</label>
+                <textarea name="Descripcion" id="editDescripcion"
+                          class="gm-textarea" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <label for="editEstado">Estado *</label>
+                <select name="EstadoReparacionID" id="editEstado"
+                        class="gm-select" style="width:100%" required>
+                    @foreach (var e in (IEnumerable<Proyecto_SkyInit.Models.EstadoReparacion>)ViewBag.Estados)
+                    {
+                        <option value="@e.EstadoReparacionID">@e.Descripcion</option>
+                    }
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="gm-btn secondary"
+                        onclick="cerrarModal('modalEditar')">
+                    Cancelar
+                </button>
+                <button type="submit" class="gm-btn warning">💾 Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // ── Modales ──────────────────────────────────────────
+        function abrirModalCrear() {
+            document.getElementById('modalCrear').classList.add('active');
+        }
+
+        function abrirModalEditar(id, descripcion, estadoId, propiedadId) {
+            document.getElementById('editId').value        = id;
+            document.getElementById('editDescripcion').value = descripcion;
+            document.getElementById('editEstado').value    = estadoId;
+            document.getElementById('modalEditar').classList.add('active');
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function (e) {
+                if (e.target === this) this.classList.remove('active');
+            });
+        });
+
+        // ── Auto-dismiss toast (RF41) ────────────────────────
+        ['toast', 'toastErr'].forEach(tid => {
+            const el = document.getElementById(tid);
+            if (el) setTimeout(() => el.style.display = 'none', 4000);
+        });
+    </script>
+}
