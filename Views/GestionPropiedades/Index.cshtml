@@ -8,12 +8,36 @@
 
 
 <html lang="es">
-<head> 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
+    <!--SIDEBAR-->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>Sky<span>Init</span></h2>
+            <span class="rol-badge">Administrador</span>
+        </div>
+
+        <nav>
+            <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
+            <a asp-controller="Administrador" asp-action="Propiedades" class="active">🏡 Propiedades</a>
+            <a asp-controller="Administrador" asp-action="Proyectos" >🏗️ Proyectos</a>
+            <a asp-controller="Administrador" asp-action="Agentes">👤 Usuarios</a>
+            <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
+            <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+            <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+            <a asp-controller="Administrador" asp-action="Certificaciones">🏅 Certificaciones</a>
+            <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+            <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
+            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+
+        </nav>
+
+    </aside>
     @* ── Toast de confirmación ─────────────────────────── *@
     @if (TempData["Mensaje"] != null)
     {
@@ -28,20 +52,6 @@
             }, 3500);
         </script>
     }
-    @* ── Navbar ───────────────────────────────────────── *@
-    <div class="actions">
-    </div>
-
-    <div class="navbar">
-        <button type="button" class="btn volver" onclick="location.href='@Url.Action("Index", "Administrador")'">
-            Volver
-        </button>
-        <div class="logo">SkyInit</div>
-        <div class="admin">
-            <div><strong>Administrador</strong></div>
-        </div>
-    </div>
-
     @* ── Contenido principal ──────────────────────────── *@
     <div class="container">
 
