@@ -37,7 +37,7 @@ namespace Proyecto_SkyInit.Controllers
         
         public IActionResult Buscar()
         {
-            return RedirectToAction("Index", "Propiedades");
+            return RedirectToAction("Index", "UsuarioPropiedades");
         }
 
         

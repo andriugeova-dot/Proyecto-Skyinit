@@ -1,0 +1,116 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutUsuarioPropiedades.cshtml";
+}
+@model List<Proyecto_SkyInit.Models.Propiedad>
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Propiedades - SkyInit</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <div class="topbar">
+            <div class="logo">SkyInit</div>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu">
+                <a asp-controller="Menu" asp-action="Index">Inicio</a>
+                <a asp-controller="Menu" asp-action="Buscar">Buscar</a>
+                <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+                <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
+                <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
+                <a asp-controller="Menu" asp-action="Registrar" class="btn-registrar">Iniciar Sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+
+        <h1>
+            Encuentra tu propiedad ideal
+        </h1>
+
+        <p>
+            Explora casas, apartamentos y encuentra tu hogar ideal.
+        </p>
+
+    </section>
+
+    <section class="search-container">
+        <form asp-controller="UsuarioPropiedades" asp-action="Buscar" method="get" class="search-box">
+            <input type="text" name="query" placeholder="Buscar por título o descripción..." />
+
+            <select name="tipoOperacion">
+                <option value="">-- Tipo de operación --</option>
+                <option value="1">Venta</option>
+                <option value="2">Arriendo</option>
+                <option value="3">Empeño</option>
+            </select>
+
+            <select name="habitaciones">
+                <option value="">-- Habitaciones --</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3+</option>
+            </select>
+
+            <input type="text" name="ciudad" placeholder="Ciudad" />
+
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+
+
+
+    <section class="properties">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var propiedad in Model)
+            {
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="@(propiedad.Imagenes.FirstOrDefault()?.URL ?? "/images/no-image.png")" alt="@propiedad.Titulo" />
+                    </div>
+
+                    <div class="property-info">
+                        <span class="tag">Disponible</span>
+
+                        <h2>@propiedad.Titulo</h2>
+
+                        <p class="location">📍 @(propiedad.Ciudad ?? propiedad.Direccion)</p>
+
+                        <p class="description">@propiedad.Descripcion</p>
+
+                        <div class="details">
+                            <span>🛏️ @(propiedad.Habitaciones ?? 0) Habitaciones</span>
+                        </div>
+
+                        <div class="footer">
+                            <h3>@propiedad.Precio.ToString("C0")</h3>
+                            <a asp-controller="UsuarioPropiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID">
+                                <button>Ver propiedad</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No se encontraron propiedades con los filtros seleccionados.</p>
+        }
+    </section>
+
+
+</body>
+</html>
