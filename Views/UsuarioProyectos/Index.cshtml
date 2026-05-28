@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Proyecto_SkyInit.Models.Proyecto>
+@{
+    Layout = "~/Views/Shared/_LayoutUsuarioProyectos.cshtml";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Proyectos - SkyInit</title>
+
+    <link rel="stylesheet" href="proyectos.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+
+        <div class="topbar">
+            <div class="logo">SkyInit</div>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu">
+                <a asp-controller="Menu" asp-action="Index">Inicio</a>
+                <a asp-controller="Menu" asp-action="Buscar">Buscar</a>
+                <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+                <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
+                <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
+                <a asp-controller="Menu" asp-action="Registrar" class="btn-registrar">Iniciar Sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <h1 class="title">
+        Proyectos
+    </h1>
+
+    <section class="projects">
+        @foreach (var proyecto in Model)
+            {
+                <div class="card">
+                    <div class="content">
+                        <h3>@proyecto.Nombre</h3>
+                        <p>
+                            Estado : @proyecto.EstadoProyecto?.Descripcion <br />
+                            Constructora: @proyecto.Constructora?.Nombre <br />
+                            Inicio: @proyecto.FechaInicio?.ToString("dd/MM/yyy") <br />
+                            Fin: @proyecto.FechaFin?.ToString("dd/MM/yyy")
+                        </p>
+                        <button>Ver más</button>
+                    </div>
+                </div>
+            }
+
+    </section>
+
+</body>
+</html>
