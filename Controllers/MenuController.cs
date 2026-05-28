@@ -41,7 +41,7 @@ namespace Proyecto_SkyInit.Controllers
         // ════════════════════════════════════════════════════════════
         public IActionResult Proyectos()
         {
-            return RedirectToAction("Index", "Proyectos");
+            return RedirectToAction("Index", "UsuarioProyectos");
         }
 
         // ════════════════════════════════════════════════════════════
