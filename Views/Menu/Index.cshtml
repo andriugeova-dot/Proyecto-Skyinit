@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<Proyecto_SkyInit.Models.Propiedad>
+
+@{
     Layout = "_LayoutMenu";
     ViewData["Title"] = "Menu";
 }
@@ -32,33 +34,29 @@
     <section class="contenedor">
         <h2 class="titulo">Propiedades Destacadas</h2>
         <div class="grid">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994">
-                <div class="card-body">
-                    <div class="precio">$350,000</div>
-                    <div class="ubicacion">Bogotá</div>
-                    <p>Casa moderna con jardín.</p>
-                    <a href="#" class="boton">Ver más</a>
+            @foreach (var propiedad in Model)
+            {
+                <div class="card">
+                    <!-- Mostrar la primera imagen si existe -->
+                    @{
+                        var imgUrl = propiedad.Imagenes.FirstOrDefault()?.URL
+                        ?? "https://via.placeholder.com/400x250?text=Sin+imagen";
+                    }
+                    <img src="@imgUrl" alt="@propiedad.Titulo" />
+
+                    <div class="card-body">
+                        <h3>@propiedad.Titulo</h3>
+                        <div class="precio">@propiedad.Precio.ToString("C0")</div>
+                        <div class="tipo-operacion">@propiedad.TipoOperacion?.Descripcion</div>
+                        <div class="ubicacion">
+                            @(string.IsNullOrEmpty(propiedad.Ciudad) ? propiedad.Direccion : propiedad.Ciudad)
+                        </div>
+                        <p>@propiedad.Descripcion</p>
+                        <a asp-controller="Propiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID" class="boton">Ver más</a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be">
-                <div class="card-body">
-                    <div class="precio">$420,000</div>
-                    <div class="ubicacion">Medellín</div>
-                    <p>Casa con piscina.</p>
-                    <a href="#" class="boton">Ver más</a>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
-                <div class="card-body">
-                    <div class="precio">$290,000</div>
-                    <div class="ubicacion">Cali</div>
-                    <p>Zona tranquila.</p>
-                    <a href="#" class="boton">Ver más</a>
-                </div>
-            </div>
+            }
+
         </div>
     </section>
     <script>

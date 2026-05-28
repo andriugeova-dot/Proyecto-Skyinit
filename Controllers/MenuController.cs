@@ -15,11 +15,17 @@ namespace Proyecto_SkyInit.Controllers
             _context = context;
         }
 
-       
         public IActionResult Index()
         {
             ViewData["Title"] = "Inicio — SkyInit";
-            return View();
+
+            var propiedades = _context.Propiedades
+        .Include(p => p.Imagenes)        // ← NUEVO: carga las imágenes
+        .Include(p => p.TipoOperacion)   // ← NUEVO: carga el tipo (Venta/Arriendo/Empeño)
+        .Take(6)                         // ← NUEVO: máximo 6 propiedades destacadas
+        .ToList();
+
+            return View(propiedades);
         }
 
         // Alias para que la ruta /Menu/Inicio también funcione
@@ -28,66 +34,49 @@ namespace Proyecto_SkyInit.Controllers
             return RedirectToAction("Index");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // BUSCAR → PropiedadesController/Index
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Buscar()
         {
-            return RedirectToAction("Index", "Propiedades");
+            return RedirectToAction("Index", "UsuarioPropiedades");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // PROYECTOS → ProyectosController/Index
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Proyectos()
         {
             return RedirectToAction("Index", "UsuarioProyectos");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // CONSTRUCTORAS → ConstructorasController/Index
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Constructoras()
         {
             return RedirectToAction("Index", "Constructoras");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // SERVICIOS → ServiciosController/Index
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Servicios()
         {
             return RedirectToAction("Index", "Servicios");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // REGISTRAR → RegistroController/Index
-        // (apunta al controlador existente "Registro" ya que no existe "Usuarios")
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Registrar()
         {
             return RedirectToAction("Index", "Login");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // LOGIN → LoginController/Index
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Login()
         {
             return RedirectToAction("Index", "Login");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // CERRAR SESIÓN → LoginController/Logout
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult CerrarSesion()
         {
             return RedirectToAction("Logout", "Login");
         }
 
-        // ════════════════════════════════════════════════════════════
-        // TÉRMINOS Y CONDICIONES → TerminosController/Index
-        // ════════════════════════════════════════════════════════════
+        
         public IActionResult Terminos()
         {
             return RedirectToAction("Index", "Terminos");
