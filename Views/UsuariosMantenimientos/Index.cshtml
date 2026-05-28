@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "_LayoutUsuariosMantenimientos";
+    ViewData["Title"] = "Usuarios Mantenimientos";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios de Mantenimiento - SkyInit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="reparaciones.css"> <!-- CSS externo -->
+</head>
+<body>
+
+    <header>
+        <div class="topbar">
+            <div class="logo">SkyInit</div>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu">
+                <a asp-controller="Menu" asp-action="Index">Inicio</a>
+                <a asp-controller="Menu" asp-action="Buscar">Buscar</a>
+                <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+                <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
+                <a asp-controller="UsuariosMantenimientos" asp-action="Index">Mantenimientos</a>
+                <a asp-controller="Menu" asp-action="Registrar" class="btn-registrar">Iniciar Sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="slider">
+            <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789" alt="Mantenimiento 1">
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1581141849291-1125c7b692b5" alt="Mantenimiento 2">
+            </div>
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="Mantenimiento 3">
+            </div>
+        </div>
+        <h1>Servicios de Mantenimiento</h1>
+    </section>
+
+
+    <section class="grid">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789" alt="Mantenimiento general">
+            <div class="card-content">
+                <h3>Mantenimiento general</h3>
+                <p>Reparaciones básicas para mantener tu hogar en perfecto estado.</p>
+                <button>Solicitar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1581141849291-1125c7b692b5" alt="Electricidad">
+            <div class="card-content">
+                <h3>Electricidad</h3>
+                <p>Instalación y reparación de sistemas eléctricos.</p>
+                <button>Solicitar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1581574205974-3c2c0f7c7b4d" alt="Plomería">
+            <div class="card-content">
+                <h3>Plomería</h3>
+                <p>Solución de fugas, tuberías y sistemas de agua.</p>
+                <button>Solicitar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="Pintura">
+            <div class="card-content">
+                <h3>Pintura</h3>
+                <p>Renueva tus espacios con acabados profesionales.</p>
+                <button>Solicitar</button>
+            </div>
+        </div>
+    </section>
+    <script>
+        let slides = document.querySelectorAll('.slide');
+        let index = 0;
+
+        setInterval(() => {
+            slides[index].classList.remove('active');
+            index = (index + 1) % slides.length;
+            slides[index].classList.add('active');
+        }, 4000); // cambia cada 4 segundos
+    </script>
+
+</body>
+</html>
