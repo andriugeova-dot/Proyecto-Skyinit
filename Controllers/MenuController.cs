@@ -20,9 +20,9 @@ namespace Proyecto_SkyInit.Controllers
             ViewData["Title"] = "Inicio — SkyInit";
 
             var propiedades = _context.Propiedades
-        .Include(p => p.Imagenes)        // ← NUEVO: carga las imágenes
-        .Include(p => p.TipoOperacion)   // ← NUEVO: carga el tipo (Venta/Arriendo/Empeño)
-        .Take(6)                         // ← NUEVO: máximo 6 propiedades destacadas
+        .Include(p => p.Imagenes)        
+        .Include(p => p.TipoOperacion)   
+        .Take(6)                         
         .ToList();
 
             return View(propiedades);
@@ -35,7 +35,7 @@ namespace Proyecto_SkyInit.Controllers
         }
 
         
-        public IActionResult Buscar()
+        public IActionResult Propiedades()
         {
             return RedirectToAction("Index", "UsuarioPropiedades");
         }
@@ -55,7 +55,7 @@ namespace Proyecto_SkyInit.Controllers
         
         public IActionResult Servicios()
         {
-            return RedirectToAction("Index", "Servicios");
+            return RedirectToAction("Index", "UsuariosMantenimientos");
         }
 
         

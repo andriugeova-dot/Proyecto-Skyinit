@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicios de Mantenimiento - SkyInit</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="reparaciones.css"> <!-- CSS externo -->
+    <link rel="stylesheet" href="reparaciones.css"> 
 </head>
 <body>
 
@@ -19,10 +19,10 @@
             <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
             <nav id="menu">
                 <a asp-controller="Menu" asp-action="Index">Inicio</a>
-                <a asp-controller="Menu" asp-action="Buscar">Buscar</a>
+                <a asp-controller="Menu" asp-action="Propiedades">Propiedades</a>
                 <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+                <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
                 <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
-                <a asp-controller="UsuariosMantenimientos" asp-action="Index">Mantenimientos</a>
                 <a asp-controller="Menu" asp-action="Registrar" class="btn-registrar">Iniciar Sesión</a>
             </nav>
         </div>
@@ -64,7 +64,7 @@
         </div>
 
         <div class="card">
-            <img src="https://images.unsplash.com/photo-1581574205974-3c2c0f7c7b4d" alt="Plomería">
+            <img src="https://images.pexels.com/photos/16509869/pexels-photo-16509869.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Plomería">
             <div class="card-content">
                 <h3>Plomería</h3>
                 <p>Solución de fugas, tuberías y sistemas de agua.</p>
@@ -89,7 +89,7 @@
             slides[index].classList.remove('active');
             index = (index + 1) % slides.length;
             slides[index].classList.add('active');
-        }, 4000); // cambia cada 4 segundos
+        }, 4000);
     </script>
 
 </body>
