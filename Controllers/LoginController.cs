@@ -156,10 +156,16 @@ namespace Proyecto_SkyInit.Controllers
         // FIN bloque Google API
         // ════════════════════════════════════════════════════════════
 
+        [HttpGet]
+        public IActionResult Ajustes()
+        {
+            return RedirectToAction("Index", "PanelUsuario");
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index");
+            return RedirectToAction("Inicio", "Menu");
         }
     }
 }

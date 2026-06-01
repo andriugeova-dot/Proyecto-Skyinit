@@ -81,6 +81,77 @@ nav {
     cursor: pointer;
 }
 
+.user-profile {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    transition: transform 0.3s;
+}
+
+    .profile-pic:hover {
+        transform: scale(1.1);
+    }
+
+.user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    min-width: 160px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.user-menu-name {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #666;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
+
+.user-menu a {
+    display: block;
+    padding: 10px 14px;
+    color: #1b5e20;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+    .user-menu a:hover {
+        background: #f1f8f1;
+    }
+
+    .user-menu a:last-child {
+        color: #c0392b;
+        border-top: 1px solid #eee;
+    }
+
+        .user-menu a:last-child:hover {
+            background: #fdf0ee;
+        }
+
+.user-menu.active {
+    display: block;
+}
+
+
 /* HERO */
 .hero {
     text-align: center;
