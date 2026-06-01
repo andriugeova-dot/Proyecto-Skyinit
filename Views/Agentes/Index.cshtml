@@ -1,0 +1,202 @@
+﻿@* Views/Agentes/Index.cshtml *@
+@* Requiere: Layout = "_LayoutAgentes" | Datos via ViewBag desde AgentesController *@
+@{
+    Layout = "_LayoutAgentes";
+    ViewData["Title"] = "Panel Agente";
+}
+
+<div class="agent-container">
+
+    @* ── SIDEBAR ────────────────────────────────────────────── *@
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>SkyInit</h2>
+            <span>Panel Agente</span>
+        </div>
+        <nav>
+            <a href="@Url.Action("Index", "Agentes")" class="nav-link active">📊 Dashboard</a>
+            <a href="@Url.Action("Index", "GestionPropiedades")" class="nav-link">🏠 Mis Propiedades</a>
+            <a href="@Url.Action("MisProyectos", "Agentes")" class="nav-link">🏗️ Proyectos</a>
+            <a href="@Url.Action("MisConsultas", "Agentes")" class="nav-link">📋 Consultas</a>
+            <a href="@Url.Action("Estadisticas", "Agentes")" class="nav-link">📈 Estadísticas</a>
+            <a href="@Url.Action("MiPerfil", "Agentes")" class="nav-link">👤 Mi Perfil</a>
+@*             <a href="@Url.Action("CerrarSesion", "Login")" class="nav-link nav-logout">🚪 Cerrar Sesión</a> 
+ *@            <a asp-controller="Login" asp-action="Logout" class="nav-link nav-logout">🚪 Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    @* ── CONTENIDO PRINCIPAL ────────────────────────────────── *@
+    <main class="content">
+
+        @* Toast de notificación (TempData) *@
+        @if (TempData["Mensaje"] != null)
+        {
+            var tipo = TempData["TipoMensaje"]?.ToString() ?? "success";
+            <div class="toast toast-@tipo" id="toast-msg">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        @* ── TOPBAR *@
+        <div class="topbar">
+            <div>
+                <h1>Bienvenido, @ViewBag.NombreAgente</h1>
+                <p>Agente Inmobiliario — SkyInit</p>
+            </div>
+            <div class="topbar-fecha">
+                <span>@DateTime.Now.ToString("dddd, dd MMMM yyyy", new System.Globalization.CultureInfo("es-CO"))</span>
+            </div>
+        </div>
+
+        @* ── ESTADÍSTICAS (RF207, RF251) *@
+        <section class="stats-grid">
+            <div class="stat-card">
+                <h2>@ViewBag.TotalPropiedades</h2>
+                <p>Mis Propiedades</p>
+            </div>
+            <div class="stat-card">
+                <h2>@ViewBag.TotalClientes</h2>
+                <p>Clientes</p>
+            </div>
+            <div class="stat-card">
+                <h2>@ViewBag.CitasHoy</h2>
+                <p>Citas Hoy</p>
+            </div>
+            <div class="stat-card">
+                <h2>@ViewBag.ConsultasPendientes</h2>
+                <p>Consultas Pendientes</p>
+            </div>
+        </section>
+
+        @* ── ACCIONES RÁPIDAS (RF48, RF183, RF185) *@
+        <section class="card">
+            <h2>Acciones Rápidas</h2>
+            <div class="quick-actions">
+
+                <div class="action-card">
+                    <h3>Publicar Propiedad</h3>
+                    <p>Registra una nueva propiedad en la plataforma.</p>
+                    <a href="@Url.Action("Index", "PublicarPropiedad")" class="action-btn">
+                        Publicar
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <h3>Ver Consultas</h3>
+                    <p>Revisa y responde las solicitudes de tus clientes.</p>
+                    <a href="@Url.Action("MisConsultas", "Agentes")" class="action-btn">
+                        Ver consultas
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <h3>Mis Proyectos</h3>
+                    <p>Consulta los proyectos activos en la plataforma.</p>
+                    <a href="@Url.Action("MisProyectos", "Agentes")" class="action-btn">
+                        Ver proyectos
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        @* ── MIS PROPIEDADES (RF201, RF202, RF204) *@
+        <section class="card">
+            <div class="card-header-row">
+                <h2>Mis Propiedades</h2>
+                <a href="@Url.Action("Index", "PublicarPropiedad")" class="btn-primary-sm">
+                    + Nueva propiedad
+                </a>
+            </div>
+
+            @{
+                var propiedades = ViewBag.Propiedades as IEnumerable<Proyecto_SkyInit.Models.Propiedad>;
+            }
+
+            @if (propiedades == null || !propiedades.Any())
+            {
+                <p class="empty-msg">Aún no tienes propiedades publicadas.</p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Propiedad</th>
+                            <th>Ubicación</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in propiedades)
+                        {
+                            <tr>
+                                <td>@p.Titulo</td>
+                                <td>@(p.Ciudad ?? p.Direccion)</td>
+                                <td>@(p.TipoOperacion?.Descripcion ?? "—")</td>
+                                <td>$@p.Precio.ToString("N0")</td>
+                                <td>
+                                    @* Editar → redirige a EditarPropiedad *@
+                                    <a href="@Url.Action("Index", "EditarPropiedad", new { id = p.PropiedadID })"
+                                       class="edit-btn">Editar</a>
+
+                                    @* Eliminar con confirmación *@
+                                    <form asp-action="EliminarPropiedad" asp-controller="Agentes"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('¿Eliminar @Html.Raw(p.Titulo.Replace("'", "\\'"))?');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@p.PropiedadID" />
+                                        <button type="submit" class="delete-btn">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </section>
+
+        @* ── PRÓXIMAS CITAS (RF269) *@
+        <section class="card">
+            <h2>Próximas Citas</h2>
+
+            @{
+                var citas = ViewBag.ProximasCitas as IEnumerable<Proyecto_SkyInit.Models.Agenda>;
+            }
+
+            @if (citas == null || !citas.Any())
+            {
+                <p class="empty-msg">No hay citas programadas próximamente.</p>
+            }
+            else
+            {
+                @foreach (var c in citas)
+                {
+                    <div class="schedule-item">
+                        <strong>@c.FechaVisita.ToString("hh:mm tt")</strong>
+                        — Visita: <em>@c.Propiedad?.Titulo</em>
+                        <span class="badge badge-@c.EstadoAgenda?.Descripcion?.ToLower()">
+                            @c.EstadoAgenda?.Descripcion
+                        </span>
+                    </div>
+                }
+            }
+        </section>
+
+    </main>
+</div>
+
+@* ── SCRIPTS: auto-ocultar toast *@
+@section Scripts {
+    <script>
+        const toast = document.getElementById('toast-msg');
+        if (toast) {
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+    </script>
+}
