@@ -28,6 +28,10 @@ namespace Proyecto_SkyInit.Data
         public DbSet<HistorialPropiedad> HistorialPropiedades { get; set; }
         public DbSet<RedSocial> RedesSociales { get; set; }
 
+        // - Agregados
+        public DbSet<ImagenProyecto> ImagenesProyecto { get; set; }
+        public DbSet<HistorialProyecto> HistorialProyectos { get; set; }
+
         // ── Catálogos (E04 — faltaban) ───────────────────
         public DbSet<Plataforma> Plataformas { get; set; }
         public DbSet<TipoOperacion> TiposOperacion { get; set; }
