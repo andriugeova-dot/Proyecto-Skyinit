@@ -20,7 +20,7 @@ builder.Services.AddDbContext<SkyinitContext>(options =>
 );
 builder.Services.AddScoped<GmailSenderService>();
 
-// ?? Autenticaci髇: Cookie + Google OAuth (NO MODIFICAR)
+// ?? Autenticaci贸n: Cookie + Google OAuth (NO MODIFICAR)
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -40,7 +40,7 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configuraci髇 del pipeline HTTP
+// Configuraci贸n del pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Menu/Error");
@@ -52,7 +52,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// IMPORTANTE: habilitar autenticaci髇 antes de autorizaci髇
+// IMPORTANTE: habilitar autenticaci贸n antes de autorizaci贸n
 app.UseAuthentication();
 app.UseAuthorization();
 
