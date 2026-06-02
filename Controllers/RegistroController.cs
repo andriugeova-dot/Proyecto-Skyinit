@@ -60,6 +60,7 @@ namespace Proyecto_SkyInit.Controllers
             };
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
+            TempData["NuevoUsuarioID"] = usuario.UsuarioID;
 
             return RedirectToAction("Index", "Terminos");
         }
