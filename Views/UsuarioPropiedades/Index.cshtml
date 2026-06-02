@@ -29,7 +29,24 @@
                 <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
                 <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
                 <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
-                <a asp-controller="Menu" asp-action="Registrar" class="btn-registrar">Iniciar Sesión</a>
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <div class="user-profile">
+                        <img src="~/img/default-avatar.svg"
+                             alt="Perfil"
+                             class="profile-pic"
+                             onclick="toggleUserMenu()" />
+                        <div id="user-menu" class="user-menu">
+                            <div class="user-menu-name">@User.Identity.Name</div>
+                            <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
+                            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a asp-controller="Login" asp-action="Index" class="btn-registrar">Iniciar Sesión</a>
+                }
             </nav>
         </div>
     </header>
@@ -110,6 +127,12 @@
             <p>No se encontraron propiedades con los filtros seleccionados.</p>
         }
     </section>
+
+    <script>
+        function toggleUserMenu() {
+            document.getElementById("user-menu").classList.toggle("active");
+        }
+    </script> 
 
 
 </body>
