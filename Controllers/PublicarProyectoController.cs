@@ -25,7 +25,7 @@ namespace Proyecto_SkyInit.Controllers
         // POST: PublicarProyecto
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(Proyecto modelo, List<IFormFile> Imagenes)
+        public async Task<IActionResult> Index(Proyecto modelo, IFormFile Imagenes)
         {
             if (!ModelState.IsValid)
             {
@@ -41,10 +41,32 @@ namespace Proyecto_SkyInit.Controllers
 
             _context.Proyectos.Add(modelo);
             _context.SaveChanges();
+            await GuardarImagenes(modelo.ProyectoID, Imagenes);
 
             TempData["Mensaje"] = "✅ Proyecto publicado correctamente";
             TempData["TipoMensaje"] = "success";
             return RedirectToAction("Index", "GestionProyectos");
+        }
+        private async Task GuardarImagenes(int proyectoID, IFormFile imagen)
+        {
+            if (imagen == null || imagen.Length == 0) return;
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/proyectos");
+            Directory.CreateDirectory(uploadPath);
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imagen.FileName);
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await imagen.CopyToAsync(stream);
+            }
+            _context.ImagenesProyecto.Add(new ImagenProyecto
+            {
+                ProyectoID = proyectoID,
+                URL = "/img/proyectos/" + fileName
+            });
+            await _context.SaveChangesAsync();
         }
     }
 }

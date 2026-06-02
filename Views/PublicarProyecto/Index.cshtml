@@ -62,6 +62,16 @@
                                 <select asp-for="ConstructoraID" asp-items="ViewBag.Constructoras" class="form-control"></select>
                                 <span asp-validation-for="ConstructoraID" class="text-danger"></span>
                             </div>
+                        
+                             <div class="input-box">
+                             <label>Descripcion</label>
+                             <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+                             <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                         <div class="input-box">
+                             <label>Imagenes del proyecto</label>
+                             <input type="file" name="Imagenes" accept="image/*" class="form-control" />
+                         </div>
                         </div>
 
                         <div class="buttons">

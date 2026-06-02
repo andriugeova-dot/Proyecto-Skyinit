@@ -107,7 +107,9 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Imagen</th>
                             <th>Proyecto</th>
+                            <th>Descripcion</th>
                             <th>Constructora</th>
                             <th>Estado</th>
                             <th>Fechas</th>
@@ -118,7 +120,22 @@
                         @foreach (var p in Model)
                         {
                             <tr>
+                                <td>
+                                        @{
+                                            var imagen = p.ImagenesProyecto?.FirstOrDefault();
+                                        }
+                                        @if (imagen != null)
+                                        {
+                                            <img src="@imagen.URL" alt="@p.Nombre"/>    
+                                        } else
+                                        {
+                                            <span class="sin-imagen">Sin imagen</span>
+                                        }
+                                    </td>
                                 <td><strong>@p.Nombre</strong></td>
+                                <td class="descripcion">
+                                    @(string.IsNullOrWhiteSpace(p.Descripcion) ? "-" : p.Descripcion)
+                                </td>
                                 <td>@(p.Constructora?.Nombre ?? "—")</td>
                                 <td>@(p.EstadoProyecto?.Descripcion  ?? "Pendiente")</td>
                                 <td>

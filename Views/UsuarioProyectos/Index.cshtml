@@ -42,8 +42,14 @@
     <section class="projects">
         @foreach (var proyecto in Model)
             {
-                <div class="card">
-                    <div class="content">
+                var imgUrl = proyecto.ImagenesProyecto?.FirstOrDefault()?.URL ?? "";
+                var bgStyle = !string.IsNullOrEmpty(imgUrl)
+                ? $"background-image: url('{imgUrl}'); background-size: cover; background-position: center;"
+                : "";
+
+                <div class="card" style="@bgStyle">
+                    <div class="card-overlay"></div>
+                        <div class="content">
                         <h3>@proyecto.Nombre</h3>
                         <p>
                             Estado : @proyecto.EstadoProyecto?.Descripcion <br />
