@@ -29,7 +29,7 @@ namespace Proyecto_SkyInit.Services
                 From = new MailAddress(fromEmail, "SkyInit"),
                 Subject = asunto,
                 Body = cuerpo,
-                IsBodyHtml = false
+                IsBodyHtml = true
             };
             mail.To.Add(destinatario);
 
