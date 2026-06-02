@@ -22,13 +22,15 @@ namespace Proyecto_SkyInit.Controllers
                 {
                     ProyectoID = p.ProyectoID,
                     Nombre = p.Nombre,
+                    Descripcion = p.Descripcion,
                     EstadoProyectoID = p.EstadoProyectoID,
                     FechaInicio = p.FechaInicio,
                     FechaFin = p.FechaFin,
                     ConstructoraID = p.ConstructoraID,
                     EstadoProyecto = p.EstadoProyecto,
                     Constructora = p.Constructora,
-                    Estadisticas = p.Estadisticas
+                    Estadisticas = p.Estadisticas,
+                    ImagenesProyecto = p.ImagenesProyecto
                 })
                 .ToList();
 

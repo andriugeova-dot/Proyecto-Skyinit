@@ -319,6 +319,9 @@ th, td {
     margin-bottom: 25px;
     gap: 20px;
 }
+.search{
+    flex:1;
+}
 
 .search input {
     width: 100%;
@@ -425,4 +428,21 @@ th, td {
         opacity: 1;
         transform: scale(1);
     }
+}
+/* IMAGEN PROYECTO */
+.table-card table img {
+    width: 70px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.sin-imagen {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.descripcion {
+    max-width: 180px;
+    font-size: 13px;
 }

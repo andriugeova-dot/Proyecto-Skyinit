@@ -19,8 +19,10 @@ namespace Proyecto_SkyInit.Controllers
         public IActionResult Index()
         {
             ViewData["Title"] = "Proyectos — SkyInit";
-            var proyectos = _context.Proyectos.Include(p => p.Constructora)
+            var proyectos = _context.Proyectos
+                .Include(p => p.Constructora)
                 .Include(p => p.EstadoProyecto)
+                .Include(p => p.ImagenesProyecto)
            .ToList();
 
             return View(proyectos);

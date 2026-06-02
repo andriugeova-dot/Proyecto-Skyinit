@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-content">
-                    <form asp-controller="GestionProyectos" asp-action="Editar" method="post">
+                    <form asp-controller="EditarProyecto" asp-action="Editar" method="post" enctype="multipart/form-data">
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="ProyectoID" />
 
@@ -64,7 +64,28 @@
                                 <select asp-for="ConstructoraID" asp-items="ViewBag.Constructoras" class="form-control"></select>
                                 <span asp-validation-for="ConstructoraID" class="text-danger"></span>
                             </div>
-                        </div>
+                            <div class="input-box">
+                                <label>Descripcion</label>
+                                <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                            <div class="input-box">
+                                <label>Agregar imagenes</label>
+                                <input type="file" name="Imagenes" accept="image/*" class="form-control" />
+                            </div>
+                            @if (Model.ImagenesProyecto != null && Model.ImagenesProyecto.Any())
+                                    {
+                                        <div class="input-box">
+                                            <label>Imagenes actuales</label>
+                                            <div class="preview">
+                                                @foreach (var img in Model.ImagenesProyecto)
+                                                {
+                                                    <img src="@img.URL" alt="Imagen" />
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
 
                         <div class="buttons">
                             <button type="submit" class="btn primary">Guardar cambios</button>

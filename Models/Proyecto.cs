@@ -16,5 +16,6 @@ namespace Proyecto_SkyInit.Models
         public EstadoProyecto? EstadoProyecto { get; set; }
         public Constructora? Constructora { get; set; }
         public ICollection<Estadistica>? Estadisticas { get; set; }
+        public ICollection<ImagenProyecto>?ImagenesProyecto { get; set; }
     }
 }

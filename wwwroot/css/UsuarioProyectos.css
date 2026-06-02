@@ -108,17 +108,19 @@ body {
         gap: 25px;
     }
     /* CARD */
-    .card {
-        width: 100%;
-        height: 240px;
-        border-radius: 24px;
-        overflow: hidden;
-        position: relative;
-        background: linear-gradient( 135deg, #2E8B57, #1f5f3d );
-        box-shadow: 0 10px 25px rgba(0,0,0,0.18);
-        transition: 0.4s;
-        cursor: pointer;
-    }
+.card {
+    width: 100%;
+    height: 240px;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    background-color: #1f5f3d;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    transition: 0.4s;
+    cursor: pointer;
+}
 
         .card:hover {
             transform: translateY(-5px);
@@ -169,6 +171,7 @@ body {
             line-height: 1.6;
             opacity: 0.92;
             font-size: 15px;
+            font-weight:bold;
         }
         /* BOTON */
         .content button {
@@ -213,6 +216,12 @@ body {
             text-align: center;
         }
     }
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
 
 .user-profile {
     position: relative;
