@@ -128,7 +128,7 @@ body {
 
 /* CONTENIDO */
 .content {
-    margin-left: 260px;
+        margin-left: 0;
     width: 100%;
     padding: 30px;
 }
