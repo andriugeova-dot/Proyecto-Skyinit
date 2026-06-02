@@ -76,8 +76,19 @@ public class AccountController : Controller
         await _context.SaveChangesAsync();
 
         var resetLink = Url.Action("ResetPassword", "Account", new { token }, Request.Scheme);
+        var cuerpoHtml = $@"
+            <div style='font-family:Segoe UI,sans-serif; background:#f6f3eb; padding:20px; border-radius:10px; text-align:center;'>
+            <h2 style='color:#0f4c5c; margin-bottom:20px;'>Restablece tu contraseña</h2>
+            <p>Hola {usuario.Nombre},</p>
+            <p>Haz clic en el siguiente botón para continuar:</p>
+            <a href='{resetLink}' 
+            style='display:inline-block; padding:12px 20px; background:#008b8b; color:#fff; border-radius:8px; text-decoration:none; margin-top:15px;'>
+            Restablecer contraseña
+            </a>
+            <p style='margin-top:20px; font-size:12px; color:#777;'>Si no solicitaste este cambio, ignora este correo.</p>
+            </div>";
 
-
+        _gmailSender.SendEmail(usuario.Correo, "Recuperación de contraseña", cuerpoHtml);
 
         ViewBag.Message = "Se envió un correo con instrucciones.";
         return View();
