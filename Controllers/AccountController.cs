@@ -78,9 +78,6 @@ public class AccountController : Controller
         var resetLink = Url.Action("ResetPassword", "Account", new { token }, Request.Scheme);
 
 
-        _gmailSender.SendEmail(usuario.Correo,
-       "Recuperación de contraseña",
-       $"Haz clic en el siguiente enlace para restablecer tu contraseña: {resetLink}");
 
         ViewBag.Message = "Se envió un correo con instrucciones.";
         return View();
