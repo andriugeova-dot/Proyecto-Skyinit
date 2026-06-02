@@ -128,9 +128,9 @@ body {
 
 /* CONTENIDO */
 .content {
-        margin-left: 0;
+    margin-left: 260px;
     width: 100%;
-    padding: 30px;
+    padding: 20px;
 }
 
 /* TOPBAR */
