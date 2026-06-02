@@ -142,7 +142,7 @@ namespace Proyecto_SkyInit.Controllers
                 case "Administrador":
                     return RedirectToAction("Index", "Administrador");
                 case "Agente":
-                    return RedirectToAction("Panel", "Agente");
+                    return RedirectToAction("Index", "Agentes");
                 case "Cliente":
                     return RedirectToAction("Index", "Menu");
                 default:
