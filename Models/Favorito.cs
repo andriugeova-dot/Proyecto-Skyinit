@@ -8,7 +8,7 @@ namespace Proyecto_SkyInit.Models
         public int FavoritoID { get; set; }
         public int UsuarioID { get; set; }
         public int PropiedadID { get; set; }
-        public DateTime FechaAgregado { get; set; }
+        public DateTime FechaAgregado { get; set; } = DateTime.Now;
         // Navegación
         public Usuario Usuario { get; set; } = null!;
         public Propiedad Propiedad { get; set; } = null!;

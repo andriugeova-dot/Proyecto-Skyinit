@@ -164,6 +164,88 @@ nav {
             background: var(--verde-dark);
         }
 
+.btn-favorito {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+    color: #e74c3c;
+    transition: 0.3s;
+    display:flex;
+    justify-content: flex-end;
+}
+
+    .btn-favorito:hover {
+        color: #c0392b;
+    }
+
+.favorito-inactivo {
+    color: rgba(0,0,0,0.4);
+}
+
+.favorito-activo {
+    color: #2E8B57;
+}
+
+.tag-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+    .tag-row .tag {
+        margin-bottom: 0;
+    }
+
+    .tag-row .btn-favorito {
+        margin-top: 0;
+    }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    margin: auto;
+}
+
+.acciones {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal .btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    background: #2e7d32;
+    color: white;
+    font-weight: bold;
+}
+
+.modal .btn-registrar {
+    background: #f5f5dc;
+    color: #2e7d32;
+}
+
+
 
 /* PROPERTIES */
 .properties {
