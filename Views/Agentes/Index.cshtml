@@ -5,23 +5,19 @@
     ViewData["Title"] = "Panel Agente";
 }
 
-<div class="agent-container">
+<div class="admin-container">
 
-    @* ── SIDEBAR ────────────────────────────────────────────── *@
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="logo">
-            <h2>SkyInit</h2>
-            <span>Panel Agente</span>
+            <h2>Sky<span>Init</span></h2>
+            <span class="rol-badge">Agente</span>
         </div>
         <nav>
-            <a href="@Url.Action("Index", "Agentes")" class="nav-link active">📊 Dashboard</a>
-            <a href="@Url.Action("Index", "GestionPropiedades")" class="nav-link">🏠 Mis Propiedades</a>
-            <a href="@Url.Action("MisProyectos", "Agentes")" class="nav-link">🏗️ Proyectos</a>
-            <a href="@Url.Action("MisConsultas", "Agentes")" class="nav-link">📋 Consultas</a>
-            <a href="@Url.Action("Estadisticas", "Agentes")" class="nav-link">📈 Estadísticas</a>
-            <a href="@Url.Action("MiPerfil", "Agentes")" class="nav-link">👤 Mi Perfil</a>
-@*             <a href="@Url.Action("CerrarSesion", "Login")" class="nav-link nav-logout">🚪 Cerrar Sesión</a> 
- *@            <a asp-controller="Login" asp-action="Logout" class="nav-link nav-logout">🚪 Cerrar sesión</a>
+            <a asp-controller="Agentes" asp-action="Index" class="active">📝 Panel de agente</a>
+            <a asp-controller="AgentePropiedades" asp-action="Index">🏡 Mis propiedades</a>
+            <a asp-controller="PublicarPropiedad" asp-action="Index">➕ Publicar propiedad</a>
+            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
         </nav>
     </aside>
 
@@ -89,13 +85,7 @@
                     </a>
                 </div>
 
-                <div class="action-card">
-                    <h3>Mis Proyectos</h3>
-                    <p>Consulta los proyectos activos en la plataforma.</p>
-                    <a href="@Url.Action("MisProyectos", "Agentes")" class="action-btn">
-                        Ver proyectos
-                    </a>
-                </div>
+                
 
             </div>
         </section>

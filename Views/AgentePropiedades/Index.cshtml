@@ -1,0 +1,222 @@
+﻿@* Views/AgentePropiedades/Index.cshtml *@
+@using System.Globalization
+@model List<Proyecto_SkyInit.Models.Propiedad>
+
+@{
+    Layout = "_LayoutAgentePropiedades";
+    ViewData["Title"] = "Mis Propiedades";
+}
+
+<div class="agent-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Sky<span>Init</span></h2>
+            <span class="rol-badge">Agente</span>
+        </div>
+        <nav>
+            <a asp-controller="Agentes" asp-action="Index">📝 Panel de agente</a>
+            <a asp-controller="AgentePropiedades" asp-action="Index" class="active">🏡 Mis propiedades</a>
+            <a asp-controller="PublicarPropiedad" asp-action="Index">➕ Publicar propiedad</a>
+            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    @* ── CONTENIDO PRINCIPAL ────────────────────────────────── *@
+    <main class="content">
+
+        @* Toast de notificación (TempData) *@
+        @if (TempData["Mensaje"] != null)
+        {
+            var tipo = TempData["TipoMensaje"]?.ToString() ?? "success";
+            <div class="toast toast-@tipo" id="toast-msg">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        @* ── TOPBAR *@
+        <div class="topbar">
+            <div>
+                <h1>Mis Propiedades</h1>
+                <p>Administra, edita y elimina tus propiedades registradas.</p>
+            </div>
+            <div class="topbar-fecha">
+                <span>@DateTime.Now.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-CO"))</span>
+            </div>
+        </div>
+
+        @* ── BUSCADOR + BOTÓN NUEVA PROPIEDAD *@
+        <section class="card">
+            <form method="get" action="@Url.Action("Index", "AgentePropiedades")">
+                <div class="search-row">
+                    <input type="text"
+                           name="buscar"
+                           value="@ViewBag.Buscar"
+                           placeholder="Buscar por título, ciudad o dirección..."
+                           class="search-input" />
+                    <button type="submit" class="btn-primary-sm">Buscar</button>
+                    <a href="@Url.Action("Index", "PublicarPropiedad")" class="btn-primary-sm">
+                        + Nueva Propiedad
+                    </a>
+                </div>
+            </form>
+
+            @* Contador + limpiar *@
+            <div class="count-row">
+                <span class="count-badge">
+                    @Model.Count propiedad@(Model.Count == 1 ? "" : "es")
+                    encontrada@(Model.Count == 1 ? "" : "s")
+                </span>
+                @if (!string.IsNullOrWhiteSpace(ViewBag.Buscar as string))
+                {
+                    <a href="@Url.Action("Index", "AgentePropiedades")" class="limpiar-link">
+                        ✕ Limpiar búsqueda
+                    </a>
+                }
+            </div>
+        </section>
+
+        @* ── TABLA DE PROPIEDADES (RF201, RF202, RF204) *@
+        <section class="card">
+            <div class="card-header-row">
+                <h2>Listado de Propiedades</h2>
+                <a href="@Url.Action("Index", "PublicarPropiedad")" class="btn-primary-sm">
+                    + Nueva propiedad
+                </a>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <p class="empty-msg">Aún no tienes propiedades publicadas.</p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Propiedad</th>
+                            <th>Ubicación</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            var primeraImg = p.Imagenes.FirstOrDefault();
+                            var imgSrc = primeraImg?.URL ?? "";
+                            var tipoDesc = p.TipoOperacion?.Descripcion ?? "—";
+
+                            <tr>
+                                @* Propiedad: miniatura + título + habitaciones *@
+                                <td>
+                                    <div class="prop-cell">
+                                        @if (!string.IsNullOrEmpty(imgSrc))
+                                        {
+                                            <img src="@imgSrc"
+                                                 alt="@p.Titulo"
+                                                 class="prop-thumb"
+                                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                                            <div class="prop-no-img" style="display:none;">🏠</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="prop-no-img">🏠</div>
+                                        }
+                                        <div>
+                                            <strong>@p.Titulo</strong>
+                                            @if (p.Habitaciones.HasValue && p.Habitaciones > 0)
+                                            {
+                                                <br />
+                                    
+                                                <small style="color:#888;">@p.Habitaciones hab.</small>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>@(p.Ciudad ?? p.Direccion)</td>
+
+                                <td>@tipoDesc</td>
+
+                                <td>$@p.Precio.ToString("N0", new CultureInfo("es-CO"))</td>
+
+                                <td>
+                                    <a href="@Url.Action("Index", "EditarPropiedad", new { id = p.PropiedadID })"
+                                       class="edit-btn">Editar</a>
+
+                                    <button class="delete-btn"
+                                            onclick="abrirModal(@p.PropiedadID, '@Html.Raw(p.Titulo.Replace("'", "\\'"))')">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </section>
+
+    </main>
+</div>
+
+@* ── Modal de confirmación ──────────────────────── *@
+<div id="modalEliminar" class="modal-overlay">
+    <div class="modal-box">
+        <h3 id="modal-titulo">¿Eliminar propiedad?</h3>
+        <p>Esta acción no se puede deshacer.</p>
+        <div class="modal-actions">
+            <button type="button" class="modal-btn-cancel" onclick="cerrarModal()">Cancelar</button>
+            <button type="button" class="modal-btn-confirm" id="btnConfirmarEliminar">Sí, eliminar</button>
+        </div>
+    </div>
+</div>
+
+@* Formulario oculto para DELETE (POST + AntiForgery) *@
+<form id="formEliminar" method="post"
+      action="@Url.Action("Eliminar", "AgentePropiedades")"
+      style="display:none;">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" />
+</form>
+
+@section Scripts {
+    <script>
+        // ── Toast auto-ocultar ───────────────────────
+        const toast = document.getElementById('toast-msg');
+        if (toast) {
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        // ── Modal eliminar ───────────────────────────
+        let propiedadIdAEliminar = null;
+
+        function abrirModal(id, titulo) {
+            propiedadIdAEliminar = id;
+            document.getElementById('modal-titulo').textContent = `¿Eliminar "${titulo}"?`;
+            document.getElementById('modalEliminar').classList.add('open');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalEliminar').classList.remove('open');
+            propiedadIdAEliminar = null;
+        }
+
+        document.getElementById('btnConfirmarEliminar').addEventListener('click', function () {
+            if (!propiedadIdAEliminar) return;
+            const form = document.getElementById('formEliminar');
+            form.querySelector('input[name="id"]').value = propiedadIdAEliminar;
+            form.submit();
+        });
+
+        // Cerrar al hacer clic en el fondo oscuro
+        document.getElementById('modalEliminar').addEventListener('click', function (e) {
+            if (e.target.id === 'modalEliminar') cerrarModal();
+        });
+    </script>
+}

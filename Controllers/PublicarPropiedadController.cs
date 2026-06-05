@@ -14,75 +14,158 @@ namespace Proyecto_SkyInit.Controllers
             _context = context;
         }
 
-        // Método privado para no repetir los ViewBag en cada acción
+        // Cargar listas desplegables
         private void CargarViewBags()
         {
-            ViewBag.TiposOperacion = new SelectList(_context.TiposOperacion.ToList(), "TipoOperacionID", "Descripcion");
-            ViewBag.Agentes = new SelectList(_context.Usuarios.Where(u => u.RolID == 2).ToList(), "UsuarioID", "Nombre");
-            ViewBag.constructoras = new SelectList(_context.Constructoras.ToList(), "ConstructoraID", "Nombre");
+            ViewBag.TiposOperacion = new SelectList(
+                _context.TiposOperacion.ToList(),
+                "TipoOperacionID",
+                "Descripcion"
+            );
+
+            ViewBag.Agentes = new SelectList(
+                _context.Usuarios
+                    .Where(u => u.RolID == 2)
+                    .ToList(),
+                "UsuarioID",
+                "Nombre"
+            );
+
+            ViewBag.constructoras = new SelectList(
+                _context.Constructoras.ToList(),
+                "ConstructoraID",
+                "Nombre"
+            );
         }
 
-        // PublicarPropiedad
+        // GET: PublicarPropiedad
         public IActionResult Index()
         {
             CargarViewBags();
             return View();
         }
 
-        // Publicar
+        // POST: PublicarPropiedad
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(Propiedad modelo, List<IFormFile> Imagenes)
+        public async Task<IActionResult> Index(
+            Propiedad modelo,
+            List<IFormFile> Imagenes)
         {
             if (!ModelState.IsValid)
             {
                 CargarViewBags();
-                TempData["Mensaje"] = "❌ Error de validación en el formulario";
+
+                TempData["Mensaje"] = "Error de validación en el formulario.";
+                TempData["TipoMensaje"] = "error";
+
                 return View(modelo);
             }
 
-            _context.Propiedades.Add(modelo);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Propiedades.Add(modelo);
+                await _context.SaveChangesAsync();
 
-            await GuardarImagenes(modelo.PropiedadID, Imagenes);
+                await GuardarImagenes(
+                    modelo.PropiedadID,
+                    Imagenes);
 
-            TempData["Mensaje"] = "✅ Propiedad publicada correctamente";
-            return RedirectToAction("Index","GestionPropiedades");
+                TempData["Mensaje"] = "Propiedad publicada correctamente.";
+                TempData["TipoMensaje"] = "success";
+
+                return RedireccionarSegunRol();
+            }
+            catch (Exception ex)
+            {
+                CargarViewBags();
+
+                TempData["Mensaje"] =
+                    $"Error al publicar la propiedad: {ex.Message}";
+                TempData["TipoMensaje"] = "error";
+
+                return View(modelo);
+            }
         }
 
-        //Cancelar
+        // POST: Cancelar
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Cancelar()
         {
-            return RedirectToAction("Index", "Administrador");
+            return RedireccionarSegunRol();
         }
 
-        // Método privado para guardar imágenes 
-        private async Task GuardarImagenes(int propiedadID, List<IFormFile> imagenes)
+        // Redirección según rol
+        private IActionResult RedireccionarSegunRol()
         {
-            if (imagenes == null || imagenes.Count == 0) return;
+            var rol = User.FindFirst("Rol")?.Value;
 
-            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/propiedades");
+            if (string.Equals(
+                rol,
+                "Administrador",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction(
+                    "Index",
+                    "GestionPropiedades");
+            }
+
+            if (string.Equals(
+                rol,
+                "Agente",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction(
+                    "Index",
+                    "Agentes");
+            }
+
+            return RedirectToAction(
+                "Index",
+                "Login");
+        }
+
+        // Guardar imágenes
+        private async Task GuardarImagenes(
+            int propiedadID,
+            List<IFormFile> imagenes)
+        {
+            if (imagenes == null || !imagenes.Any())
+                return;
+
+            var uploadPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "img",
+                "propiedades");
+
             Directory.CreateDirectory(uploadPath);
 
             foreach (var img in imagenes)
             {
-                if (img.Length == 0) continue;
+                if (img.Length <= 0)
+                    continue;
 
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
-                var filePath = Path.Combine(uploadPath, fileName);
+                var fileName =
+                    $"{Guid.NewGuid()}{Path.GetExtension(img.FileName)}";
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var filePath =
+                    Path.Combine(uploadPath, fileName);
+
+                using (var stream = new FileStream(
+                    filePath,
+                    FileMode.Create))
                 {
                     await img.CopyToAsync(stream);
                 }
 
-                _context.ImagenesPropiedad.Add(new ImagenPropiedad
-                {
-                    PropiedadID = propiedadID,
-                    URL = "/img/propiedades/" + fileName
-                });
+                _context.ImagenesPropiedad.Add(
+                    new ImagenPropiedad
+                    {
+                        PropiedadID = propiedadID,
+                        URL = $"/img/propiedades/{fileName}"
+                    });
             }
 
             await _context.SaveChangesAsync();

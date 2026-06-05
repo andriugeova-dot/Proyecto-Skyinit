@@ -99,8 +99,14 @@
 
                         <div class="actions">
                             <button type="submit" class="btn btn-primary">Aceptar</button>
-                            <button type="button" class="btn volver" onclick="location.href='@Url.Action("Index", "GestionPropiedades")'">
+                            @* <button type="button" class="btn volver" onclick="location.href='@Url.Action("Index", "GestionPropiedades")'">
                                 Volver
+                            </button> *@
+                            <button type="submit"
+                                    formaction="@Url.Action("Cancelar", "EditarPropiedad")"
+                                    formmethod="post"
+                                    class="btn volver">
+                                Cancelar
                             </button>
                         </div>
                     </form>

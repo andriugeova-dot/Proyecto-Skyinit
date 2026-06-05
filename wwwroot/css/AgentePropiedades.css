@@ -126,11 +126,10 @@ body {
         }
 }
 
-
 /* ── CONTENIDO ─────────────────────────────────── */
 
 .content {
-    margin-left: 260px; /* FIX E02: debe coincidir con el ancho del sidebar */
+    margin-left: 260px;
     width: calc(100% - 260px);
     padding: 30px;
 }
@@ -160,35 +159,6 @@ body {
     padding-top: 6px;
 }
 
-/* ── ESTADÍSTICAS ──────────────────────────────── */
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    border-left: 5px solid #0F4C5C;
-}
-
-    .stat-card h2 {
-        font-size: 40px;
-        color: #0F4C5C;
-        font-weight: 700;
-    }
-
-    .stat-card p {
-        margin-top: 8px;
-        color: #666;
-        font-size: 14px;
-    }
-
 /* ── TARJETAS ──────────────────────────────────── */
 
 .card {
@@ -216,52 +186,59 @@ body {
         margin-bottom: 0;
     }
 
-/* ── ACCIONES RÁPIDAS ──────────────────────────── */
+/* ── BUSCADOR ───────────────────────────────────── */
 
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+.search-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
 }
 
-.action-card {
-    background: linear-gradient(135deg, #0F4C5C, #127089);
-    color: white;
-    padding: 25px;
-    border-radius: 18px;
-}
-
-    .action-card h3 {
-        margin-bottom: 10px;
-        font-size: 17px;
-    }
-
-    .action-card p {
-        margin-bottom: 18px;
-        opacity: 0.9;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-/* FIX E03: botones de acción deben ser <a> con estilos de botón,
-            no <button> sin href ni acción asignada */
-.action-btn {
-    display: inline-block;
-    text-decoration: none;
-    background: white;
-    color: #0F4C5C;
-    padding: 10px 18px;
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    font-weight: 600;
     font-size: 14px;
-    transition: opacity 0.2s;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-    .action-btn:hover {
-        opacity: 0.85;
+    .search-input:focus {
+        border-color: #0F4C5C;
     }
 
-/* ── TABLAS ─────────────────────────────────────── */
+/* ── CONTADOR ───────────────────────────────────── */
+
+.count-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.count-badge {
+    background: #E0F2F7;
+    color: #0F4C5C;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.limpiar-link {
+    font-size: 13px;
+    color: #0F4C5C;
+    text-decoration: none;
+}
+
+    .limpiar-link:hover {
+        text-decoration: underline;
+    }
+
+/* ── TABLA ──────────────────────────────────────── */
 
 .table {
     width: 100%;
@@ -287,6 +264,34 @@ body {
     .table tr:hover td {
         background: #F4FBFC;
     }
+
+/* ── CELDA DE PROPIEDAD (imagen + texto) ────────── */
+
+.prop-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.prop-thumb {
+    width: 72px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.prop-no-img {
+    width: 72px;
+    height: 54px;
+    border-radius: 10px;
+    background: #F0F7F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
 
 /* ── BOTONES ─────────────────────────────────────── */
 
@@ -333,54 +338,16 @@ body {
     font-size: 14px;
     font-weight: 600;
     transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
 }
 
     .btn-primary-sm:hover {
         background: #0a3542;
     }
 
-/* ── CITAS ──────────────────────────────────────── */
-
-.schedule-item {
-    background: #F4FBFC;
-    border-left: 5px solid #0F4C5C;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-/* ── BADGES DE ESTADO ──────────────────────────── */
-
-.badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-left: auto;
-}
-
-.badge-pendiente {
-    background: #FFF3CD;
-    color: #856404;
-}
-
-.badge-confirmada {
-    background: #D1E7DD;
-    color: #0A5C36;
-}
-
-.badge-cancelada {
-    background: #F8D7DA;
-    color: #842029;
-}
-
-/* ── TOAST NOTIFICACIÓN ─────────────────────────── */
+/* ── TOAST ──────────────────────────────────────── */
 
 .toast {
     position: fixed;
@@ -407,7 +374,99 @@ body {
     border-left: 5px solid #DC3545;
 }
 
-/* ── MENSAJE VACÍO ──────────────────────────────── */
+/* ── MODAL ──────────────────────────────────────── */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+.modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: fadeIn .25s ease;
+}
+
+    .modal-box h3 {
+        color: #0F4C5C;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .modal-box p {
+        color: #666;
+        margin-bottom: 24px;
+        font-size: 14px;
+    }
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.modal-btn-cancel {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #eee;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+    .modal-btn-cancel:hover {
+        background: #ddd;
+    }
+
+.modal-btn-confirm {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #C62828;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+    .modal-btn-confirm:hover {
+        background: #a31f1f;
+    }
+
+@keyframes fadeIn {
+    from {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ── ESTADO VACÍO ───────────────────────────────── */
 
 .empty-msg {
     color: #999;
@@ -428,13 +487,20 @@ body {
         width: 100%;
     }
 
-    .stats-grid,
-    .quick-actions {
-        grid-template-columns: 1fr;
-    }
-
     .topbar {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .search-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 600px) {
+    .table {
+        display: block;
+        overflow-x: auto;
     }
 }
