@@ -98,8 +98,16 @@
                         </div>
 
                         <div class="buttons">
-                            <button type="submit" class="btn primary">Publicar propiedad</button>
-                            <a asp-controller="Administrador" asp-action="Index" class="btn secondary">Cancelar</a>
+                            <button type="submit" class="btn primary">
+                                Publicar propiedad
+                            </button>
+
+                            <button type="submit"
+                                    formaction="@Url.Action("Cancelar", "PublicarPropiedad")"
+                                    formmethod="post"
+                                    class="btn secondary">
+                                Cancelar
+                            </button>
                         </div>
                     </form>
                 </div>
