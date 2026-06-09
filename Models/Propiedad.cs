@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Proyecto_SkyInit.Models
@@ -24,6 +25,9 @@ namespace Proyecto_SkyInit.Models
         public int? Habitaciones { get; set; }
 
         [Required(ErrorMessage = "La dirección es obligatoria")]
+
+        [NotMapped]
+        public bool EsFavorito { get; set; }
         public string Direccion { get; set; } = null!;
 
         public string? Ciudad { get; set; }

@@ -100,7 +100,14 @@
                     </div>
 
                     <div class="property-info">
-                        <span class="tag">Disponible</span>
+                        <div class="tag-row">
+                            <span class="tag">Disponible</span>
+                            <button type="button"
+                                    class="btn-favorito @(propiedad.EsFavorito ? "favorito-activo" : "favorito-inactivo")"
+                                    data-id="@propiedad.PropiedadID">
+                                💚
+                            </button>
+                        </div>
 
                         <h2>@propiedad.Titulo</h2>
 
@@ -128,12 +135,44 @@
         }
     </section>
 
+    <div id="modalRegistro" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Debes estar registrado</h2>
+            <p>Para guardar favoritos debes iniciar sesion</p>
+            <div class="acciones">
+                <a asp-controller="Login" asp-action="Index" class="btn">Iniciar Sesion</a>
+            </div>
+        </div>
+    </div>
+
+    
+
     <script>
         function toggleUserMenu() {
             document.getElementById("user-menu").classList.toggle("active");
         }
-    </script> 
+    </script>
 
+    <script>
+        document.querySelectorAll(".btn-favorito").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const propiedadId = btn.getAttribute("data-id");
+
+                const response = await fetch("/Favoritos/Toggle", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `propiedadId=${propiedadId}`
+                });
+
+                if (response.ok) {
+                    btn.classList.toggle("favorito-activo");
+                    btn.classList.toggle("favorito-inactivo");
+                } else if (response.status === 401) {
+                    document.getElementById("modalRegistro").style.display = "flex";
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

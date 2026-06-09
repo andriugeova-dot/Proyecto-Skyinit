@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Proyecto_SkyInit.Models;
 using Proyecto_SkyInit.Data;
+using Proyecto_SkyInit.Models;
+using System.Linq;
 
 namespace Proyecto_SkyInit.Controllers
 {
@@ -20,14 +21,30 @@ namespace Proyecto_SkyInit.Controllers
             ViewData["Title"] = "Inicio — SkyInit";
 
             var propiedades = _context.Propiedades
-        .Include(p => p.Imagenes)        
-        .Include(p => p.TipoOperacion)   
-        .Take(6)                         
-        .ToList();
-
+            .Include(p => p.Imagenes)        
+            .Include(p => p.TipoOperacion)   
+            .Take(6)                         
+            .ToList();
+            MarcarFavoritos(propiedades);
             return View(propiedades);
         }
 
+        private void MarcarFavoritos(List<Propiedad> propiedades)
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                var usuarioId = int.Parse(User.FindFirst("UsuarioID")!.Value);
+                var favoritos = _context.Favoritos
+                .Where(f => f.UsuarioID == usuarioId)
+                .Select(f => f.PropiedadID)
+                .ToList();
+
+                foreach (var p in propiedades)
+                {
+                    p.EsFavorito = favoritos.Contains(p.PropiedadID);
+                }
+            }
+        }
         // Alias para que la ruta /Menu/Inicio también funcione
         public IActionResult Inicio()
         {

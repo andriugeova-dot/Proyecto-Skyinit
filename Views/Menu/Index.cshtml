@@ -60,7 +60,6 @@
                         ?? "https://via.placeholder.com/400x250?text=Sin+imagen";
                     }
                     <img src="@imgUrl" alt="@propiedad.Titulo" />
-
                     <div class="card-body">
                         <h3>@propiedad.Titulo</h3>
                         <div class="precio">@propiedad.Precio.ToString("C0")</div>
@@ -70,12 +69,28 @@
                         </div>
                         <p>@propiedad.Descripcion</p>
                         <a asp-controller="Propiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID" class="boton">Ver más</a>
+                        <button type="button"
+                                class="btn-favorito @(propiedad.EsFavorito ? "favorito-activo" : "favorito-inactivo")"
+                                data-id="@propiedad.PropiedadID">
+                            💚
+                        </button>
                     </div>
                 </div>
             }
 
         </div>
     </section>
+
+    <div id="modalRegistro" class="modal">
+        <div class="modal-content">
+            <h2>Debes estar registrado</h2>
+            <p>Para guardar favoritos debes iniciar sesion</p>
+            <div class="acciones">
+                <a asp-controller="Login" asp-action="Index" class="btn">Iniciar Sesion</a>
+            </div>
+        </div>
+    </div>
+
     <script>
         function toggleMenu() {
             document.getElementById("menu").classList.toggle("active");
@@ -98,6 +113,27 @@
         }
         changeBackground();
         setInterval(changeBackground, 5000);
+    </script>
+
+    <script>
+        document.querySelectorAll(".btn-favorito").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const propiedadId = btn.getAttribute("data-id");
+
+                const response = await fetch("/Favoritos/Toggle", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `propiedadId=${propiedadId}`
+                });
+
+                if (response.ok) {
+                    btn.classList.toggle("favorito-activo");
+                    btn.classList.toggle("favorito-inactivo");
+                } else if (response.status === 401) {
+                    document.getElementById("modalRegistro").style.display = "flex";
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -38,7 +38,7 @@
 
             <div class="topbar">
 
-                <h1>Bienvenido, Jhoan Cotamo</h1>
+                <h1>Bienvenido, @Model.Nombre</h1>
 
                 <p>
                     Gestiona tu cuenta y tus propiedades favoritas.
@@ -52,7 +52,7 @@
 
                 <div class="stat-card">
 
-                    <h2>8</h2>
+                    <h2>@Model.Favoritos.Count</h2>
 
                     <p>Propiedades Favoritas</p>
 
@@ -60,7 +60,7 @@
 
                 <div class="stat-card">
 
-                    <h2>3</h2>
+                    <h2>0</h2>
 
                     <p>Solicitudes Activas</p>
 
@@ -82,11 +82,11 @@
 
                     <div class="profile-info">
 
-                        <p><strong>Nombre:</strong> Jhoan Cotamo</p>
+                        <p><strong>Nombre:</strong> @Model.Nombre</p>
 
-                        <p><strong>Correo:</strong> jhoan@email.com</p>
+                        <p><strong>Correo:</strong> @Model.Correo</p>
 
-                        <p><strong>Teléfono:</strong> +57 300 000 0000</p>
+                        <p><strong>Teléfono:</strong> @Model.Telefono</p>
 
                         <button class="btn">
                             Editar Perfil
@@ -97,120 +97,5 @@
                 </div>
 
             </section>
-
-            <!-- FAVORITOS -->
-
-            <section class="card">
-
-                <h2>Propiedades Favoritas</h2>
-
-                <div class="favorite-list">
-
-                    <div class="favorite-item">
-                        Casa Moderna - Bogotá
-                    </div>
-
-                    <div class="favorite-item">
-                        Penthouse Medellín
-                    </div>
-
-                    <div class="favorite-item">
-                        Apartamento Sky Living
-                    </div>
-
-                </div>
-
-            </section>
-
-            <!-- HISTORIAL -->
-
-            <section class="card">
-
-                <h2>Historial de Propiedades</h2>
-
-                <div class="history-list">
-
-                    <div class="history-item">
-                        Casa Campestre - Hace 2 horas
-                    </div>
-
-                    <div class="history-item">
-                        Apartamento Norte - Hace 1 día
-                    </div>
-
-                    <div class="history-item">
-                        Proyecto Green House - Hace 3 días
-                    </div>
-
-                </div>
-
-            </section>
-
-            <!-- MANTENIMIENTO -->
-
-            <section class="card">
-
-                <h2>Solicitudes de Mantenimiento</h2>
-
-                <table class="table">
-
-                    <thead>
-
-                        <tr>
-                            <th>Solicitud</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-                            <td>Fuga de agua</td>
-                            <td>05/06/2026</td>
-                            <td>
-                                <span class="status pending">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Problema eléctrico</td>
-                            <td>01/06/2026</td>
-                            <td>
-                                <span class="status progress">
-                                    En proceso
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Pintura exterior</td>
-                            <td>25/05/2026</td>
-                            <td>
-                                <span class="status completed">
-                                    Completado
-                                </span>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-                <br>
-
-                <button class="btn">
-                    Nueva Solicitud
-                </button>
-
-            </section>
-
-        </main>
-
-    </div>
-
 </body>
 </html>

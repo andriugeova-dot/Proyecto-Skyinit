@@ -39,6 +39,20 @@ namespace Proyecto_SkyInit.Controllers
         .Include(p => p.Imagenes)
         .ToList();
 
+            if (User.Identity!.IsAuthenticated)
+            {
+                var usuarioId = int.Parse(User.FindFirst("UsuarioID")!.Value);
+                var favoritos = _context.Favoritos
+                .Where(f => f.UsuarioID == usuarioId)
+                .Select(f => f.PropiedadID)
+                .ToList();
+
+                foreach (var p in propiedades)
+                {
+                    p.EsFavorito = favoritos.Contains(p.PropiedadID);
+                }
+            }
+
             return View(propiedades);
         }
     }
