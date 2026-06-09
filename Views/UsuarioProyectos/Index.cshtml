@@ -74,15 +74,47 @@
                             Inicio: @proyecto.FechaInicio?.ToString("dd/MM/yyy") <br />
                             Fin: @proyecto.FechaFin?.ToString("dd/MM/yyy")
                         </p>
-                        <button>Ver más</button>
+                    <button onclick="abrirModal(
+                        '@Html.Raw(proyecto.Nombre.Replace("'", "\\'"))',
+                        '@Html.Raw((proyecto.Constructora?.Nombre ?? "").Replace("'", "\\'"))',
+                        '@Html.Raw((proyecto.Descripcion ?? "").Replace("'", "\\'"))',
+                        '@imgUrl')">
+                        Ver más
+                    </button>
                     </div>
                 </div>
             }
     </section>
-
+    <!-- FLOTANTE-->
+            <div id="modal" class="modal-overlay" onclick="cerrarModal(event)">
+            <div class="modal-box">
+                <button class="modal-close" onclick="cerrarModal()">X</button>
+                <img id="modal-img" src="" alt="Imagen del proyecto" />
+                <div class="modal-info">
+                    <h2 id="modal-nombre"></h2>
+                    <p><strong>Constructora: </strong><span id="modal-constructora"></span></p>
+                    <p><strong>Descripcion: </strong><span id="modal-descripcion"></span></p>
+                    <button class="btn-contacto">Contacto</button>
+                </div>
+            </div>
+    </div>
+    
     <script>
         function toggleUserMenu() {
             document.getElementById("user-menu").classList.toggle("active");
+        }
+        function abrirModal(nombre,constructora,descripcion,imgUrl) {
+            document.getElementById("modal-nombre").textContent = nombre;
+            document.getElementById("modal-constructora").textContent = constructora || "-";
+            document.getElementById("modal-descripcion").textContent = descripcion || "-";
+            document.getElementById("modal-img").src = imgUrl || "";
+            document.getElementById("modal-img").style.display = imgUrl ? "block" : "none";
+            document.getElementById("modal").classList.add("open");
+        }
+        function cerrarModal(event){
+            if (!event || event.target.id === "modal") {
+                document.getElementById("modal").classList.remove("open");
+             }
         }
     </script>
 
