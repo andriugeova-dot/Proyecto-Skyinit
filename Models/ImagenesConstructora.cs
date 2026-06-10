@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_SkyInit.Models
 {
+    [Table("imagenesconstructora")]
     public class ImagenesConstructoras
     {
         [Key]
