@@ -215,6 +215,18 @@ body {
     overflow: hidden;
     border: 1px solid #e9ecef;
 }
+    /* Centrar verticalmente el contenido de la tabla para que se vea ordenado */
+    .table td, .table th {
+        vertical-align: middle;
+    }
+
+        /* Limitar el ancho de columnas con mucho texto (como Descripción) */
+        .table td.col-larga {
+            max-width: 250px; /* Puedes ajustar este tamaño */
+            white-space: nowrap; /* Evita que el texto baje a la siguiente línea */
+            overflow: hidden; /* Oculta el texto que se sale del ancho */
+            text-overflow: ellipsis; /* Agrega "..." al final del texto cortado */
+        }
 
     /* Encabezado de la Tabla */
     .table thead.table-dark th {
@@ -303,23 +315,88 @@ body {
         background-color: #bb2d3b;
     }
 /* Estilo para las etiquetas de los inputs */
-/*.modal {
-    display: block;
-    position: static; 
-}*/
-
-..modal-content {
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+.modal-content {
+    border: none;
+    border-radius: 16px; /* Bordes más redondeados y suaves */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Sombra amplia y difuminada */
+    overflow: hidden; /* Evita que los colores se salgan de los bordes redondeados */
 }
 
+/* Cabecera del modal */
 .modal-header {
-    background-color: #073b4c;
-    color: #fff;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    background-color: #ffffff; /* Fondo limpio */
+    color: #0f4c5c; /* Color de tu sidebar para mantener la marca */
+    border-bottom: 2px solid #f8f9fa; /* Línea separadora muy sutil */
+    padding: 24px 30px;
 }
 
-.modal-footer {
-    justify-content: center;
+    .modal-header .modal-title {
+        font-weight: 700;
+        font-size: 1.35rem;
+        letter-spacing: -0.5px;
+    }
+
+    /* Botón de la 'X' para cerrar */
+    .modal-header .btn-close {
+        background-color: #f1f3f5;
+        border-radius: 50%;
+        padding: 12px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .modal-header .btn-close:hover {
+            background-color: #e2e3e5;
+            transform: rotate(90deg); /* Pequeño efecto giro al pasar el mouse */
+        }
+
+/* Cuerpo del modal (donde van los inputs) */
+.modal-body {
+    padding: 30px;
+    background-color: #fdfdfc; /* Un tono casi blanco, muy sutil */
 }
+
+    /* Estilo para los inputs y selects dentro del modal */
+    .modal-body .form-control,
+    .modal-body .form-select {
+        border-radius: 10px;
+        border: 1.5px solid #e9ecef;
+        padding: 14px 18px;
+        margin-bottom: 18px !important; /* Espaciado perfecto entre cada campo */
+        background-color: #f8f9fa; /* Fondo gris súper clarito */
+        font-size: 0.95rem;
+        color: #495057;
+        transition: all 0.3s ease;
+        box-shadow: none; /* Quitamos la sombra por defecto de Bootstrap */
+    }
+
+        /* Efecto cuando el usuario hace clic en un input */
+        .modal-body .form-control:focus,
+        .modal-body .form-select:focus {
+            background-color: #ffffff;
+            border-color: #0f4c5c; /* Borde del color de tu tema */
+            box-shadow: 0 0 0 4px rgba(15, 76, 92, 0.1); /* Resplandor suave */
+            outline: none;
+        }
+
+/* Footer del modal (donde van los botones) */
+.modal-footer {
+    border-top: none;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    justify-content: flex-end; /* Alineamos botones a la derecha */
+    gap: 12px; /* Separación entre botones */
+}
+
+    /* Botones dentro del modal */
+    .modal-footer .btn {
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .modal-footer .btn:hover {
+            transform: translateY(-2px); /* El botón sube un poquito al pasar el mouse */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }

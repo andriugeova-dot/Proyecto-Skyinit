@@ -40,6 +40,8 @@ namespace Proyecto_SkyInit.Controllers
                 Contacto = c.Contacto,
                 Telefono = c.Telefono,
                 Estado = c.Estado,
+                Descripcion= c.Descripcion,
+                Ciudad=c.Ciudad,
                 Logo = c.Imagenes.FirstOrDefault(i => i.EsLogo).URL
             }).ToList();
 
@@ -60,6 +62,8 @@ namespace Proyecto_SkyInit.Controllers
                 Contacto = model.Contacto,
                 Telefono = model.Telefono,
                 Correo = model.Correo,
+                Descripcion= model.Descripcion,
+                Ciudad= model.Ciudad,
                 Estado = model.Estado
             };
 
@@ -111,6 +115,8 @@ namespace Proyecto_SkyInit.Controllers
                 constructora.Contacto = model.Contacto;
                 constructora.Telefono = model.Telefono;
                 constructora.Correo = model.Correo;
+                constructora.Descripcion = model.Descripcion;
+                constructora.Ciudad = model.Ciudad;
                 constructora.Estado = model.Estado;
                 _context.SaveChanges(); // ✅ Guarda cambios de la constructora
 

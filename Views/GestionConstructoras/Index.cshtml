@@ -50,58 +50,66 @@
             </form>
             
         <!-- Tabla CRUD -->
-        <table class="table table-striped table-hover text-center align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Contacto</th>
-                    <th>Teléfono</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var constructora in Model)
-                {
-                  <tr>
-                        <td>@constructora.Id</td>
-                        <td>
-                        <img src="~/images/@constructora.Logo" class="logo-constructora" />
-                        </td>
-                        <td>@constructora.Nombre</td>
-                        <td>@constructora.Contacto</td>
-                        <td>@constructora.Telefono</td>
-                        <td>
-                            @if (constructora.Estado == "Activo")
-                            {
-                                <span class="badge bg-success">Activo</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">Inactivo</span>
-                            }
-                        </td>   
-                        <td>
+        <div class="table-responsive">
+
+            <table class="table table-striped table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Descripcion</th>
+                        <th>Ciudad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var constructora in Model)
+                    {
+                        <tr>
+                            <td>@constructora.Id</td>
+                            <td>
+                                <img src="~/images/@constructora.Logo" class="logo-constructora" />
+                            </td>
+                            <td>@constructora.Nombre</td>
+                            <td>@constructora.Contacto</td>
+                            <td>@constructora.Telefono</td>
+                            <td>
+                                @if (constructora.Estado == "Activo")
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                }
+                            </td>
+
+                            <td class="col-larga">@constructora.Descripcion</td>
+
+                            <td>@constructora.Ciudad</td>
+
+                            <td>
                                 <a href="#" class="btn btn-sm btn-warning"
                                    data-bs-toggle="modal"
                                    data-bs-target="#editarConstructoraModal_@constructora.Id">
                                     Editar
                                 </a>
 
-                            <button type="button" class="btn btn-sm btn-danger"
-                                    onclick="confirmarEliminar(@constructora.Id, '@constructora.Nombre')">
-                                Eliminar
-                            </button>
-                        </td>
-                  </tr>  
-                }
-            </tbody>
-             
-        </table>
-        
+                                <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="confirmarEliminar(@constructora.Id, '@constructora.Nombre')">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
+        </div>
     </div>
 </main>
 
@@ -121,6 +129,8 @@
                             <input type="text" name="Contacto" value="@constructora.Contacto" class="form-control mb-2" />
                             <input type="text" name="Telefono" value="@constructora.Telefono" class="form-control mb-2" />
                             <input type="email" name="Correo" value="@constructora.Correo" class="form-control mb-2" />
+                            <input type="text" name="Descripcion" value="@constructora.Descripcion" class="form-control mb-2" placeholder="Descripción" />
+                            <input type="text" name="Ciudad" value="@constructora.Ciudad" class="form-control mb-2" placeholder="Ciudad" />
                             <select name="Estado" class="form-select mb-2">
                                 <option value="Activo" selected="@(constructora.Estado=="Activo")">Activo</option>
                                 <option value="Inactivo" selected="@(constructora.Estado=="Inactivo")">Inactivo</option>
@@ -154,6 +164,8 @@
                 <input type="text" name="Contacto" class="form-control mb-2" placeholder="Contacto" />
                 <input type="text" name="Telefono" class="form-control mb-2" placeholder="Teléfono" />
                 <input type="email" name="Correo" class="form-control mb-2" placeholder="Correo" />
+                <input type="text" name="Descripcion" class="form-control mb-2" placeholder="Descripción de la constructora" />
+                <input type="text" name="Ciudad" class="form-control mb-2" placeholder="Ciudad (Ej: Bogotá)" />
                 <select name="Estado" class="form-select mb-2">
                     <option value="Activo">Activo</option>
                     <option value="Inactivo">Inactivo</option>

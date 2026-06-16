@@ -49,7 +49,7 @@ namespace Proyecto_SkyInit.Controllers
         
         public IActionResult Constructoras()
         {
-            return RedirectToAction("Index", "Constructoras");
+            return RedirectToAction("Index", "UsuariosConstructora");
         }
 
         
