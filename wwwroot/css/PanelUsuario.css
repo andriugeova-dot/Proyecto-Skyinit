@@ -19,7 +19,7 @@ body {
 
 .sidebar {
     width: 260px;
-    background: #0F4C5C;
+    background: #14532d;
     color: white;
     padding: 30px 20px;
     position: fixed;
@@ -37,7 +37,7 @@ body {
     }
 
     .logo span {
-        color: #B8E3EA;
+        color: #A7F3D0;
         font-size: 14px;
     }
 
@@ -73,7 +73,7 @@ body {
 }
 
     .topbar h1 {
-        color: #0F4C5C;
+        color: #14532d;
         font-size: 32px;
     }
 
@@ -100,7 +100,7 @@ body {
 }
 
     .stat-card h2 {
-        color: #0F4C5C;
+        color: #14532d;
         font-size: 42px;
     }
 
@@ -134,6 +134,17 @@ body {
     flex-wrap: wrap;
 }
 
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #D9EEF2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+}
+
 .profile-image {
     width: 120px;
     height: 120px;
@@ -157,7 +168,7 @@ body {
 
 .btn {
     border: none;
-    background: #127089;
+    background: #22c55e;
     color: white;
     padding: 12px 18px;
     border-radius: 10px;
@@ -167,7 +178,7 @@ body {
 }
 
     .btn:hover {
-        background: #0F4C5C;
+        background: #14532d;
     }
 
 /* FAVORITOS */
@@ -236,7 +247,7 @@ body {
 }
 
 .progress {
-    background: #3498DB;
+    background: #10b981;
 }
 
 .completed {

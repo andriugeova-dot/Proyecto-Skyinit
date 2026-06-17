@@ -23,5 +23,14 @@ namespace Proyecto_SkyInit.Controllers
                 .FirstOrDefault(u => u.UsuarioID == usuarioId);
             return View(usuario);
         }
+
+        public IActionResult PanelPrincipal()
+        {
+            return RedirectToAction("Index", "PanelUsuario");
+        }
+
+        public IActionResult Perfil() { 
+            return RedirectToAction("Index", "UsuarioPerfil");        
+        }
     }
 }

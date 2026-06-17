@@ -13,12 +13,10 @@ namespace Proyecto_SkyInit.Controllers
             _context = context;
         }
       
-
-       
-        
         public IActionResult Index()
         {
-            ViewData["Title"] = "Proyectos — SkyInit";
+            ViewData["Title"] = "SkyInit";
+            CargarFotoPerfil();
             var proyectos = _context.Proyectos
                 .Include(p => p.Constructora)
                 .Include(p => p.EstadoProyecto)
@@ -27,8 +25,26 @@ namespace Proyecto_SkyInit.Controllers
 
             return View(proyectos);
         }
-    //REDIRECCIÓN A MENU//
-    public IActionResult Inicio()
+
+        private void CargarFotoPerfil()
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                var usuarioId = int.Parse(User.FindFirst("UsuarioID")!.Value);
+                var foto = _context.Usuarios
+                    .Where(u => u.UsuarioID == usuarioId)
+                    .Select(u => u.FotoPerfil)
+                    .FirstOrDefault();
+                ViewBag.FotoPerfil = foto ?? "/img/default-avatar.svg";
+            }
+            else
+            {
+                ViewBag.FotoPerfil = "/img/default-avatar.svg";
+            }
+        }
+
+        //REDIRECCIÓN A MENU//
+        public IActionResult Inicio()
         {
             return RedirectToAction("Inicio","Menu");
         }

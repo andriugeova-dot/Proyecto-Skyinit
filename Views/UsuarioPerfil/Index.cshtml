@@ -1,0 +1,97 @@
+﻿@model Proyecto_SkyInit.Models.Usuario
+@{
+    Layout = "_LayoutUsuarioPerfil";
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="user-container">
+
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>SkyInit</h2>
+            <span>Panel Usuario</span>
+        </div>
+        <nav>
+            <a asp-controller="PanelUsuario" asp-action="Index">Panel Principal</a>
+            <a asp-controller="UsuarioPerfil" asp-action="Index" class="active">Perfil</a>
+            <a href="#">Favoritos</a>
+            <a href="#">Historial</a>
+            <a href="#">Mantenimiento</a>
+            <a href="#">Configuración</a>
+            <a asp-controller="Login" asp-action="Logout">Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <div class="content">
+        <div class="card">
+
+            @if (TempData["Exito"] != null)
+            {
+                <div class="msg success" style="display:block">@TempData["Exito"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="msg error" style="display:block">@TempData["Error"]</div>
+            }
+
+            <h2>Mi cuenta</h2>
+
+            <form asp-action="GuardarPerfil" asp-controller="UsuarioPerfil"
+                  method="post" enctype="multipart/form-data">
+
+                <input type="hidden" asp-for="UsuarioID" />
+
+                <div class="profile-header">
+                    <img id="preview"
+                         src="@(string.IsNullOrEmpty(Model.FotoPerfil) ? "/img/default-avatar.svg" : Model.FotoPerfil)"
+                         alt="Avatar de @Model.Nombre" />
+                    <div>
+                        <div class="change-photo" onclick="document.getElementById('file').click()">
+                            Cambiar Avatar
+                        </div>
+                        <input type="file" id="file" name="Avatar" accept="image/*" hidden />
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>NOMBRE</label>
+                    <input asp-for="Nombre" />
+                </div>
+
+                <div class="input-group">
+                    <label>CORREO</label>
+                    <input asp-for="Correo" type="email" />
+                </div>
+
+                <div class="input-group">
+                    <label>TELÉFONO</label>
+                    <input asp-for="Telefono" type="tel" />
+                </div>
+
+                <button type="submit" class="btn primary">
+                    Guardar cambios
+                </button>
+
+            </form>
+
+            <form asp-action="EliminarFoto" asp-controller="UsuarioPerfil" method="post">
+                <input type="hidden" name="id" value="@Model.UsuarioID" />
+                <button type="submit" class="btn danger">Eliminar avatar</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('file').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById('preview').src = e.target.result;
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

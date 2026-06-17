@@ -33,7 +33,7 @@
                 @if (User.Identity!.IsAuthenticated)
                 {
                     <div class="user-profile">
-                        <img src="~/img/default-avatar.svg"
+                        <img src="@(ViewBag.FotoPerfil ?? "/img/default-avatar.svg")"
                              alt="Perfil"
                              class="profile-pic"
                              onclick="toggleUserMenu()" />

@@ -7,11 +7,12 @@ namespace Proyecto_SkyInit.Models
         [Key]
         public int UsuarioID { get; set; }
         public string Nombre { get; set; } = null!;
-        public string Correo { get; set; } = null!;
+        public string? Correo { get; set; } = null!;
         public string ContrasenaHash { get; set; } = null!;
         public string? Telefono { get; set; }
         public DateTime FechaRegistro { get; set; }
         public string EstadoCuenta { get; set; } = null!;
+        public string? FotoPerfil { get; set; } = null!;
         public int RolID { get; set; }
         // Navegación
         public Rol Rol { get; set; } = null!;

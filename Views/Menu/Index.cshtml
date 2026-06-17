@@ -26,14 +26,14 @@
                 @if (User.Identity!.IsAuthenticated)
                 {
                     <div class="user-profile">
-                        <img src="~/img/default-avatar.svg"
-                             alt="Perfil"
-                             class="profile-pic"
-                             onclick="toggleUserMenu()" />
+                        <img src="@ViewBag.FotoPerfil"
+                            alt="Perfil"
+                            class="profile-pic"
+                            onclick="toggleUserMenu()" />
                         <div id="user-menu" class="user-menu">
                             <div class="user-menu-name">@User.Identity.Name</div>
-                            <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
-                            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+                            <a asp-controller="Login" asp-action="Ajustes">Ajustes</a>
+                            <a asp-controller="Login" asp-action="Logout">Cerrar sesion</a>
                         </div>
                     </div>
                 }
@@ -48,13 +48,13 @@
             <p>Compra, vende o arrienda con SkyInit</p>
         </div>
     </header>
+
     <section class="contenedor">
         <h2 class="titulo">Propiedades Destacadas</h2>
         <div class="grid">
             @foreach (var propiedad in Model)
             {
                 <div class="card">
-                    <!-- Mostrar la primera imagen si existe -->
                     @{
                         var imgUrl = propiedad.Imagenes.FirstOrDefault()?.URL
                         ?? "https://via.placeholder.com/400x250?text=Sin+imagen";

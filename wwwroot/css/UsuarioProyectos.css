@@ -8,6 +8,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+header {
+    background: transparent;
+}
 
 :root {
     --verde: #2E8B57;
@@ -230,13 +233,18 @@ body {
 }
 
 .profile-pic {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     cursor: pointer;
     object-fit: cover;
-    border: 2px solid #f5f5dc;
+    border: 2px solid #fff;
+    transition: transform 0.3s;
 }
+
+    .profile-pic:hover {
+        transform: scale(1.1);
+    }
 
 .user-menu {
     display: none;
