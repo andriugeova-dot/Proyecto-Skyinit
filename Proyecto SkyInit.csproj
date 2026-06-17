@@ -18,4 +18,8 @@
     <PackageReference Include="Zack.EFCore.Batch.MySQL.Pomelo_NET8" Version="8.1.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\Avatars\" />
+  </ItemGroup>
+
 </Project>

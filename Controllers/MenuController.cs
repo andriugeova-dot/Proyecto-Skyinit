@@ -18,7 +18,7 @@ namespace Proyecto_SkyInit.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Title"] = "Inicio — SkyInit";
+            ViewData["Title"] = "SkyInit";
 
             var propiedades = _context.Propiedades
             .Include(p => p.Imagenes)        
@@ -26,6 +26,14 @@ namespace Proyecto_SkyInit.Controllers
             .Take(6)                         
             .ToList();
             MarcarFavoritos(propiedades);
+
+            if (User.Identity!.IsAuthenticated)
+            {
+                var usuarioId = int.Parse(User.FindFirst("UsuarioID")!.Value);
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioID == usuarioId);
+
+                ViewBag.FotoPerfil = usuario?.FotoPerfil ?? "/img/default-avatar.svg";
+            }
             return View(propiedades);
         }
 

@@ -14,6 +14,7 @@ namespace Proyecto_SkyInit.Controllers
         }
         public IActionResult Buscar(string query, int? tipoOperacion, int? habitaciones, string ciudad)
         {
+            CargarFotoPerfil();
             var propiedades = _context.Propiedades
                 .Include(p => p.Imagenes)
                 .AsQueryable();
@@ -35,6 +36,7 @@ namespace Proyecto_SkyInit.Controllers
 
         public IActionResult Index()
         {
+            CargarFotoPerfil();
             var propiedades = _context.Propiedades
         .Include(p => p.Imagenes)
         .ToList();
@@ -54,6 +56,23 @@ namespace Proyecto_SkyInit.Controllers
             }
 
             return View(propiedades);
+        }
+
+        private void CargarFotoPerfil()
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                var usuarioId = int.Parse(User.FindFirst("UsuarioID")!.Value);
+                var foto = _context.Usuarios
+                    .Where(u => u.UsuarioID == usuarioId)
+                    .Select(u => u.FotoPerfil)
+                    .FirstOrDefault();
+                ViewBag.FotoPerfil = foto ?? "/img/default-avatar.svg";
+            }
+            else
+            {
+                ViewBag.FotoPerfil = "/img/default-avatar.svg";
+            }
         }
     }
 }
