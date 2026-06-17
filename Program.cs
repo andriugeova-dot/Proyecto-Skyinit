@@ -58,6 +58,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=AgentePropiedades}/{action=Index}/{id?}");
+    pattern: "{controller=Menu}/{action=Inicio}/{id?}");
 
 app.Run();
