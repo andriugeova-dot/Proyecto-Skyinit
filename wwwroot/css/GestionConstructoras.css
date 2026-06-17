@@ -1,0 +1,402 @@
+﻿*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI',sans-serif;
+    background: #f6f3eb;
+    color: #333;
+}
+
+/* LAYOUT */
+.gm-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #0f4c5c;
+    color: white;
+    padding: 25px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: hidden;
+    z-index: 100;
+}
+
+/* LOGO */
+.logo {
+    margin-bottom: 40px;
+    text-align: start;
+}
+
+    .logo h2 {
+        font-size: 32px;
+    }
+
+    .logo span {
+        color: #b8e3ea;
+    }
+
+/* [C4] ROL BADGE en sidebar */
+.rol-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+/* NAV */
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 10px;
+    transition: .3s;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .sidebar a:hover,
+    .sidebar a.active {
+        background: rgba(255,255,255,0.15);
+    }
+
+/* RESPONSIVE SIDEBAR */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        padding: 15px;
+    }
+
+    .logo h2 {
+        font-size: 24px;
+    }
+
+    .sidebar a {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+        .sidebar nav {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .sidebar a {
+            flex: 1 1 auto;
+            min-width: 100px;
+            text-align: center;
+        }
+}
+.content {
+    margin-left: 260px;
+    width: 80%;
+    padding: 35px 40px;
+    align-items: center;
+}
+/* --- Contenedor Interno (Efecto Tarjeta Moderna) --- */
+    .content .container-fluid {
+        background-color: #ffffff;
+        width: 90%; /* Aquí le decimos que ocupe el 85% de la zona de contenido */
+        max-width: 100%; /* FUNDAMENTAL: Esto anula el límite de Bootstrap */
+        margin: 30px auto; /* El "auto" a los lados es lo que lo centra perfectamente */
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Sombra un poco más marcada para que resalte */
+    }
+
+/* Título de la sección */
+.content h2.mb-4 {
+    color: #212529;
+    font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: -0.5px;
+}
+
+/* --- Barra de Búsqueda y Filtrado --- */
+.content .d-flex.mb-3 {
+    background-color: #f8f9fa; /* Fondo gris claro para agrupar los componentes */
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    gap: 12px; /* Espaciado uniforme entre inputs y botones */
+}
+
+/* Inputs y Selects */
+.content .form-control,
+.content .form-select {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    color: #495057;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    /* Efecto Focus para Inputs y Selects */
+    .content .form-control:focus,
+    .content .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        outline: none;
+    }
+
+/* Botones de la Barra Superior */
+.content .btn {
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.content .btn-primary {
+    background-color: #0d6efd;
+    color: #ffffff;
+}
+
+    .content .btn-primary:hover {
+        background-color: #0b5ed7;
+    }
+
+.content .btn-success {
+    background-color: #198754;
+    color: #ffffff;
+}
+
+    .content .btn-success:hover {
+        background-color: #157347;
+    }
+
+/* --- Tabla General del CRUD --- */
+.table {
+    width: 100%; /* Obliga a la tabla a ocupar todo el espacio dentro del cuadro blanco */
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+    /* Centrar verticalmente el contenido de la tabla para que se vea ordenado */
+    .table td, .table th {
+        vertical-align: middle;
+    }
+
+        /* Limitar el ancho de columnas con mucho texto (como Descripción) */
+        .table td.col-larga {
+            max-width: 250px; /* Puedes ajustar este tamaño */
+            white-space: nowrap; /* Evita que el texto baje a la siguiente línea */
+            overflow: hidden; /* Oculta el texto que se sale del ancho */
+            text-overflow: ellipsis; /* Agrega "..." al final del texto cortado */
+        }
+
+    /* Encabezado de la Tabla */
+    .table thead.table-dark th {
+        background-color: #1e293b; /* Tono oscuro azulado/grisáceo más moderno */
+        color: #ffffff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        padding: 16px;
+        border: none;
+    }
+
+    /* Filas y Celdas */
+    .table tbody tr {
+        transition: background-color 0.15s ease-in-out;
+    }
+
+/* Efecto Hover sobre las filas */
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.03) !important; /* Destacado azul sutil */
+}
+
+.table tbody td {
+    padding: 14px 16px;
+    color: #495057;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f1f3f5;
+    vertical-align: middle; /* Alineación vertical perfecta */
+}
+
+/* --- Imagen / Logo de la Constructora --- */
+.logo-constructora {
+    width: 44px;
+    height: 44px;
+    object-fit: cover; /* Mantiene la proporción de la imagen sin deformarla */
+    border-radius: 50%; /* Transforma el logo en un círculo perfecto */
+    border: 2px solid #dee2e6;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* --- Badges / Etiquetas de Estado --- */
+.badge {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 30px; /* Bordes completamente redondeados estilo píldora */
+}
+
+.bg-success {
+    background-color: #d1e7dd !important;
+    color: #0f5132 !important; /* Texto verde oscuro sobre fondo verde claro */
+}
+
+.bg-secondary {
+    background-color: #e2e3e5 !important;
+    color: #41464b !important; /* Texto gris oscuro sobre fondo gris claro */
+}
+
+/* --- Botones de Acción (Editar y Eliminar) --- */
+.table .btn-sm {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    margin: 0 3px;
+}
+
+.table .btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+    .table .btn-warning:hover {
+        background-color: #ffca2c;
+        color: #212529;
+    }
+
+.table .btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+    .table .btn-danger:hover {
+        background-color: #bb2d3b;
+    }
+/* Estilo para las etiquetas de los inputs */
+.modal-content {
+    border: none;
+    border-radius: 16px; /* Bordes más redondeados y suaves */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Sombra amplia y difuminada */
+    overflow: hidden; /* Evita que los colores se salgan de los bordes redondeados */
+}
+
+/* Cabecera del modal */
+.modal-header {
+    background-color: #ffffff; /* Fondo limpio */
+    color: #0f4c5c; /* Color de tu sidebar para mantener la marca */
+    border-bottom: 2px solid #f8f9fa; /* Línea separadora muy sutil */
+    padding: 24px 30px;
+}
+
+    .modal-header .modal-title {
+        font-weight: 700;
+        font-size: 1.35rem;
+        letter-spacing: -0.5px;
+    }
+
+    /* Botón de la 'X' para cerrar */
+    .modal-header .btn-close {
+        background-color: #f1f3f5;
+        border-radius: 50%;
+        padding: 12px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .modal-header .btn-close:hover {
+            background-color: #e2e3e5;
+            transform: rotate(90deg); /* Pequeño efecto giro al pasar el mouse */
+        }
+
+/* Cuerpo del modal (donde van los inputs) */
+.modal-body {
+    padding: 30px;
+    background-color: #fdfdfc; /* Un tono casi blanco, muy sutil */
+}
+
+    /* Estilo para los inputs y selects dentro del modal */
+    .modal-body .form-control,
+    .modal-body .form-select {
+        border-radius: 10px;
+        border: 1.5px solid #e9ecef;
+        padding: 14px 18px;
+        margin-bottom: 18px !important; /* Espaciado perfecto entre cada campo */
+        background-color: #f8f9fa; /* Fondo gris súper clarito */
+        font-size: 0.95rem;
+        color: #495057;
+        transition: all 0.3s ease;
+        box-shadow: none; /* Quitamos la sombra por defecto de Bootstrap */
+    }
+
+        /* Efecto cuando el usuario hace clic en un input */
+        .modal-body .form-control:focus,
+        .modal-body .form-select:focus {
+            background-color: #ffffff;
+            border-color: #0f4c5c; /* Borde del color de tu tema */
+            box-shadow: 0 0 0 4px rgba(15, 76, 92, 0.1); /* Resplandor suave */
+            outline: none;
+        }
+
+/* Footer del modal (donde van los botones) */
+.modal-footer {
+    border-top: none;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    justify-content: flex-end; /* Alineamos botones a la derecha */
+    gap: 12px; /* Separación entre botones */
+}
+
+    /* Botones dentro del modal */
+    .modal-footer .btn {
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .modal-footer .btn:hover {
+            transform: translateY(-2px); /* El botón sube un poquito al pasar el mouse */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }

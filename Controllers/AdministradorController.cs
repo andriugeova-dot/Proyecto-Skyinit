@@ -57,6 +57,10 @@ namespace Proyecto_SkyInit.Controllers
         {
             return RedirectToAction("Index", "GestionMantenimiento");
         }
+        public IActionResult Constructoras()
+        {
+            return RedirectToAction("Index", "Gestionconstructoras");
+        }
         public IActionResult Consultas()
         {
             return RedirectToAction("Index", "GestionConsultas");
@@ -64,10 +68,6 @@ namespace Proyecto_SkyInit.Controllers
         public IActionResult Comentarios()
         {
             return RedirectToAction("Index", "GestionComentarios");
-        }
-        public IActionResult Certificaciones()
-        {
-            return RedirectToAction("Index", "GestionCertificaciones");
         }
         public IActionResult Historial()
         {

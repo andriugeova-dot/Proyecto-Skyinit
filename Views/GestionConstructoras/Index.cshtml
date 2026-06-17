@@ -1,0 +1,212 @@
+﻿@model IEnumerable<Proyecto_SkyInit.Models.ConstructoraViewModel>
+@{
+    Layout = "_LayoutGestionConstructoras";
+
+}
+
+<!-- ── SIDEBAR (igual al panel de Administrador) ── -->
+<aside class="sidebar">
+    <div class="logo">
+        <h2>Sky<span>Init</span></h2>
+        <span class="rol-badge">Administrador</span>
+    </div>
+    <nav>
+        <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
+        <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
+        <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
+        <a asp-controller="GestionUsuarios" asp-action="Index">👤 Usuarios</a>
+        <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
+        <a asp-controller="Administrador" asp-action="Constructoras" class="active">🏅 Constructoras</a>
+        <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+        <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+        <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+        <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
+        <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+    </nav>
+</aside>
+<main class= "content">
+
+    <div class="container-fluid" >
+        <h2 class="mb-4 text-center">Gestión de Constructoras</h2>
+
+        <!-- Barra de búsqueda y filtrado -->
+        <form asp-action="Index" method="get" class="d-flex mb-3">
+            <input type="text" name="buscar" value="@ViewBag.Buscar"
+                   class="form-control me-2" placeholder="Buscar por nombre o contacto" />
+
+            <select name="filtroEstado" class="form-select me-2">
+                <option value="">Filtrar por estado</option>
+                <option value="Activo" selected="@(ViewBag.FiltroEstado == "Activo")">Activo</option>
+                <option value="Inactivo" selected="@(ViewBag.FiltroEstado == "Inactivo")">Inactivo</option>
+                <option value="Suspendido" selected="@(ViewBag.FiltroEstado == "Suspendido")">Suspendido</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+                <button type="button" class="btn btn-success ms-auto"
+                        data-bs-toggle="modal" data-bs-target="#crearConstructoraModal">
+                    + Nueva constructora
+                </button>
+
+            </form>
+            
+        <!-- Tabla CRUD -->
+        <div class="table-responsive">
+
+            <table class="table table-striped table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Descripcion</th>
+                        <th>Ciudad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var constructora in Model)
+                    {
+                        <tr>
+                            <td>@constructora.Id</td>
+                            <td>
+                                <img src="~/images/@constructora.Logo" class="logo-constructora" />
+                            </td>
+                            <td>@constructora.Nombre</td>
+                            <td>@constructora.Contacto</td>
+                            <td>@constructora.Telefono</td>
+                            <td>
+                                @if (constructora.Estado == "Activo")
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                }
+                            </td>
+
+                            <td class="col-larga">@constructora.Descripcion</td>
+
+                            <td>@constructora.Ciudad</td>
+
+                            <td>
+                                <a href="#" class="btn btn-sm btn-warning"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#editarConstructoraModal_@constructora.Id">
+                                    Editar
+                                </a>
+
+                                <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="confirmarEliminar(@constructora.Id, '@constructora.Nombre')">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</main>
+
+    @foreach (var constructora in Model)
+    {
+        <div class="modal fade" id="editarConstructoraModal_@constructora.Id" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form asp-action="Editar" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar: @constructora.Nombre</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="Id" value="@constructora.Id" />
+                            <input type="text" name="Nombre" value="@constructora.Nombre" class="form-control mb-2" />
+                            <input type="text" name="Contacto" value="@constructora.Contacto" class="form-control mb-2" />
+                            <input type="text" name="Telefono" value="@constructora.Telefono" class="form-control mb-2" />
+                            <input type="email" name="Correo" value="@constructora.Correo" class="form-control mb-2" />
+                            <input type="text" name="Descripcion" value="@constructora.Descripcion" class="form-control mb-2" placeholder="Descripción" />
+                            <input type="text" name="Ciudad" value="@constructora.Ciudad" class="form-control mb-2" placeholder="Ciudad" />
+                            <select name="Estado" class="form-select mb-2">
+                                <option value="Activo" selected="@(constructora.Estado=="Activo")">Activo</option>
+                                <option value="Inactivo" selected="@(constructora.Estado=="Inactivo")">Inactivo</option>
+                                <option value="Suspendido" selected="@(constructora.Estado=="Suspendido")">Suspendido</option>
+                            </select>
+                            <input type="file" name="Logo" class="form-control mb-2" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning">Guardar cambios</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testModal">
+        Abrir modal de prueba
+    </button>
+
+<div class="modal fade" id="crearConstructoraModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <h5 class="modal-title">Nueva Constructora</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+        <form asp-action="Crear" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+                <input type="text" name="Nombre" class="form-control mb-2" placeholder="Nombre" />
+                <input type="text" name="Contacto" class="form-control mb-2" placeholder="Contacto" />
+                <input type="text" name="Telefono" class="form-control mb-2" placeholder="Teléfono" />
+                <input type="email" name="Correo" class="form-control mb-2" placeholder="Correo" />
+                <input type="text" name="Descripcion" class="form-control mb-2" placeholder="Descripción de la constructora" />
+                <input type="text" name="Ciudad" class="form-control mb-2" placeholder="Ciudad (Ej: Bogotá)" />
+                <select name="Estado" class="form-select mb-2">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    <option value="Suspendido">Suspendido</option>
+                </select>
+                <input type="file" name="Logo" class="form-control mb-2" />
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Crear</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+<!-- Modal confirmar eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">⚠️ Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar la constructora <strong id="nombreConstructora"></strong>?
+                Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <a id="btnConfirmarEliminar" href="#" class="btn btn-danger">Sí, eliminar</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarEliminar(id, nombre) {
+        document.getElementById('nombreConstructora').textContent = nombre;
+        document.getElementById('btnConfirmarEliminar').href = '/GestionConstructoras/Eliminar/' + id;
+        var modal = new bootstrap.Modal(document.getElementById('modalEliminar'));
+        modal.show();
+    }
+</script>
