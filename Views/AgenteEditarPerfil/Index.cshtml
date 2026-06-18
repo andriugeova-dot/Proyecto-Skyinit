@@ -1,0 +1,217 @@
+﻿@* Views/AgenteEditarPerfil/Index.cshtml *@
+@* Requisitos: RF213, RF214, RF36, RF37, RF38, RF39, RF40, RF42 *@
+@model Proyecto_SkyInit.Models.Usuario
+
+@{
+    Layout = "_LayoutAgenteEditarPerfil";
+    ViewData["Title"] = "Editar Mi Perfil";
+}
+
+<div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Sky<span>Init</span></h2>
+            <span class="rol-badge">Agente</span>
+        </div>
+        <nav>
+            <a asp-controller="Agentes" asp-action="Index">📝 Panel de agente</a>
+            <a asp-controller="AgenteEditarPerfil" asp-action="Index" class="active">👤 Mi Perfil</a>
+            <a asp-controller="AgentePropiedades" asp-action="Index">🏡 Mis propiedades</a>
+            <a asp-controller="PublicarPropiedad" asp-action="Index">➕ Publicar propiedad</a>
+            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="content">
+
+        @* Toast de notificación (TempData) *@
+        @if (TempData["Mensaje"] != null)
+        {
+            var tipo = TempData["TipoMensaje"]?.ToString() ?? "success";
+            <div class="toast toast-@tipo" id="toast-msg">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <h1>Mi Perfil</h1>
+                <p>Edita tu información personal y seguridad</p>
+            </div>
+            <div class="topbar-fecha">
+                <span>@DateTime.Now.ToString("dddd, dd MMMM yyyy", new System.Globalization.CultureInfo("es-CO"))</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: FOTO DE PERFIL -->
+        <section class="card profile-section">
+            <h2>Foto de Perfil</h2>
+            <div class="profile-photo-container">
+                <div class="photo-display">
+                    @if (!string.IsNullOrEmpty(Model.FotoPerfil))
+                    {
+                        <img src="@Model.FotoPerfil" alt="@Model.Nombre" class="profile-photo" />
+                    }
+                    else
+                    {
+                        <div class="photo-placeholder">
+                            <span>SIN FOTO</span>
+                        </div>
+                    }
+                </div>
+                <div class="photo-actions">
+                    <form asp-action="CambiarFotoPerfil" asp-controller="AgenteEditarPerfil" method="post" enctype="multipart/form-data" class="form-inline">
+                        @Html.AntiForgeryToken()
+                        <div class="file-input-wrapper">
+                            <input type="file" name="fotoPerfil" accept=".jpg,.jpeg,.png,.webp" id="fotoPerfil" />
+                            <label for="fotoPerfil">Seleccionar Imagen</label>
+                        </div>
+                        <button type="submit" class="btn-primary">Cambiar Foto</button>
+                    </form>
+
+                    @if (!string.IsNullOrEmpty(Model.FotoPerfil))
+                    {
+                        <form asp-action="EliminarFotoPerfil" asp-controller="AgenteEditarPerfil" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-danger" onclick="return confirm('¿Eliminar foto de perfil?')">
+                                Eliminar Foto
+                            </button>
+                        </form>
+                    }
+                </div>
+                <p class="help-text">Formatos aceptados: JPG, PNG, WebP. Tamaño máximo: 5 MB.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: INFORMACIÓN BÁSICA -->
+        <section class="card profile-section">
+            <h2>Información Básica</h2>
+            <form asp-action="GuardarPerfil" asp-controller="AgenteEditarPerfil" method="post" class="profile-form">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label for="Nombre">Nombre Completo *</label>
+                    <input type="text" id="Nombre" name="Nombre" class="form-control"
+                           value="@Model.Nombre" required maxlength="100" />
+                    <span class="help-text">Tu nombre será visible para los clientes</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Correo">Correo Electrónico</label>
+                    <input type="email" id="Correo" name="Correo" class="form-control"
+                           value="@Model.Correo" disabled />
+                    <span class="help-text">No se puede modificar desde aquí</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Telefono">Número Telefónico</label>
+                    <input type="tel" id="Telefono" name="Telefono" class="form-control"
+                           value="@Model.Telefono" placeholder="3001234567" maxlength="20" />
+                    <span class="help-text">Opcional. Usado para contacto directo</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha de Registro</label>
+                    <input type="text" class="form-control"
+                           value="@Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")" disabled />
+                </div>
+
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </form>
+        </section>
+
+        <!-- SECCIÓN 3: SEGURIDAD (CAMBIAR CONTRASEÑA) -->
+        <section class="card profile-section">
+            <h2>Seguridad</h2>
+            <form asp-action="CambiarContraseña" asp-controller="AgenteEditarPerfil" method="post" class="profile-form">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label for="ContraseñaActual">Contraseña Actual *</label>
+                    <input type="password" id="ContraseñaActual" name="ContraseñaActual" class="form-control" required />
+                    <span class="help-text">Verifica tu identidad</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ContraseñaNueva">Contraseña Nueva *</label>
+                        <input type="password" id="ContraseñaNueva" name="ContraseñaNueva" class="form-control"
+                               required minlength="6" />
+                        <span class="help-text">Mínimo 6 caracteres</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ConfirmarContraseña">Confirmar Contraseña *</label>
+                        <input type="password" id="ConfirmarContraseña" name="ConfirmarContraseña" class="form-control"
+                               required minlength="6" />
+                        <span class="help-text">Debe coincidir con la nueva</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Cambiar Contraseña</button>
+            </form>
+        </section>
+
+        <!-- SECCIÓN 4: INFORMACIÓN ADICIONAL -->
+        <section class="card profile-section">
+            <h2>Información Adicional</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Estado de Cuenta</strong>
+                    <p>
+                        @if (Model.EstadoCuenta == "Activa")
+                        {
+                            <span class="badge badge-activa">✓ Activa</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-inactiva">✗ Inactiva</span>
+                        }
+                    </p>
+                </div>
+                <div class="info-item">
+                    <strong>Rol</strong>
+                    <p><span class="badge badge-agente">Agente Inmobiliario</span></p>
+                </div>
+                <div class="info-item">
+                    <strong>ID de Usuario</strong>
+                    <p>@Model.UsuarioID</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-ocultar toast
+        const toast = document.getElementById('toast-msg');
+        if (toast) {
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        // Validación de concordancia de contraseñas en tiempo real
+        const contraseñaNueva = document.getElementById('ContraseñaNueva');
+        const confirmarContraseña = document.getElementById('ConfirmarContraseña');
+
+        if (confirmarContraseña) {
+            confirmarContraseña.addEventListener('input', function () {
+                if (this.value && contraseñaNueva.value && this.value !== contraseñaNueva.value) {
+                    this.classList.add('error');
+                    this.title = 'Las contraseñas no coinciden';
+                } else {
+                    this.classList.remove('error');
+                    this.title = '';
+                }
+            });
+        }
+    </script>
+}
