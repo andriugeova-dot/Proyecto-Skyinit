@@ -168,13 +168,15 @@ body {
 
 .btn {
     border: none;
-    background: #22c55e;
+    background: #2e8b57;
     color: white;
-    padding: 12px 18px;
+    padding: 4px 10px;
     border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     transition: .3s;
+    text-decoration:none;
+    display:inline-block;
 }
 
     .btn:hover {

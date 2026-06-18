@@ -1,0 +1,171 @@
+﻿/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #F8F6F0;
+    color: #333;
+}
+
+.user-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #14532d;
+    color: white;
+    padding: 30px 20px;
+    position: fixed;
+    height: 100vh;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .logo h2 {
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .logo span {
+        color: #A7F3D0;
+        font-size: 14px;
+    }
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    padding: 14px 16px;
+    border-radius: 12px;
+    transition: .3s;
+    font-size: 15px;
+}
+
+    .sidebar a:hover {
+        background: rgba(255,255,255,.12);
+    }
+/* CONTENIDO */
+.content {
+    margin-left: 260px;
+    width: 100%;
+    padding: 30px;
+}
+
+.topbar {
+    margin-bottom: 30px;
+}
+
+    .topbar h1 {
+        color: #14532d;
+        font-size: 32px;
+    }
+
+    .topbar p {
+        color: #666;
+        margin-top: 5px;
+    }
+
+/* FAVORITOS */
+.favorite-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.favorite-item {
+    display: flex;
+    gap: 20px;
+    background: #fff;
+    border-left: 5px solid #22c55e;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    transition: transform .3s;
+}
+
+    .favorite-item:hover {
+        transform: translateX(5px);
+    }
+
+.favorite-image img {
+    width: 160px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.favorite-info {
+    flex: 1;
+}
+
+    .favorite-info h4 {
+        margin-bottom: 10px;
+        font-size: 20px;
+        color: #14532d;
+    }
+
+    .favorite-info p {
+        margin-bottom: 6px;
+        color: #555;
+    }
+
+/* BOTÓN QUITAR */
+.btn {
+    border: none;
+    background: #2e8b57;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .3s;
+}
+
+    .btn:hover {
+        background: #14532d;
+    }
+
+/* MENSAJE SIN FAVORITOS */
+.sin-favoritos {
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px) {
+    .sidebar {
+        display: none;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .favorite-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .favorite-image img {
+        width: 100%;
+        height: auto;
+    }
+}
