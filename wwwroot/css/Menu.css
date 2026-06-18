@@ -1,4 +1,6 @@
-﻿body {
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #F9FCF3;
@@ -151,10 +153,78 @@ nav {
 .user-menu.active {
     display: block;
 }
+/* Contenedor principal de los textos */
+.hero-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    text-align: center; /* Centra el texto */
+    flex-grow: 1; /* Toma todo el espacio sobrante debajo del topbar */
+    padding: 0 20px;
+    z-index: 2; /* Para que quede sobre el fondo oscuro */
+    margin-bottom: 40px;
+}   
 
+/* Etiqueta superior (Píldora) */
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin: 0 auto 24px auto;
+    margin-bottom: 24px;
+}
+
+    /* Puntito verde dentro de la píldora */
+    .hero-eyebrow::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: #81C784;
+        border-radius: 50%;
+    }
+
+/* Título principal */
+.hero-inner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.12;
+    margin-bottom: 20px;
+    max-width: 640px;
+    margin-top: 0;
+}
+
+    /* Texto resaltado en verde claro (hogar ideal) */
+    .hero-inner h1 em {
+        color: #A5D6A7;
+        font-style: normal;
+    }
+
+/* Subtítulo */
+.hero-sub {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 480px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 /* HERO */
-.hero {
+/*.hero {
     text-align: center;
     position: relative;
     z-index: 2;
@@ -162,8 +232,13 @@ nav {
 }
 
     .hero h1 {
-        font-size: 40px;
-        margin-bottom: 10px;
+        font-family: 'Playfair Display',serif;
+        font-size: clamp(2.6rem,5.5vw,4.4rem);
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.12;
+        margin-bottom: 20px;
+        max-width: 640px;
     }
 
     .hero p {
@@ -177,7 +252,7 @@ nav {
     color: #2E8B57;
     margin: 30px 0;
     margin-bottom: 25px;
-}
+}*/
 
 
 /* CARDS */
@@ -189,102 +264,160 @@ nav {
 }
 
 
+/* CONTENEDOR PRINCIPAL DE LA TARJETA */
 .card {
     background: white;
     border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
-    display: flex;
-    flex-direction: column; 
-    position: relative;
-}
-
-    .card:hover {
-        transform: translateY(-5px);
-    }
-
-    .card img {
-        width: 100%;
-        height: 200px; 
-        object-fit: cover; 
-        border-bottom: 1px solid #eee;
-    }
-.card-body {
+    overflow: hidden; /* Mantiene las esquinas redondeadas limpias */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
-    align-items: flex-start; 
-    padding: 20px; 
-    text-align: left; 
+    position: relative; /* Para el enlace absoluto */
 }
 
-.card-body h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #1b5e20;
-    margin-bottom: 8px;
-    gap:8px;
+    /* Efecto hover general de la tarjeta */
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+/* CONTENEDOR DE LA IMAGEN (Aquí ocurre la magia del zoom) */
+.card-img-container {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    overflow: hidden; /* Crucial: evita que la imagen se salga al hacer zoom */
 }
 
-.precio {
-    color: #2e7d32;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 6px;
+    .card-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease; /* Transición suave del zoom */
+    }
+
+/* Al pasar el mouse por la tarjeta, agranda la imagen */
+.card:hover .card-img-container img {
+    transform: scale(1.1);
 }
 
-.ubicacion {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
-}
-
-.card-body p {
-    font-size: 14px;
-    color: #666;
-    flex-grow: 1;
-}
-
-.card-body .boton {
-    margin-top: 15px;
-    align-self: flex-start;
-    padding: 8px 12px;
-    background: #2e7d32;
+/* ETIQUETAS DE OPERACIÓN (Posicionadas sobre la imagen) */
+.badge-tipo {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
     color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
 }
 
-    .card-body .boton:hover {
-        background: #1b5e20;
-    }
+.badge-venta {
+    background-color: #2e7d32;
+}
+/* Verde */
+.badge-arriendo {
+    background-color: #1a1a1a;
+}
+/* Negro */
+.badge-default {
+    background-color: #777FF2;
+}
+/* Naranja para empeño/otros */
 
-.btn-favorito {
-    margin-top: 10px;
-    top: 200px;
-    right: 10px;
-    background: transparent;
+/* BOTÓN DE FAVORITO CIRCULAR */
+.btn-favorito-nuevo {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    background: white;
     border: none;
-    cursor: pointer;
-    font-size: 25px;
-    color: #e74c3c;
-    transition: 0.3s;
+    border-radius: 50%;
     display: flex;
-    position:absolute;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    color: #1a1a1a; /* Color del borde del corazón */
+    transition: transform 0.2s ease;
+    z-index: 10; /* Debe ser mayor al enlace absoluto */
 }
 
-    .btn-favorito:hover {
-        color: #c0392b;
+    .btn-favorito-nuevo:hover {
+        transform: scale(1.1);
     }
 
-.favorito-inactivo {
-    color: rgba(0,0,0,0.4);
+    /* Cuando es favorito, el SVG se pinta de rojo */
+    .btn-favorito-nuevo.favorito-activo svg {
+        fill: #e74c3c;
+        stroke: #e74c3c;
+    }
+
+/* CUERPO DE LA TARJETA (Textos) */
+.card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
 }
 
-.favorito-activo {
-    color: #2E8B57;
+/* PRECIO */
+.precio-container {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.precio-valor {
+    color: #1b5e20;
+    font-family: 'Playfair Display', serif; /* La fuente elegante de tu header */
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.precio-moneda {
+    color: #888;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* TÍTULO Y UBICACIÓN */
+.card-titulo {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+}
+
+.ubicacion-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+.icono-pin {
+    color: #d81b60; /* El color rosado del diseño original */
+}
+
+/* ENLACE QUE CUBRE TODA LA TARJETA */
+.enlace-absoluto {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1; /* Por debajo del botón de favorito para no bloquearlo */
 }
 
 .modal {
@@ -353,4 +486,368 @@ nav {
     .hero h1 {
         font-size: 28px;
     }
+}
+/* DISEÑO DE PROPIEDADES DESTACADAS */
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto; /* Centra todo el bloque en la página */
+}
+
+.header-destacadas {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 40px 30px 30px 30px;
+}
+
+.textos-destacadas {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* La etiqueta verde con la línea */
+.etiqueta-destacadas {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #2E8B57;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+    .etiqueta-destacadas::before {
+        content: "";
+        display: inline-block;
+        width: 30px;
+        height: 2px;
+        background-color: #2E8B57;
+    }
+
+.titulo-destacadas {
+    font-family: 'Playfair Display', serif; /* La misma fuente de tu Hero */
+    font-size: 2.8rem;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.sub-destacadas {
+    color: #6c757d;
+    font-size: 1.05rem;
+    margin: 0;
+    margin-top: 5px;
+}
+
+.link-ver-todas {
+    color: #2E8B57;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    margin-bottom: 5px;
+}
+
+    .link-ver-todas:hover {
+        color: #1b5e20;
+    }
+
+/* RESPONSIVE PARA EL ENCABEZADO */
+@media (max-width: 768px) {
+    .header-destacadas {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
+/* =========================================
+   SECCIÓN: NUESTROS SERVICIOS
+   ========================================= */
+.servicios-section {
+    background-color: #1b5e20;
+    padding: 80px 20px 80px 20px; /* Ajusta aquí el espacio interno si lo necesitas */
+    margin-top: 80px;
+    margin-bottom: 0 !important; /* IMPORTANTE: Elimina el margen inferior */
+    color: white;
+}
+
+.servicios-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.etiqueta-servicios-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.etiqueta-servicios {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #a5d6a7; /* Verde claro para contraste */
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+    .etiqueta-servicios::before {
+        content: "";
+        display: inline-block;
+        width: 40px;
+        height: 1px;
+        background-color: #a5d6a7;
+    }
+
+.titulo-servicios {
+    font-family: 'Playfair Display', serif; /* Manteniendo la tipografía elegante */
+    font-size: 2.5rem;
+    color: white;
+    margin: 0 0 15px 0;
+}
+
+.sub-servicios {
+    color: #c8e6c9;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* GRID DE SERVICIOS */
+.servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px; /* Un poco más de aire entre tarjetas */
+    max-width: 1200px;
+    margin: 60px auto 0 auto; /* Separación superior dentro del mismo contenedor */
+}
+
+.servicio-card {
+    background-color: rgba(255, 255, 255, 0.05); /* Efecto vidrio sutil */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+    .servicio-card:hover {
+        transform: translateY(-10px);
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+/* ESTILO DE LOS ICONOS SVG */
+.servicio-icono {
+    margin-bottom: 25px;
+}
+
+    .servicio-icono svg {
+        width: 50px;
+        height: 50px;
+        stroke: #a5d6a7; /* Color inicial del icono */
+        transition: all 0.3s ease;
+    }
+
+.servicio-card:hover .servicio-icono svg {
+    stroke: #ffffff; /* El icono se vuelve blanco al hacer hover */
+    transform: scale(1.05);
+}
+
+/* TEXTOS DENTRO DE LA CARD */
+.servicio-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.servicio-card p {
+    font-size: 0.95rem;
+    color: #c8e6c9;
+    line-height: 1.6;
+}
+/* =========================================
+   SECCIÓN DE CONTACTO ADICIONAL
+   ========================================= */
+.contacto-adicional {
+    background-color: #f1f8e9;
+    padding: 60px 20px;
+    margin-top: 0 !important; /* IMPORTANTE: Elimina el margen superior para pegarlo */
+    border-radius: 0; /* Opcional: elimina el redondeado si quieres unión total */
+}
+
+.contacto-box {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.contacto-texto {
+    flex: 2;
+    min-width: 250px;
+}
+
+    .contacto-texto h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: #1b5e20;
+        margin: 0 0 10px 0;
+    }
+
+    .contacto-texto p {
+        color: #555;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+.contacto-accion {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-principal {
+    background-color: #1b5e20;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+    .btn-principal:hover {
+        background-color: #2e7d32;
+        color: white;
+    }
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+    .contacto-box {
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .contacto-accion {
+        justify-content: center;
+    }
+}
+/* =========================================
+   FOOTER
+   ========================================= */
+.footer-section {
+    background-color: #1b5e20; /* Verde oscuro */
+    color: white;
+    padding: 60px 20px 30px 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.footer-col h3 {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    color: #a5d6a7; /* Verde claro para títulos de columna */
+}
+
+.footer-col p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #c8e6c9;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-col ul li {
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
+        .footer-col ul li a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+            .footer-col ul li a:hover {
+                opacity: 0.7;
+            }
+
+/* Línea inferior */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #a5d6a7;
+}
+
+.footer-links a {
+    color: #a5d6a7;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+/* Botón flotante WhatsApp */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+        background-color: #128c7e;
+    }
+
+.whatsapp-icon {
+    width: 35px;
+    height: 35px;
+    fill: white;
 }

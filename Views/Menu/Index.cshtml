@@ -4,14 +4,6 @@
     Layout = "_LayoutMenu";
     ViewData["Title"] = "Menu";
 }
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyInit Inmobiliaria</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
 
 <body>
     <header id="header">
@@ -43,44 +35,216 @@
                     <a asp-controller="Login" asp-action="Index" class="btn-registrar">Iniciar Sesión</a>
                 }
             </nav>
-        </div>
-        <div class="hero">
-            <h1>Encuentra tu hogar ideal</h1>
-            <p>Compra, vende o arrienda con SkyInit</p>
+        </div>  
+        <div class="hero-inner">
+            <div class="hero-eyebrow">Especialistas en bienes raíces.</div>
+            <h1>Encuentra tu <em>hogar ideal</em> con SkyInit</h1>
+            <p class="hero-sub">Compra, vende o arrienda con el respaldo de nuestros expertos.</p>
         </div>
     </header>
 
     <section class="contenedor">
-        <h2 class="titulo">Propiedades Destacadas</h2>
+        <div class="header-destacadas">
+            <div class="textos-destacadas">
+                <span class="etiqueta-destacadas">Selección Especial</span>
+                <h2 class="titulo-destacadas">Propiedades Destacadas</h2>
+                <p class="sub-destacadas">Inmuebles seleccionados por nuestros asesores esta semana</p>
+            </div>
+        </div>
         <div class="grid">
             @foreach (var propiedad in Model)
             {
                 <div class="card">
                     @{
-                        var imgUrl = propiedad.Imagenes.FirstOrDefault()?.URL
-                        ?? "https://via.placeholder.com/400x250?text=Sin+imagen";
+                        var imgUrl = propiedad.Imagenes.FirstOrDefault()?.URL ?? "https://via.placeholder.com/400x250?text=Sin+imagen";
+
+                        // Lógica para asignar un color a la etiqueta según la operación
+                        var tipoOperacion = propiedad.TipoOperacion?.Descripcion?.ToLower() ?? "";
+                        var badgeClass = "badge-default"; 
+                        if (tipoOperacion.Contains("venta")) badgeClass = "badge-venta";
+                        if (tipoOperacion.Contains("arriendo")) badgeClass = "badge-arriendo";
+
+                        // Lógica para el sufijo del precio (COP o / mes)
+                        var sufijoPrecio = tipoOperacion.Contains("arriendo") ? "/ mes" : "COP";
                     }
-                    <img src="@imgUrl" alt="@propiedad.Titulo" />
-                    <div class="card-body">
-                        <h3>@propiedad.Titulo</h3>
-                        <div class="precio">@propiedad.Precio.ToString("C0")</div>
-                        <div class="tipo-operacion">@propiedad.TipoOperacion?.Descripcion</div>
-                        <div class="ubicacion">
-                            @(string.IsNullOrEmpty(propiedad.Ciudad) ? propiedad.Direccion : propiedad.Ciudad)
-                        </div>
-                        <p>@propiedad.Descripcion</p>
-                        <a asp-controller="Propiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID" class="boton">Ver más</a>
+
+                    <div class="card-img-container">
+                        <img src="@imgUrl" alt="@propiedad.Titulo" />
+
+                        <span class="badge-tipo @badgeClass">@propiedad.TipoOperacion?.Descripcion</span>
+
                         <button type="button"
-                                class="btn-favorito @(propiedad.EsFavorito ? "favorito-activo" : "favorito-inactivo")"
+                                class="btn-favorito-nuevo @(propiedad.EsFavorito ? "favorito-activo" : "")"
                                 data-id="@propiedad.PropiedadID">
-                            💚
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
                         </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="precio-container">
+                            <span class="precio-valor">@propiedad.Precio.ToString("C0", new System.Globalization.CultureInfo("es-CO"))</span>
+                            <span class="precio-moneda">@sufijoPrecio</span>
+                        </div>
+
+                        <h3 class="card-titulo">@propiedad.Titulo</h3>
+
+                        <div class="ubicacion-container">
+                            <svg class="icono-pin" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            <span class="ubicacion-texto">@(string.IsNullOrEmpty(propiedad.Ciudad) ? propiedad.Direccion : propiedad.Ciudad)</span>
+                        </div>
+
+                        <a asp-controller="Propiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID" class="enlace-absoluto"></a>
                     </div>
                 </div>
             }
 
         </div>
     </section>
+
+    <section class="servicios-section">
+        <div class="contenedor">
+            <div class="servicios-header">
+                <div class="etiqueta-servicios-container">
+                    <span class="etiqueta-servicios">Lo que hacemos</span>
+                </div>
+                <h2 class="titulo-servicios">Nuestros servicios</h2>
+                <p class="sub-servicios">Todo lo que necesitas para comprar, vender o arrendar tu inmueble en un solo lugar</p>
+            </div>
+
+            <div class="servicios-grid">
+
+                <div class="servicio-card">
+                    <div class="servicio-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Compra y venta</h3>
+                    <p>Te asesoramos en cada etapa del proceso con total transparencia y respaldo legal.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <div class="servicio-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Arriendo</h3>
+                    <p>Encuentra el arrendatario ideal o el inmueble perfecto para vivir o trabajar.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <div class="servicio-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <h3>Avalúos</h3>
+                    <p>Conoce el valor real de tu propiedad con nuestros expertos certificados.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <div class="servicio-icono">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                        </svg>
+                    </div>
+                    <h3>Proyectos nuevos</h3>
+                    <p>Accede a los mejores proyectos de constructoras aliadas con beneficios exclusivos.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="contacto-adicional">
+        <div class="contenedor">
+            <div class="contacto-box">
+                <div class="contacto-texto">
+                    <h2>¿Buscas algo exclusivo?</h2>
+                    <p>Nuestra selección está en constante actualización para ofrecerte las mejores oportunidades inmobiliarias del mercado.</p>
+                </div>
+                <div class="contacto-accion">
+                    <a asp-controller="UsuarioPropiedades" asp-action="Index" class="btn-principal">
+                        Ver todas las propiedades
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-section">
+        <div class="contenedor">
+            <div class="footer-grid">
+
+                <div class="footer-col">
+                    <h2 class="footer-logo">SkyInit</h2>
+                    <p>Conectamos personas con los inmuebles que merecen. Con más de 12 años de experiencia en el mercado colombiano.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h3>BUSCAR</h3>
+                    <ul>
+                        <li><a href="#">Casas en venta</a></li>
+                        <li><a href="#">Apartamentos</a></li>
+                        <li><a href="#">Locales comerciales</a></li>
+                        <li><a href="#">Fincas y lotes</a></li>
+                        <li><a href="#">Proyectos nuevos</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>EMPRESA</h3>
+                    <ul>
+                        <li><a href="#">Quiénes somos</a></li>
+                        <li><a href="#">Constructoras aliadas</a></li>
+                        <li><a href="#">Blog inmobiliario</a></li>
+                        <li><a href="#">Trabaja con nosotros</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>CONTACTO</h3>
+                    <ul class="footer-contacto">
+                        <li>📞 +57 3124143860</li>
+                        <li>✉️ skyinit2026@gmail.com</li>
+                        <li>📍 Duitama, Colombia</li>
+                        <li class="redes">
+                            <a href="#">Instagram</a> · <a href="#">Facebook</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 SkyInit. Todos los derechos reservados.</p>
+                <div class="footer-links">
+                    <a href="#">Política de privacidad</a> · <a href="#">Términos de uso</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/573124143860?text=Hola,%20estoy%20interesado%20en%20una%20propiedad."
+       class="whatsapp-float" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="whatsapp-icon">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+        </svg>
+    </a>
 
     <div id="modalRegistro" class="modal">
         <div class="modal-content">
@@ -118,24 +282,31 @@
     </script>
 
     <script>
-        document.querySelectorAll(".btn-favorito").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                const propiedadId = btn.getAttribute("data-id");
+        document.querySelectorAll(".btn-favorito-nuevo").forEach(btn => {
+             btn.addEventListener("click", async (e) => {
+                 // MUY IMPORTANTE: Estas dos líneas evitan que al dar clic al corazón,
+                 // te lleve a la página de detalles por accidente.
+                 e.preventDefault();
+                 e.stopPropagation();
 
-                const response = await fetch("/Favoritos/Toggle", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `propiedadId=${propiedadId}`
-                });
+                 const propiedadId = btn.getAttribute("data-id");
 
-                if (response.ok) {
-                    btn.classList.toggle("favorito-activo");
-                    btn.classList.toggle("favorito-inactivo");
-                } else if (response.status === 401) {
-                    document.getElementById("modalRegistro").style.display = "flex";
-                }
-            });
-        });
+                 const response = await fetch("/Favoritos/Toggle", {
+                     method: "POST",
+                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                     body: `propiedadId=${propiedadId}`
+                 });
+
+                 if (response.ok) {
+                     // Cambia el color del corazón
+                     btn.classList.toggle("favorito-activo");
+                 } 
+                 else if (response.status === 401) {
+                     // Muestra el modal si no ha iniciado sesión
+                     document.getElementById("modalRegistro").style.display = "flex";
+                 }
+             });
+         });
     </script>
 </body>
-</html>
+
