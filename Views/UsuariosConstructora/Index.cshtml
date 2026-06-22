@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Proyecto_SkyInit.Models.ConstructoraViewModel>
+@{
+    Layout = "_layoutUsuarioConstructoras";
+}
+<header id="header">
+    <div class="topbar">
+        <div>SkyInit</div>
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+        <nav id="menu">
+            <a asp-controller="Menu" asp-action="Index">Inicio</a>
+            <a asp-controller="Menu" asp-action="Propiedades">Propiedades</a>
+            <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+            <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
+            <a asp-controller="UsuariosConstructora" asp-action="Constructoras">Constructoras</a>
+            @if (User.Identity!.IsAuthenticated)
+            {
+                <div class="user-profile">
+                    <img src="~/img/default-avatar.svg"
+                         alt="Perfil"
+                         class="profile-pic"
+                         onclick="toggleUserMenu()" />
+                    <div id="user-menu" class="user-menu">
+                        <div class="user-menu-name">@User.Identity.Name</div>
+                        <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
+                        <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Login" asp-action="Index" class="btn-registrar">Iniciar Sesión</a>
+            }
+        </nav>
+    </div>
+
+    <section class="hero">
+
+        <div class="hero-slider">
+
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" class="active">
+
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c">
+
+            <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115">
+
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <h1>Constructoras Asociadas</h1>
+
+            <p>
+                Empresas constructoras que construyen el futuro junto a SkyInit.
+            </p>
+
+        </div>
+
+    </section>
+</header>
+
+
+<div class="container">
+
+    <div class="search">
+
+        <input type="text" placeholder="Buscar constructora...">
+
+    </div>
+
+    <div class="builder-card">
+        @if (Model != null && Model.Count() > 0)
+        {
+            @foreach (var constructora in Model)
+            {
+                <div class="constructora-card">
+
+                    <div class="card-logo">
+                        <img src="~/images/@constructora.Logo"
+                             alt="Logo"
+                             onerror="this.style.display='none'" />
+                    </div>
+
+                    <div class="card-info">
+                        <h2>@constructora.Nombre</h2>
+                        <p class="descripcion">@constructora.Descripcion</p>
+                        <p class="metadata">
+                            @constructora.Ciudad • @constructora.CantidadProyectos • Desde 2010
+                        </p>
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="/Constructoras/Detalles/@constructora.Id" class="btn-ver-mas">Ver más</a>
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <p class="no-data">No hay constructoras activas registradas actualmente.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+        const slides = document.querySelectorAll('.hero-slider img');
+
+        let current = 0;
+
+        setInterval(() => {
+
+            slides[current].classList.remove('active');
+
+            current = (current + 1) % slides.length;
+
+            slides[current].classList.add('active');
+
+        }, 4000);
+
+    </script>
+
+}

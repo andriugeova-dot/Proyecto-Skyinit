@@ -27,6 +27,7 @@ namespace Proyecto_SkyInit.Data
         public DbSet<ImagenPropiedad> ImagenesPropiedad { get; set; }
         public DbSet<HistorialPropiedad> HistorialPropiedades { get; set; }
         public DbSet<RedSocial> RedesSociales { get; set; }
+        public DbSet<ImagenesConstructoras> ImagenesConstructoras { get; set; }
 
         // - Agregados
         public DbSet<ImagenProyecto> ImagenesProyecto { get; set; }
