@@ -5,7 +5,7 @@
     ViewData["Title"] = "Menu";
 }
 
-<body>
+
     <header id="header">
         <div class="topbar">
             <div class="logo">SkyInit</div>
@@ -23,11 +23,13 @@
                             alt="Perfil"
                             class="profile-pic"
                             onclick="toggleUserMenu()" />
-                        <div id="user-menu" class="user-menu">
-                            <div class="user-menu-name">@User.Identity.Name</div>
-                            <a asp-controller="Login" asp-action="Ajustes">Ajustes</a>
-                            <a asp-controller="Login" asp-action="Logout">Cerrar sesion</a>
-                        </div>
+                    <div id="user-menu" class="user-menu">
+                        <div class="user-menu-name">@User.Identity.Name</div>
+                        <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
+                        <form asp-controller="Login" asp-action="LogoutPost" method="post">
+                            <button type="submit">🚪 Cerrar sesión</button>
+                        </form>
+                    </div>
                     </div>
                 }
                 else
@@ -256,57 +258,62 @@
         </div>
     </div>
 
-    <script>
-        function toggleMenu() {
-            document.getElementById("menu").classList.toggle("active");
-        }
+ @section Scripts {
 
-                function toggleUserMenu() {
-            document.getElementById("user-menu").classList.toggle("active");
-        }
+        <script>
+            function toggleMenu() {
+                document.getElementById("menu").classList.toggle("active");
+            }
 
-        const images = [
+                    function toggleUserMenu() {
+                document.getElementById("user-menu").classList.toggle("active");
+            }
 
-            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-            "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
-            "https://images.unsplash.com/photo-1570129477492-45c003edd2be"
-        ];
-        let index = 0;
-        const header = document.getElementById("header");
-        function changeBackground() {
-            header.style.backgroundImage = `url(${images[index]})`;
-            index = (index + 1) % images.length;
-        }
-        changeBackground();
-        setInterval(changeBackground, 5000);
-    </script>
+            const images = [
 
-    <script>
-        document.querySelectorAll(".btn-favorito-nuevo").forEach(btn => {
-             btn.addEventListener("click", async (e) => {
-                 // MUY IMPORTANTE: Estas dos líneas evitan que al dar clic al corazón,
-                 // te lleve a la página de detalles por accidente.
-                 e.preventDefault();
-                 e.stopPropagation();
+                "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+                "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+                "https://images.unsplash.com/photo-1570129477492-45c003edd2be"
+            ];
+            let index = 0;
+            const header = document.getElementById("header");
+            function changeBackground() {
+                header.style.backgroundImage = `url(${images[index]})`;
+                index = (index + 1) % images.length;
+            }
+            changeBackground();
+            setInterval(changeBackground, 5000);
+        </script>
 
-                 const propiedadId = btn.getAttribute("data-id");
+        <script>
+            document.querySelectorAll(".btn-favorito-nuevo").forEach(btn => {
+                 btn.addEventListener("click", async (e) => {
+                     // MUY IMPORTANTE: Estas dos líneas evitan que al dar clic al corazón,
+                     // te lleve a la página de detalles por accidente.
+                     e.preventDefault();
+                     e.stopPropagation();
 
-                 const response = await fetch("/Favoritos/Toggle", {
-                     method: "POST",
-                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                     body: `propiedadId=${propiedadId}`
+                     const propiedadId = btn.getAttribute("data-id");
+
+                     const response = await fetch("/Favoritos/Toggle", {
+                         method: "POST",
+                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                         body: `propiedadId=${propiedadId}`
+                     });
+
+                     if (response.ok) {
+                         // Cambia el color del corazón
+                         btn.classList.toggle("favorito-activo");
+                     } 
+                     else if (response.status === 401) {
+                         // Muestra el modal si no ha iniciado sesión
+                         document.getElementById("modalRegistro").style.display = "flex";
+                     }
                  });
-
-                 if (response.ok) {
-                     // Cambia el color del corazón
-                     btn.classList.toggle("favorito-activo");
-                 } 
-                 else if (response.status === 401) {
-                     // Muestra el modal si no ha iniciado sesión
-                     document.getElementById("modalRegistro").style.display = "flex";
-                 }
              });
-         });
-    </script>
-</body>
+        </script>
+
+
+ }
+
 

@@ -28,6 +28,8 @@ header {
         background: rgba(0,0,0,0.5);
         top: 0;
         left: 0;
+        z-index: 0;
+        pointer-events: none;
     }
 
 /* NAVBAR */
@@ -37,7 +39,8 @@ header {
     align-items: center;
     padding: 15px 30px;
     position: relative;
-    z-index: 2;
+    z-index: 100;
+    overflow:visible;
     background: rgba(46, 125, 50, 0.7);
     backdrop-filter: blur(6px);
 }
@@ -51,6 +54,9 @@ nav {
     display: flex;
     align-items: center;
     gap: 20px;
+    position: relative; /* ← esto se agregó */
+    z-index: 9999; /* ← esto se agregó */
+    overflow: visible;
 }
 
     nav a {
@@ -86,6 +92,8 @@ nav {
 .user-profile {
     position: relative;
     display: inline-block;
+    z-index:9999;    
+    overflow:visible;
 }
 
 .profile-pic {
@@ -101,8 +109,67 @@ nav {
     .profile-pic:hover {
         transform: scale(1.1);
     }
-
 .user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 180px;
+    z-index: 9999;
+    padding: 8px 0; /* Espacio arriba y abajo del recuadro */
+}
+
+    /* Cuando se abre, lo volvemos un contenedor de columna */
+    .user-menu.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+/* El nombre del usuario en la parte superior */
+.user-menu-name {
+    padding: 10px 16px;
+    font-weight: bold;
+    color: #333333; /* Forzamos color oscuro */
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 4px;
+    font-size: 14.5px;
+}
+
+/* Forzamos el diseño de los enlaces y botones DENTRO del menú para sobrescribir el texto blanco */
+.user-menu a,
+.user-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px !important; /* !important evita que el nav lo sobreescriba */
+    color: #333333 !important; /* TEXTO OSCURO PARA QUE SE VEA */
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 14.5px;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+    /* Efecto al pasar el ratón por las opciones */
+    .user-menu a:hover,
+    .user-menu button:hover {
+        background-color: #f8f9fa !important;
+        color: #2e7d32 !important; /* Se pone verde al pasar el ratón */
+    }
+
+/* Evita que el formulario de cerrar sesión dañe el diseño */
+.user-menu form {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+}
+/*.user-menu {
     display: none;
     position: absolute;
     right: 0;
@@ -152,7 +219,7 @@ nav {
 
 .user-menu.active {
     display: block;
-}
+}*/
 /* Contenedor principal de los textos */
 .hero-inner {
     display: flex;

@@ -161,11 +161,18 @@ namespace Proyecto_SkyInit.Controllers
         {
             return RedirectToAction("Index", "PanelUsuario");
         }
-
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Inicio", "Menu");
+            return RedirectToAction("Index", "Login");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogoutPost()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Login");
         }
     }
 }
