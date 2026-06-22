@@ -1,0 +1,228 @@
+﻿@model IEnumerable<Proyecto_SkyInit.Models.ServicioMantenimiento>
+@{
+    Layout = "_LayoutGestionServicios";
+}
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="logo">
+        <h2>Sky<span>Init</span></h2>
+        <span class="rol-badge">Administrador</span>
+    </div>
+    <nav>
+        <a asp-controller="Administrador" asp-action="Index">📝 Panel de control</a>
+        <a asp-controller="Administrador" asp-action="Propiedades">🏡 Propiedades</a>
+        <a asp-controller="Administrador" asp-action="Proyectos">🏗️ Proyectos</a>
+        <a asp-controller="Administrador" asp-action="Agentes">👤 Usuarios</a>
+        <a asp-controller="GestionMantenimientos" asp-action="Index">🛠️ Mantenimiento</a>
+        <a asp-controller="GestionServicios" asp-action="Index" class="active">🧰 Servicios</a>
+        <a asp-controller="Administrador" asp-action="Constructoras">🏅 Constructoras</a>
+        <a asp-controller="Administrador" asp-action="Consultas">💬 Consultas</a>
+        <a asp-controller="Administrador" asp-action="Comentarios">⭐ Comentarios</a>
+        <a asp-controller="Administrador" asp-action="Historial">🕘 Historial</a>
+        <a asp-controller="Administrador" asp-action="Notificaciones">🔔 Notificaciones</a>
+        <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+    </nav>
+</aside>
+
+<main class="content">
+    <div class="container-fluid">
+        <h2 class="mb-4 text-center">Gestión de Servicios de Mantenimiento</h2>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Mensaje"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Barra de búsqueda y filtrado -->
+        <form asp-action="Index" method="get" class="d-flex mb-3">
+            <input type="text" name="buscar" value="@ViewBag.Buscar"
+                   class="form-control me-2" placeholder="Buscar por nombre o descripción" />
+
+            <select name="filtroEstado" class="form-select me-2">
+                <option value="">Filtrar por estado</option>
+                <option value="Activo" selected="@(ViewBag.FiltroEstado == "Activo")">Activo</option>
+                <option value="Inactivo" selected="@(ViewBag.FiltroEstado == "Inactivo")">Inactivo</option>
+                <option value="Suspendido" selected="@(ViewBag.FiltroEstado == "Suspendido")">Suspendido</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="button" class="btn btn-success ms-auto"
+                    data-bs-toggle="modal" data-bs-target="#crearServicioModal">
+                + Nuevo servicio
+            </button>
+        </form>
+
+        <!-- Tabla CRUD -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var servicio in Model)
+                    {
+                        <tr>
+                            <td>@servicio.ServicioID</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(servicio.Imagen))
+                                {
+                                    <img src="@servicio.Imagen" class="img-servicio" alt="@servicio.Nombre" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                            <td>@servicio.Nombre</td>
+                            <td class="col-larga">@servicio.Descripcion</td>
+                            <td>$@servicio.Precio.ToString("N0")</td>
+                            <td>
+                                @if (servicio.Estado == "Activo")
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else if (servicio.Estado == "Suspendido")
+                                {
+                                    <span class="badge bg-warning-estado">Suspendido</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-warning"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#editarServicioModal_@servicio.ServicioID">
+                                    Editar
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="confirmarEliminar(@servicio.ServicioID, '@servicio.Nombre')">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- ── Modales Editar (uno por servicio) ──────────────────────────────────── -->
+@foreach (var servicio in Model)
+{
+    <div class="modal fade" id="editarServicioModal_@servicio.ServicioID" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form asp-action="Editar" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar: @servicio.Nombre</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="ServicioID" value="@servicio.ServicioID" />
+                        <input type="text" name="Nombre" value="@servicio.Nombre"
+                               class="form-control" placeholder="Nombre" required />
+                        <textarea name="Descripcion" class="form-control"
+                              placeholder="Descripción" rows="3" required>@servicio.Descripcion</textarea>
+                        <input type="number" name="Precio" value="@servicio.Precio"
+                               class="form-control" placeholder="Precio" step="0.01" min="0" required />
+                        <select name="Estado" class="form-select">
+                            <option value="Activo" selected="@(servicio.Estado == "Activo")">Activo</option>
+                            <option value="Inactivo" selected="@(servicio.Estado == "Inactivo")">Inactivo</option>
+                            <option value="Suspendido" selected="@(servicio.Estado == "Suspendido")">Suspendido</option>
+                        </select>
+                        <label class="form-label mt-2">Imagen (opcional — dejar vacío para mantener la actual)</label>
+                        <input type="file" name="imagenFile" class="form-control"
+                               accept="image/*" />
+                        @if (!string.IsNullOrEmpty(servicio.Imagen))
+                        {
+                            <div class="mt-2">
+                                <small class="text-muted">Imagen actual:</small><br />
+                                <img src="@servicio.Imagen" class="img-preview-modal" alt="actual" />
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning">Guardar cambios</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- ── Modal Crear ────────────────────────────────────────────────────────── -->
+<div class="modal fade" id="crearServicioModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo Servicio de Mantenimiento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="Crear" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="text" name="Nombre" class="form-control"
+                           placeholder="Nombre del servicio" required />
+                    <textarea name="Descripcion" class="form-control"
+                              placeholder="Descripción del servicio" rows="3" required></textarea>
+                    <input type="number" name="Precio" class="form-control"
+                           placeholder="Precio" step="0.01" min="0" required />
+                    <select name="Estado" class="form-select">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                        <option value="Suspendido">Suspendido</option>
+                    </select>
+                    <label class="form-label mt-2">Imagen (opcional)</label>
+                    <input type="file" name="imagenFile" class="form-control" accept="image/*" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Crear</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ── Modal confirmar eliminar ──────────────────────────────────────────── -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">⚠️ Confirmar eliminación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar el servicio <strong id="nombreServicio"></strong>?
+                Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <a id="btnConfirmarEliminar" href="#" class="btn btn-danger">Sí, eliminar</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarEliminar(id, nombre) {
+        document.getElementById('nombreServicio').textContent = nombre;
+        document.getElementById('btnConfirmarEliminar').href = '/GestionMantenimientos/Eliminar/' + id;
+        new bootstrap.Modal(document.getElementById('modalEliminar')).show();
+    }
+</script>

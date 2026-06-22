@@ -55,7 +55,7 @@ namespace Proyecto_SkyInit.Controllers
         }
         public IActionResult Mantenimiento()
         {
-            return RedirectToAction("Index", "GestionMantenimiento");
+            return RedirectToAction("Index", "GestionMantenimientos");
         }
         public IActionResult Consultas()
         {

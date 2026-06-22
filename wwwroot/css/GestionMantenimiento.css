@@ -1,9 +1,4 @@
-﻿/* wwwroot/css/GestionMantenimientos.css
-   SkyInit – Módulo Gestión de Mantenimientos
-   Consistente con GestionUsuarios.css y Administrador.css
-   RF: 142-156, 281-300 (SRS SkyInit)
-*/
-*, *::before, *::after {
+﻿*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -43,6 +38,9 @@ body {
 
     .logo h2 {
         font-size: 32px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0;
     }
 
     .logo span {

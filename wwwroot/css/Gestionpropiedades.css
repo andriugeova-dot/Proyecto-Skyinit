@@ -28,6 +28,9 @@ body {
 
     .logo h2 {
         font-size: 32px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0;
         color: white;
     }
 
