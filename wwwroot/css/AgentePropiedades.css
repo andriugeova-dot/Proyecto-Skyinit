@@ -26,14 +26,12 @@ body {
     top: 0;
     left: 0;
     height: 100vh;
-    overflow-y: hidden;
+    overflow-y: auto;
     z-index: 100;
 }
 
-/* LOGO */
 .logo {
     margin-bottom: 40px;
-    text-align: start;
 }
 
     .logo h2 {
@@ -44,21 +42,6 @@ body {
         color: #b8e3ea;
     }
 
-/* [C4] ROL BADGE en sidebar */
-.rol-badge {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
-    background: rgba(255,255,255,0.2);
-    color: #fff;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-}
-
-/* NAV */
 .sidebar nav {
     display: flex;
     flex-direction: column;
@@ -70,7 +53,6 @@ body {
     text-decoration: none;
     padding: 12px;
     border-radius: 10px;
-    transition: .3s;
     font-size: 15px;
     font-weight: 500;
     display: flex;
@@ -80,7 +62,7 @@ body {
 
     .sidebar a:hover,
     .sidebar a.active {
-        background: rgba(255,255,255,0.15);
+        background: rgba(255,255,255,.15);
     }
 
 /* RESPONSIVE SIDEBAR */
@@ -125,6 +107,7 @@ body {
             text-align: center;
         }
 }
+
 
 /* ── CONTENIDO ─────────────────────────────────── */
 

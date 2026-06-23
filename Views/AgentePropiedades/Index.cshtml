@@ -17,6 +17,7 @@
         </div>
         <nav>
             <a asp-controller="Agentes" asp-action="Index">📝 Panel de agente</a>
+            <a asp-controller="AgenteEditarPerfil" asp-action="Index">👤 Mi Perfil</a>
             <a asp-controller="AgentePropiedades" asp-action="Index" class="active">🏡 Mis propiedades</a>
             <a asp-controller="PublicarPropiedad" asp-action="Index">➕ Publicar propiedad</a>
             <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
@@ -56,9 +57,6 @@
                            placeholder="Buscar por título, ciudad o dirección..."
                            class="search-input" />
                     <button type="submit" class="btn-primary-sm">Buscar</button>
-                    <a href="@Url.Action("Index", "PublicarPropiedad")" class="btn-primary-sm">
-                        + Nueva Propiedad
-                    </a>
                 </div>
             </form>
 
