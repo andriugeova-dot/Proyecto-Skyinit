@@ -76,6 +76,6 @@ namespace Proyecto_SkyInit.Controllers
         public IActionResult Notificaciones()
         {
             return RedirectToAction("Index", "GestionNotificaciones");
-        }  
+        }
     }
 }

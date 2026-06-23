@@ -39,8 +39,8 @@ namespace Proyecto_SkyInit.Data
         public DbSet<EstadoAgenda> EstadosAgenda { get; set; }
         public DbSet<EstadoProyecto> EstadosProyecto { get; set; }
         public DbSet<EstadoReparacion> EstadosReparacion { get; set; }
-
         public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+        public DbSet<ServicioMantenimiento> ServiciosMantenimiento { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
