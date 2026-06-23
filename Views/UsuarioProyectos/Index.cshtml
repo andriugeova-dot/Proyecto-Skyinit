@@ -138,7 +138,7 @@
         function abrirModalRegistro(){
             document.getElementById("modalRegistro").classList.add("open");
         }
-        function cerrarModalRegistro(){
+        function cerrarModalRegistro(event){
             if(!event || event.target.id === "modalRegistro"){
                 document.getElementById("modalRegistro").classList.remove("open");
             }
