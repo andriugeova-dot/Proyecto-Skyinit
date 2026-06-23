@@ -53,6 +53,8 @@ namespace Proyecto_SkyInit.Controllers
                 }
             }
         }
+      
+
         // Alias para que la ruta /Menu/Inicio también funcione
         public IActionResult Inicio()
         {

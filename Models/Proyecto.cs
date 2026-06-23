@@ -12,6 +12,7 @@ namespace Proyecto_SkyInit.Models
         public DateTime? FechaFin { get; set; }
         public int? ConstructoraID { get; set; }
         public string? Descripcion { get; set; }
+        public string? Ubicacion { get; set; }
         // Navegación
         public EstadoProyecto? EstadoProyecto { get; set; }
         public Constructora? Constructora { get; set; }

@@ -48,59 +48,169 @@
         <div class="hero-overlay"></div>
 
         <div class="hero-content">
+            <div class="hero-eyebrow">RED DE ALIADOS SKYINIT</div>
 
             <h1>Constructoras Asociadas</h1>
-
-            <p>
-                Empresas constructoras que construyen el futuro junto a SkyInit.
-            </p>
-
-        </div>
+            
+            <p>Empresas constructoras que construyen el futuro junto a SkyInit.</p>
+        </div>  
 
     </section>
 </header>
 
 
-<div class="container">
+<div class="search-wrap">
+    <form asp-action="Index" method="get" class="search-card">
+        <div class="search-input">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input type="text" name="buscar" value="@ViewBag.Buscar" placeholder="Buscar constructora...">
+        </div>
 
-    <div class="search">
+        <div class="filter-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 6H3M16 12H8M12 18h0" />
+            </svg>
+            <select name="ciudad">
+                <option value="">Todas las ciudades</option>
+                <option value="Duitama">Duitama</option>
+                <option value="Sede principál">Sede principal</option>
+                <option value="Tunja">Tunja</option>
+            </select>
+        </div>
 
-        <input type="text" placeholder="Buscar constructora...">
+        <div class="filter-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+            </svg>
+            <input type="date" name="desde">
+        </div>
 
-    </div>
+        <button type="submit" class="btn-search">Buscar</button>
+    </form>
+</div>
 
-    <div class="builder-card">
-        @if (Model != null && Model.Count() > 0)
+
+    <main class="main">
+
+       @if (Model != null && Model.Any())
         {
-            @foreach (var constructora in Model)
-            {
-                <div class="constructora-card">
-
-                    <div class="card-logo">
-                        <img src="~/images/@constructora.Logo"
-                             alt="Logo"
-                             onerror="this.style.display='none'" />
-                    </div>
-
-                    <div class="card-info">
-                        <h2>@constructora.Nombre</h2>
-                        <p class="descripcion">@constructora.Descripcion</p>
-                        <p class="metadata">
-                            @constructora.Ciudad • @constructora.CantidadProyectos • Desde 2010
-                        </p>
-                    </div>
-
-                    <div class="card-actions">
-                        <a href="/Constructoras/Detalles/@constructora.Id" class="btn-ver-mas">Ver más</a>
-                    </div>
-
+            <div class="results-row">
+                <div class="results-count"><strong>@Model.Count()</strong> constructoras encontradas</div>
+                <div class="sort-select">
+                    Ordenar por
+                    <select>
+                        <option>Más relevantes</option>
+                        <option>Más proyectos</option>
+                        <option>Más antiguas</option>
+                        <option>Nombre A-Z</option>
+                    </select>
                 </div>
-            }
+            </div>
+
+            <div class="grid">
+                @foreach (var constructora in Model)
+                {
+                    <article class="card">
+                        <div class="card-top">
+                            <div class="card-logo">
+                                @if (!string.IsNullOrEmpty(constructora.Logo))
+                                {
+                                    <img src="~/images/@constructora.Logo" alt="Logo @constructora.Nombre" onerror="this.style.display='none'" />
+                                }
+
+                                else
+                                {
+                                    @(constructora.Nombre.Length >= 2 ? constructora.Nombre.Substring(0, 2).ToUpper() : constructora.Nombre)
+                                }
+                            </div>
+                            <div class="card-headline">
+                                <h3 class="card-name">@constructora.Nombre</h3>
+                                <p class="card-tagline">@constructora.Descripcion</p>
+                            </div>
+                        </div>
+
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-7.5 8-13a8 8 0 1 0-16 0c0 5.5 8 13 8 13Z" /><circle cx="12" cy="9" r="2.5" /></svg>
+                                <strong>@(string.IsNullOrEmpty(constructora.Ciudad) ? "Sede Principal" : constructora.Ciudad)</strong>
+                            </div>
+                            <div class="meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13" /><path d="M9 21v-6h6v6" /></svg>
+                                <strong>@constructora.CantidadProyectos</strong>&nbsp;proyectos
+                            </div>
+                        </div>
+
+                        <div class="card-bottom">
+                            <span class="card-since">Aliados desde 2010</span>
+                        <button type="button" class="btn-ver-mas" data-id="@constructora.Id" style="text-decoration: none; border: none; background: none; cursor: pointer;">
+                            Ver más
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </button>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            <div class="load-more-wrap">
+                <button class="btn-load-more">Cargar más constructoras</button>
+            </div>
         }
+
         else
         {
-            <p class="no-data">No hay constructoras activas registradas actualmente.</p>
+            <div class="results-row">
+                <div class="results-count"><strong>0</strong> constructoras encontradas</div>
+            </div>
+            <p style="text-align: center; color: var(--ink-soft); margin-top: 40px;">
+                No hay constructoras activas registradas actualmente.
+            </p>
         }
+    </main>
+
+<div id="modalConstructora" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+
+        <div class="modal-header">
+            <div class="modal-logo-wrap">
+                <img src="/img/logo-placeholder.png" alt="Logo" id="modalLogo">
+            </div>
+            <div class="modal-title-wrap">
+                <h2 id="modalNombre">Nombre Constructora</h2>
+                <p id="modalSede">Sede Principal: Cargando...</p>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <div class="modal-section">
+                <h3>Proyectos Activos</h3>
+                <div class="modal-grid" id="modalProyectos">
+                    <div class="mini-card">
+                        <h4>Condominio Los Pinos</h4>
+                        <p>Duitama - En construcción</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <h3>Propiedades Disponibles</h3>
+                <div class="modal-grid-propiedades" id="modalPropiedades">
+                    <div class="prop-card">
+                        <img src="/img/casa-ejemplo.jpg" alt="Casa">
+                        <div class="prop-info">
+                            <h4>Casa Campestre</h4>
+                            <p class="precio">$ 350.000.000 COP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -123,5 +233,139 @@
         }, 4000);
 
     </script>
+    <script>
+        
+        function toggleUserMenu() {
+            var menu = document.getElementById("user-menu");
+            menu.classList.toggle("active");
+        }
 
+       
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-pic')) {
+                var dropdowns = document.getElementsByClassName("user-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('active')) {
+                        openDropdown.classList.remove('active');
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('modalConstructora');
+        const closeBtn = document.querySelector('.modal-close');
+        const botonesVerMas = document.querySelectorAll('.btn-ver-mas');
+
+        // Función para abrir el modal
+        botonesVerMas.forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                e.preventDefault(); // Evita que el enlace recargue la página
+
+                modal.classList.add('active'); // Muestra el modal
+            });
+        });
+
+        // Función para cerrar el modal dándole a la 'X'
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Función para cerrar el modal si haces clic por fuera de la caja blanca
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    });
+    </script>
+    <script>
+                document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modalConstructora');
+            const closeBtn = document.querySelector('.modal-close');
+            const botonesVerMas = document.querySelectorAll('.btn-ver-mas');
+
+            // Formateador exacto para Pesos Colombianos (COP)
+            const formatoPesos = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            });
+
+            botonesVerMas.forEach(boton => {
+                boton.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const constructoraId = boton.getAttribute('data-id');
+
+                    try {
+                        // OJO AQUÍ: La ruta debe coincidir con tu controlador y método
+                             
+                        const response = await fetch(`/UsuariosConstructora/ObtenerDetalles/${constructoraId}`);
+                        if (!response.ok) throw new Error("No se pudo cargar la info");
+
+                        const data = await response.json();
+
+                        // Llenamos la información básica
+                        document.getElementById('modalNombre').textContent = data.nombre;
+                        document.getElementById('modalSede').textContent = `Sede Principal: ${data.sede}`;
+                        document.getElementById('modalLogo').src = data.logoUrl;
+
+                        // Llenamos los proyectos
+                        const contenedorProyectos = document.getElementById('modalProyectos');
+                        contenedorProyectos.innerHTML = '';
+
+                        if(data.proyectos.length === 0) {
+                            contenedorProyectos.innerHTML = '<p>No hay proyectos activos.</p>';
+                        } else {
+                            data.proyectos.forEach(proy => {
+                                contenedorProyectos.innerHTML += `
+                                    <div class="mini-card">
+                                        <h4>${proy.nombre}</h4>
+                                        <p>${proy.ubicacion} - ${proy.estado}</p>
+                                    </div>
+                                `;
+                            });
+                        }
+
+                        // Llenamos las propiedades
+                        const contenedorPropiedades = document.getElementById('modalPropiedades');
+                        contenedorPropiedades.innerHTML = '';
+
+                        if(data.propiedades.length === 0) {
+                            contenedorPropiedades.innerHTML = '<p>No hay propiedades registradas.</p>';
+                        } else {
+                            data.propiedades.forEach(prop => {
+                                contenedorPropiedades.innerHTML += `
+                                    <div class="prop-card">
+                                        <img src="${prop.imagenUrl}" alt="Foto propiedad">
+                                        <div class="prop-info">
+                                            <h4>${prop.nombre}</h4>
+                                            <p class="precio">${formatoPesos.format(prop.precio)}</p>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        }
+
+                        modal.classList.add('active');
+
+                    } catch (error) {
+                        console.error("Error cargando los detalles:", error);
+                        alert("Hubo un error al cargar la información de la constructora.");
+                    }
+                });
+            });
+
+            // Cerrar modal
+            closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('active');
+            });
+        });
+    </script>
+    
 }
