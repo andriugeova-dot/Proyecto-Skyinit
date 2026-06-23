@@ -23,13 +23,13 @@
             </div>
 
             <nav>
-                <a asp-controller="PanelUsuario" asp-action="PanelPrincipal" class="active">Panel Principal</a>
-                <a asp-controller="PanelUsuario" asp-action="Perfil">Perfil</a>
-                <a href="#">Favoritos</a>
-                <a href="#">Historial</a>
-                <a href="#">Mantenimiento</a>
-                <a href="#">Configuración</a>
-                <a asp-controller="Login" asp-action="Logout">Cerrar sesión</a>
+                <a asp-controller="PanelUsuario" asp-action="Index">🏠 Panel Principal</a>
+                <a asp-controller="UsuarioPerfil" asp-action="Index">👤 Perfil</a>
+                <a asp-controller="PanelUsuario" asp-action="Favoritos">⭐ Favoritos</a>
+                <a href="#">📜 Historial</a>
+                <a href="#">🛠️ Mantenimiento</a>
+                <a asp-controller="Menu" asp-action="Inicio">⬅️ Volver al menú</a>
+                <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
             </nav>
 
         </aside>
@@ -90,9 +90,11 @@
 
                         <p><strong>Teléfono:</strong> @Model.Telefono</p>
 
-                        <button class="btn">
-                            Editar Perfil
-                        </button>
+                        <a asp-controller="UsuarioPerfil" asp-action="Index" class="btn">
+                            ✏️ Editar Perfil
+                        </a>
+
+
 
                     </div>
                 </div>

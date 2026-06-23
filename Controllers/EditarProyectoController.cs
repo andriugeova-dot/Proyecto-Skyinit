@@ -26,7 +26,7 @@ namespace Proyecto_SkyInit.Controllers
 
             if (proyecto == null) return NotFound();
 
-            PoblarSelects();
+            PoblarSelects(proyecto);
             return View("Index", proyecto);
         }
 
@@ -37,33 +37,47 @@ namespace Proyecto_SkyInit.Controllers
         {
             if (!ModelState.IsValid)
             {
-                PoblarSelects();
+                PoblarSelects(modelo);
                 TempData["Mensaje"] = "❌ Error de validación";
                 TempData["TipoMensaje"] = "error";
                 return View("Index", modelo);
             }
 
-            _context.Proyectos.Update(modelo);
-            _context.SaveChanges();
+            var proyectoDb = _context.Proyectos
+                .FirstOrDefault(p => p.ProyectoID == modelo.ProyectoID);
 
-            await GuardarImagenes(modelo.ProyectoID, Imagenes);
+            if (proyectoDb == null) return NotFound();
+
+            proyectoDb.Nombre = modelo.Nombre;
+            proyectoDb.EstadoProyectoID = modelo.EstadoProyectoID;
+            proyectoDb.FechaInicio = modelo.FechaInicio;
+            proyectoDb.FechaFin = modelo.FechaFin;
+            proyectoDb.ConstructoraID = modelo.ConstructoraID;
+            proyectoDb.Descripcion = modelo.Descripcion;
+
+            await _context.SaveChangesAsync();
+
+            await GuardarImagenes(modelo.ProyectoID, Imagenes,true);
 
             TempData["Mensaje"] = "✅ Proyecto actualizado correctamente";
             TempData["TipoMensaje"] = "success";
             return RedirectToAction("Index", "GestionProyectos");
         }
 
-        private void PoblarSelects()
+        private void PoblarSelects(Proyecto proyecto)
         {
-            ViewBag.EstadosProyecto = new SelectList(_context.EstadosProyecto.ToList(), "EstadoProyectoID", "Descripcion");
-            ViewBag.Constructoras = new SelectList(_context.Constructoras.ToList(), "ConstructoraID", "Nombre");
+            ViewBag.EstadosProyecto = new SelectList(_context.EstadosProyecto.ToList(), "EstadoProyectoID", "Descripcion",proyecto.EstadoProyectoID);
+            ViewBag.Constructoras = new SelectList(_context.Constructoras.ToList(), "ConstructoraID", "Nombre", proyecto.ConstructoraID);
         }
-        private async Task GuardarImagenes(int proyectoID, IFormFile Imagenes)
+        private async Task GuardarImagenes(int proyectoID, IFormFile Imagenes, bool EsEdicion = false)
         {
-            if (Imagenes == null || Imagenes.Length == 0) return;
-
+            if (Imagenes == null || Imagenes.Length == 0)
+            {
+                if (EsEdicion) return;
+                throw new InvalidOperationException("Debe subir una imagen al crear un proyecto");
+            }
             var imagenAnterior = _context.ImagenesProyecto
-                .FirstOrDefault(i => i.ProyectoID == proyectoID);
+              .FirstOrDefault(i => i.ProyectoID == proyectoID);
 
             if (imagenAnterior != null)
             {
@@ -73,6 +87,7 @@ namespace Proyecto_SkyInit.Controllers
 
                 _context.ImagenesProyecto.Remove(imagenAnterior);
             }
+
 
             var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/proyectos");
             Directory.CreateDirectory(uploadPath);

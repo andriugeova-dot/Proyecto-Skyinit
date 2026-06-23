@@ -1,0 +1,404 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI',sans-serif;
+    background: #F8F5EC;
+    color: #333;
+}
+
+header {
+    height: 90vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+}
+
+    /* Overlay oscuro */
+    header::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        top: 0;
+        left: 0;
+    }
+
+.user-profile {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    transition: transform 0.3s;
+}
+
+    .profile-pic:hover {
+        transform: scale(1.1);
+    }
+
+.user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    min-width: 160px;
+    z-index: 100;
+}
+
+    .user-menu.active {
+        display: block;
+    }
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    position: absolute; /* CAMBIO CLAVE: Hace que flote sobre el hero */
+    top: 0;
+    left: 0;
+    width: 100%; /* Asegura que ocupe todo el ancho de la pantalla */
+    z-index: 100; /* Lo mantiene siempre por encima de la imagen y el overlay */
+    background: rgba(46, 125, 50, 0.7);
+    backdrop-filter: blur(6px);
+    box-sizing: border-box; /* Evita que el padding desborde el 100% del ancho */
+}
+ /* Overlay oscuro */
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 5px;
+        transition: 0.3s;
+        font-size: 15px;
+    }
+
+        nav a:hover {
+            background: #a5d6a7;
+            color: #1b5e20;
+        }
+
+.btn-registrar {
+    background: #f5f5dc;
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+    .btn-registrar:hover {
+        background: #e6e6c5;
+    }
+
+.menu-toggle {
+    display: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    nav {
+        position: absolute;
+        top: 65px;
+        right: 0;
+        background: #2e7d32;
+        flex-direction: column;
+        width: 240px;
+        display: none;
+    }
+
+        nav.active {
+            display: flex;
+        }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* HERO */
+
+.hero {
+    position: relative;
+    height: 100vh; /* Define la altura real de la sección en la pantalla */
+    width: 100%;
+    overflow: hidden;
+    background-color: #222; /* Fondo oscuro de respaldo */
+}
+
+.hero-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+    .hero-slider img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+        .hero-slider img.active {
+            opacity: 1;
+        }
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65); /* Filtro oscuro para dar contraste */
+    z-index: 2;
+}
+
+
+/*
+.hero-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( rgba(46,139,87,0.45), rgba(248,245,236,0.35) );
+    z-index: 1;
+}*/
+
+header, .hero {
+    background-color: transparent !important; /* Elimina el color gris oscuro de fondo */
+}
+.hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    padding-top: 80px; /* Espacio de cortesía para que la barra verde no lo toque */
+    box-sizing: border-box;
+}
+
+    .hero-content h1 {
+        color: #ffffff !important; /* Forzamos el color blanco */
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-shadow: 2px 3px 10px rgba(0, 0, 0, 0.85); /* Sombra para resaltar */
+    }
+
+    .hero-content p {
+        color: #ffffff !important; /* Forzamos el color blanco */
+        font-size: 18px;
+        max-width: 650px;
+        margin: 0;
+        text-shadow: 1px 2px 6px rgba(0, 0, 0, 0.9);
+    }
+
+/* CONTENIDO */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+/* BUSCADOR */
+
+.search {
+    margin-bottom: 35px;
+}
+
+    .search input {
+        width: 100%;
+        padding: 16px 20px;
+        border: none;
+        border-radius: 15px;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,.08);
+        font-size: 15px;
+    }
+.slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* las imágenes quedan detrás del texto */
+}
+
+.slide {
+    min-width: 100%;
+    transition: opacity 0.5s ease;
+}
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .slide:not(.active) {
+        display: none;
+    }
+
+.grid {
+    padding: 40px 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+/* TARJETAS */
+
+.builder-card {
+    display: flex;
+    flex-direction: column; /* Obliga a que cada tarjeta vaya debajo de la otra */
+    gap: 20px; /* Espacio de separación entre tarjetas */
+    background: transparent; /* Quitamos el fondo blanco */
+    box-shadow: none; /* Quitamos la sombra */
+    border: none; /* Quitamos el borde verde */
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+/* 2. La tarjeta individual (La que lleva el diseño) */
+.constructora-card {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff; /* Fondo blanco para cada una */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Sombra individual */
+    border-left: 10px solid #2e8b57; /* Borde verde individual */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .constructora-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+/* 3. Sección del Logo */
+.card-logo {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    background-color: #f4ede4;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-right: 25px;
+    border: 1px solid #e0d8c8;
+}
+
+    .card-logo img {
+        max-width: 80%;
+        max-height: 80%;
+        object-fit: contain;
+    }
+
+/* 4. Sección de Textos (Centro) */
+.card-info {
+    flex-grow: 1;
+}
+
+    .card-info h2 {
+        color: #1e7e4a;
+        margin: 0 0 5px 0;
+        font-size: 1.4rem;
+    }
+
+    .card-info .descripcion {
+        color: #555;
+        margin: 0 0 8px 0;
+    }
+
+    .card-info .metadata {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+/* 5. Sección del Botón (Derecha) */
+.card-actions {
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.btn-ver-mas {
+    display: inline-block;
+    background-color: #329f64;
+    color: white;
+    padding: 10px 24px;1
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+    .btn-ver-mas:hover {
+        background-color: #247547;
+        color: white;
+    }
+
+/* RESPONSIVE AJUSTADO */
+@media(max-width:768px) {
+    .constructora-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .card-logo {
+        margin-right: 0;
+    }
+
+    .card-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .btn-ver-mas {
+        display: block;
+        width: 100%;
+    }
+}

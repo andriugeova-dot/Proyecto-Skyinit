@@ -20,19 +20,19 @@ namespace Proyecto_SkyInit.Controllers
         {
             var query = _context.Constructoras.AsQueryable();
 
-
+           
             if (!string.IsNullOrEmpty(buscar))
             {
                 query = query.Where(c => c.Nombre.Contains(buscar) || c.Contacto.Contains(buscar));
             }
 
-
+            
             if (!string.IsNullOrEmpty(filtroEstado))
             {
                 query = query.Where(c => c.Estado == filtroEstado);
             }
 
-
+           
             var model = query.Select(c => new ConstructoraViewModel
             {
                 Id = c.ConstructoraID,
@@ -40,12 +40,12 @@ namespace Proyecto_SkyInit.Controllers
                 Contacto = c.Contacto,
                 Telefono = c.Telefono,
                 Estado = c.Estado,
-                Descripcion = c.Descripcion,
-                Ciudad = c.Ciudad,
+                Descripcion= c.Descripcion,
+                Ciudad=c.Ciudad,
                 Logo = c.Imagenes.FirstOrDefault(i => i.EsLogo).URL
             }).ToList();
 
-
+           
             ViewBag.Buscar = buscar;
             ViewBag.FiltroEstado = filtroEstado;
 
@@ -62,8 +62,8 @@ namespace Proyecto_SkyInit.Controllers
                 Contacto = model.Contacto,
                 Telefono = model.Telefono,
                 Correo = model.Correo,
-                Descripcion = model.Descripcion,
-                Ciudad = model.Ciudad,
+                Descripcion= model.Descripcion,
+                Ciudad= model.Ciudad,
                 Estado = model.Estado
             };
 

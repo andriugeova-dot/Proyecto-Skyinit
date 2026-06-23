@@ -300,5 +300,10 @@ namespace Proyecto_SkyInit.Controllers
 
             return View();
         }
+
+        public IActionResult AgenteEditarPerfil()
+        {
+            return RedirectToAction("Index", "AgenteEditarPerfil");
+        }
     }
 }

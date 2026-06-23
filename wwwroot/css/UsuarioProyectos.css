@@ -375,3 +375,27 @@ body {
     .btn-contacto:hover {
         background: var(--verde-dark);
     }
+
+.modal-box-login{
+    max-width: 420px;
+    text-align: center;
+}
+
+.modal-box-login .modal-info{
+    padding:35px 25px 25px;
+}
+.modal-box-login p{
+    color: #555;
+    font-size: 15px;
+    margin-bottom:0;
+}
+.acciones-login{
+    margin-top:20px;
+    display: flex;
+    justify-content:center;
+}
+.acciones-login .btn-contacto{
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0;
+}

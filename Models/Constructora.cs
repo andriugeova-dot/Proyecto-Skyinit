@@ -14,7 +14,7 @@ namespace Proyecto_SkyInit.Models
         public string? Logo { get; set; }
         public string? Descripcion { get; set; }
         public string? Ciudad { get; set; }
-
+        
 
         // Navegación
         public ICollection<Propiedad> Propiedades { get; set; } = null!;

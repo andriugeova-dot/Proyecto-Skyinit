@@ -121,7 +121,9 @@
 
                         <div class="footer">
                             <h3>@propiedad.Precio.ToString("C0")</h3>
-                            <a asp-controller="UsuarioPropiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID">
+                            <a asp-controller="UsuarioPropiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID"
+                                class="link-detalle-propiedad"
+                                data-require-sesion="@Html.Raw(User.Identity!.IsAuthenticated ? "false" : "true")">
                                 <button>Ver propiedad</button>
                             </a>
                         </div>
@@ -152,7 +154,16 @@
             document.getElementById("user-menu").classList.toggle("active");
         }
     </script>
-
+    <script>
+        document.querySelectorAll(".link-detalle-propiedad").forEach(link => {
+            link.addEventListener("click",(e) => {
+                if (link.dataset.requireSesion === "true"){
+                    e.preventDefault();
+                    document.getElementById("modalRegistro").style.display = "flex";
+                }
+            })
+        })
+        </script>
     <script>
         document.querySelectorAll(".btn-favorito").forEach(btn => {
             btn.addEventListener("click", async () => {

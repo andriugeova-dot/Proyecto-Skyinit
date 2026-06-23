@@ -98,12 +98,31 @@
                 </div>
             </div>
     </div>
+    <div id="modalRegistro" class="modal-overlay" onclick="cerrarModalRegistro(event)">
+        <div class="modal-box modal-box-login">
+            <button class="modal-close" onclick="cerrarModalRegistro()">X</button>
+            <div class="modal-info">
+                <h2>Debes iniciar sesion</h2>
+                <p>Para ver mas detalles de este proyecto debes iniciar sesión en tu cuenta.</p>
+                <div class="acciones-login">
+                    <a asp-controller="Login" asp-action="Index" class="btn-contacto">Iniciar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script>
+
+        const usuarioAutenticado = @Html.Raw(User.Identity!.IsAuthenticated ? "true" : "false");
+
         function toggleUserMenu() {
             document.getElementById("user-menu").classList.toggle("active");
         }
         function abrirModal(nombre,constructora,descripcion,imgUrl) {
+            if (!usuarioAutenticado){
+                abrirModalRegistro();
+                return;
+            }
             document.getElementById("modal-nombre").textContent = nombre;
             document.getElementById("modal-constructora").textContent = constructora || "-";
             document.getElementById("modal-descripcion").textContent = descripcion || "-";
@@ -115,6 +134,14 @@
             if (!event || event.target.id === "modal") {
                 document.getElementById("modal").classList.remove("open");
              }
+        }
+        function abrirModalRegistro(){
+            document.getElementById("modalRegistro").classList.add("open");
+        }
+        function cerrarModalRegistro(){
+            if(!event || event.target.id === "modalRegistro"){
+                document.getElementById("modalRegistro").classList.remove("open");
+            }
         }
     </script>
 
