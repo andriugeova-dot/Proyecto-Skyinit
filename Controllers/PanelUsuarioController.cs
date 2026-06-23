@@ -32,5 +32,9 @@ namespace Proyecto_SkyInit.Controllers
         public IActionResult Perfil() { 
             return RedirectToAction("Index", "UsuarioPerfil");        
         }
+        public IActionResult Favoritos()
+        {
+            return RedirectToAction("Index", "UsuarioFavoritos");
+        }
     }
 }
