@@ -93,7 +93,6 @@
                         <tr>
                             <th>#</th>
                             <th>Usuario</th>
-                            <th>Propiedad</th>
                             <th>Descripción</th>
                             <th>Estado</th>
                             <th>Fecha solicitud</th>
@@ -114,43 +113,37 @@
                             <tr>
                                 <td>@item.ReparacionID</td>
                                 <td>@item.Usuario?.Nombre</td>
+                                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                                    title="@item.Descripcion">
+                                    @item.Descripcion
+                                </td>
                                 <td>
-                                    @(item.Propiedad != null
-                                                                ? item.Propiedad.Titulo
-                                                                : "<em style='color:#aaa'>Sin propiedad</em>")
-                        </td>
-                        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
-                            title="@item.Descripcion">
-                            @item.Descripcion
-                        </td>
-                        <td>
-                            <span class="badge @badgeClass">
-                                @item.EstadoReparacion?.Descripcion
-                            </span>
-                        </td>
-                        <td>@item.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>
-                            <div class="acciones">
-                                <!-- RF284 – Editar/cambiar estado -->
-                                <button class="gm-btn warning"
-                                        onclick="abrirModalEditar(
-                                                    @item.ReparacionID,
-                                                    '@Html.Raw(item.Descripcion?.Replace("'", "\\'") ?? "")' ,
-                                                    @item.EstadoReparacionID,
-                                                    @(item.PropiedadID?.ToString() ?? "null"))">
-                                    ✏️ Editar
-                                </button>
-                                <!-- RF204 / RF220 – Eliminar -->
-                                <form asp-action="Eliminar" asp-route-id="@item.ReparacionID"
-                                      method="post" style="display:inline"
-                                      onsubmit="return confirm('¿Eliminar esta solicitud?');">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="gm-btn danger">🗑️ Eliminar</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                                        }
+                                    <span class="badge @badgeClass">
+                                        @item.EstadoReparacion?.Descripcion
+                                    </span>
+                                </td>
+                                <td>@item.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <div class="acciones">
+                                        <!-- RF284 – Editar/cambiar estado -->
+                                        <button class="gm-btn warning"
+                                                onclick="abrirModalEditar(
+                                                            @item.ReparacionID,
+                                                            '@Html.Raw(item.Descripcion?.Replace("'", "\\'") ?? "")' ,
+                                                            @item.EstadoReparacionID)">
+                                            ✏️ Editar
+                                        </button>
+                                        <!-- RF204 / RF220 – Eliminar -->
+                                        <form asp-action="Eliminar" asp-route-id="@item.ReparacionID"
+                                              method="post" style="display:inline"
+                                              onsubmit="return confirm('¿Eliminar esta solicitud?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="gm-btn danger">🗑️ Eliminar</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             }
@@ -175,18 +168,6 @@
                         <option value="@u.UsuarioID">@u.Nombre (@u.Correo)</option>
                     }
                 </select>
-            </div>
-
-            <div class="form-row">
-                <label for="PropiedadID">Propiedad</label>
-                <select name="PropiedadID" id="PropiedadID" class="gm-select" style="width:100%">
-                    <option value="">Sin propiedad asociada</option>
-                    @foreach (var p in (IEnumerable<Proyecto_SkyInit.Models.Propiedad>)ViewBag.Propiedades)
-                    {
-                        <option value="@p.PropiedadID">@p.Titulo – @p.Direccion</option>
-                    }
-                </select>
-                <small>Opcional. Asocia la solicitud a un inmueble registrado.</small>
             </div>
 
             <div class="form-row">
@@ -260,7 +241,7 @@
             document.getElementById('modalCrear').classList.add('active');
         }
 
-        function abrirModalEditar(id, descripcion, estadoId, propiedadId) {
+        function abrirModalEditar(id, descripcion, estadoId) {
             document.getElementById('editId').value        = id;
             document.getElementById('editDescripcion').value = descripcion;
             document.getElementById('editEstado').value    = estadoId;

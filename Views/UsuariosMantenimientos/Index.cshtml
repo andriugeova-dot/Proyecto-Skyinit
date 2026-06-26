@@ -1,110 +1,151 @@
-﻿@{
+﻿@model IEnumerable<Proyecto_SkyInit.Models.ServicioMantenimiento>
+@{
     Layout = "_LayoutUsuariosMantenimientos";
-    ViewData["Title"] = "Usuarios Mantenimientos";
+    ViewData["Title"] = "Servicios de Mantenimiento";
 }
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios de Mantenimiento - SkyInit</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="reparaciones.css"> 
-</head>
-<body>
 
-    <header>
-        <div class="topbar">
-            <div class="logo">SkyInit</div>
-            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-            <nav id="menu">
-                <a asp-controller="Menu" asp-action="Index">Inicio</a>
-                <a asp-controller="Menu" asp-action="Propiedades">Propiedades</a>
-                <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
-                <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
-                <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
-                @if (User.Identity!.IsAuthenticated)
-                {
-                    <div class="user-profile">
-                        <img src="@(ViewBag.FotoPerfil ?? "/img/default-avatar.svg")"
-                             alt="Perfil"
-                             class="profile-pic"
-                             onclick="toggleUserMenu()" />
-                        <div id="user-menu" class="user-menu">
-                            <div class="user-menu-name">@User.Identity.Name</div>
-                            <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
-                            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
-                        </div>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="toast success" id="toast">@TempData["Mensaje"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="toast error" id="toastErr">@TempData["Error"]</div>
+}
+
+<header>
+    <div class="topbar">
+        <div class="logo">SkyInit</div>
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+        <nav id="menu">
+            <a asp-controller="Menu" asp-action="Index">Inicio</a>
+            <a asp-controller="Menu" asp-action="Propiedades">Propiedades</a>
+            <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+            <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
+            <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
+            @if (User.Identity!.IsAuthenticated)
+            {
+                <div class="user-profile">
+                    <img src="@(ViewBag.FotoPerfil ?? "/img/default-avatar.svg")"
+                         alt="Perfil"
+                         class="profile-pic"
+                         onclick="toggleUserMenu()" />
+                    <div id="user-menu" class="user-menu">
+                        <div class="user-menu-name">@User.Identity.Name</div>
+                        <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
+                        <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
                     </div>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Login" asp-action="Index" class="btn-registrar">Iniciar Sesión</a>
+            }
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="slider">
+        <div class="slide active">
+            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789" alt="Mantenimiento 1">
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1581141849291-1125c7b692b5" alt="Mantenimiento 2">
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="Mantenimiento 3">
+        </div>
+    </div>
+    <h1>Servicios de Mantenimiento</h1>
+</section>
+
+<section class="grid">
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <span>🛠️</span>
+            No hay servicios de mantenimiento disponibles por el momento.
+        </div>
+    }
+    else
+    {
+        foreach (var servicio in Model)
+        {
+            <div class="card">
+                @if (!string.IsNullOrWhiteSpace(servicio.Imagen))
+                {
+                    <img src="@servicio.Imagen" alt="@servicio.Nombre">
                 }
                 else
                 {
-                    <a asp-controller="Login" asp-action="Index" class="btn-registrar">Iniciar Sesión</a>
+                    <div class="card-icon-placeholder">🛠️</div>
                 }
-            </nav>
-        </div>
-    </header>
+                <div class="card-content">
+                    <h3>@servicio.Nombre</h3>
+                    <p>@servicio.Descripcion</p>
+                    <p class="price-tag">$@servicio.Precio.ToString("N0") COP</p>
 
-    <section class="hero">
-        <div class="slider">
-            <div class="slide active">
-                <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789" alt="Mantenimiento 1">
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <button type="button"
+                                onclick="abrirModalSolicitud(@servicio.ServicioID, '@Html.Raw(servicio.Nombre.Replace("'", "\\'"))')">
+                            Solicitar
+                        </button>
+                    }
+                    else
+                    {
+                        <a asp-controller="Login" asp-action="Index" class="btn-login-required">
+                            Inicia sesión para solicitar
+                        </a>
+                    }
+                </div>
             </div>
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1581141849291-1125c7b692b5" alt="Mantenimiento 2">
-            </div>
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="Mantenimiento 3">
-            </div>
-        </div>
-        <h1>Servicios de Mantenimiento</h1>
-    </section>
+        }
+    }
+</section>
 
-
-    <section class="grid">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789" alt="Mantenimiento general">
-            <div class="card-content">
-                <h3>Mantenimiento general</h3>
-                <p>Reparaciones básicas para mantener tu hogar en perfecto estado.</p>
-                <button>Solicitar</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1581141849291-1125c7b692b5" alt="Electricidad">
-            <div class="card-content">
-                <h3>Electricidad</h3>
-                <p>Instalación y reparación de sistemas eléctricos.</p>
-                <button>Solicitar</button>
+<!-- ▌MODAL SOLICITAR SERVICIO ▐ -->
+<div class="modal-overlay" id="modalSolicitud">
+    <div class="modal-content">
+        <button type="button" class="modal-close" onclick="cerrarModal('modalSolicitud')">&times;</button>
+        <div class="modal-header">
+            <div class="modal-title-wrap">
+                <h2>Solicitar servicio</h2>
+                <p id="modalServicioNombre"></p>
             </div>
         </div>
+        <div class="modal-body">
+            <form asp-action="SolicitarServicio" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="servicioId" id="modalServicioId" />
 
-        <div class="card">
-            <img src="https://images.pexels.com/photos/16509869/pexels-photo-16509869.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Plomería">
-            <div class="card-content">
-                <h3>Plomería</h3>
-                <p>Solución de fugas, tuberías y sistemas de agua.</p>
-                <button>Solicitar</button>
-            </div>
-        </div>
+                <div class="form-row">
+                    <label for="modalNotas">Detalles adicionales (opcional)</label>
+                    <textarea name="notas" id="modalNotas" rows="4"
+                              placeholder="Ej: dirección del inmueble, disponibilidad de horario, descripción del problema..."></textarea>
+                </div>
 
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1599423300746-b62533397364" alt="Pintura">
-            <div class="card-content">
-                <h3>Pintura</h3>
-                <p>Renueva tus espacios con acabados profesionales.</p>
-                <button>Solicitar</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal('modalSolicitud')">Cancelar</button>
+                    <button type="submit" class="btn-confirm">✅ Enviar solicitud</button>
+                </div>
+            </form>
         </div>
-    </section>
+    </div>
+</div>
+
+@section Scripts {
     <script>
-       
         function toggleUserMenu() {
             document.getElementById("user-menu").classList.toggle("active");
         }
 
-    let slides = document.querySelectorAll('.slide');
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+
+        let slides = document.querySelectorAll('.slide');
         let index = 0;
 
         setInterval(() => {
@@ -112,7 +153,28 @@
             index = (index + 1) % slides.length;
             slides[index].classList.add('active');
         }, 4000);
-    </script>
 
-</body>
-</html>
+        // ── Modal de solicitud ──────────────────────────────
+        function abrirModalSolicitud(servicioId, nombre) {
+            document.getElementById('modalServicioId').value = servicioId;
+            document.getElementById('modalServicioNombre').textContent = nombre;
+            document.getElementById('modalSolicitud').classList.add('active');
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function (e) {
+                if (e.target === this) this.classList.remove('active');
+            });
+        });
+
+        // ── Auto-dismiss toast ──────────────────────────────
+        ['toast', 'toastErr'].forEach(tid => {
+            const el = document.getElementById(tid);
+            if (el) setTimeout(() => el.style.display = 'none', 4500);
+        });
+    </script>
+}

@@ -122,8 +122,9 @@
                         <div class="footer">
                             <h3>@propiedad.Precio.ToString("C0")</h3>
                             <a asp-controller="UsuarioPropiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID"
-                                class="link-detalle-propiedad"
-                                data-require-sesion="@Html.Raw(User.Identity!.IsAuthenticated ? "false" : "true")">
+                               class="link-detalle-propiedad"
+                               data-id="@propiedad.PropiedadID"
+                               data-require-sesion="@Html.Raw(User.Identity!.IsAuthenticated ? "false" : "true")">
                                 <button>Ver propiedad</button>
                             </a>
                         </div>
@@ -161,7 +162,41 @@
         </div>
     </div>
 
-    
+    <div id="modalPropiedad" class="modal">
+        <div class="modal-content modal-content-propiedad">
+            <span class="modal-close">&times;</span>
+            <div id="modal-body">
+                <h2 id="modalTitulo"></h2>
+                <img id="modalImagen" src="" alt="Imagen propiedad" class="modal-img-propiedad" />
+                <p id="modalDescripcion"></p>
+
+                <div class="modal-detalles-grid">
+                    <p id="modalPrecio"></p>
+                    <p id="modalUbicacion"></p>
+                    <p id="modalTipoOperacion"></p>
+                    <p id="modalHabitaciones"></p>
+                </div>
+
+                <div class="modal-contacto">
+                    <div class="modal-agente" id="modalAgenteWrap">
+                        <img id="modalAgenteFoto" src="" alt="Foto del agente" class="modal-avatar" />
+                        <div class="modal-contacto-info">
+                            <span class="modal-contacto-label">Agente encargado</span>
+                            <p id="modalAgenteNombre"></p>
+                        </div>
+                    </div>
+
+                    <div class="modal-constructora" id="modalConstructoraWrap">
+                        <img id="modalConstructoraLogo" src="" alt="Logo de la constructora" class="modal-logo" />
+                        <div class="modal-contacto-info">
+                            <span class="modal-contacto-label">Constructora</span>
+                            <p id="modalConstructoraNombre"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function toggleUserMenu() {
@@ -203,6 +238,79 @@
             document.getElementById("modalRegistro").classList.remove("open");
             }
         }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modalPropiedad');
+            const closeBtn = document.querySelector('.modal-close');
+            const botonesVerMas = document.querySelectorAll('.link-detalle-propiedad');
+
+            const formatoPesos = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            });
+
+            botonesVerMas.forEach(boton => {
+                boton.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const propiedadId = boton.dataset.id;
+
+                    try {
+                        const response = await fetch(`/UsuarioPropiedades/ObtenerDetalles/${propiedadId}`);
+                        if (!response.ok) throw new Error("No se pudo cargar la info");
+
+                        const data = await response.json();
+
+                        document.getElementById('modalTitulo').textContent = data.titulo;
+                        document.getElementById('modalImagen').src = data.imagenUrl;
+                        document.getElementById('modalDescripcion').textContent = data.descripcion;
+                        document.getElementById('modalPrecio').textContent = formatoPesos.format(data.precio);
+                        document.getElementById('modalUbicacion').textContent = `Ubicación: ${data.direccion}, ${data.ciudad}`;
+                        document.getElementById('modalTipoOperacion').textContent = `Operación: ${data.tipoOperacion}`;
+                        document.getElementById('modalHabitaciones').textContent = data.habitaciones
+                            ? `Habitaciones: ${data.habitaciones}`
+                            : 'Habitaciones: No especificado';
+
+                        const agenteWrap = document.getElementById('modalAgenteWrap');
+                        if (data.agenteNombre) {
+                            document.getElementById('modalAgenteNombre').textContent = data.agenteNombre;
+                            document.getElementById('modalAgenteFoto').src = data.agenteFoto;
+                            agenteWrap.style.display = 'flex';
+                        } else {
+                            agenteWrap.style.display = 'none';
+                        }
+
+                        const constructoraWrap = document.getElementById('modalConstructoraWrap');
+                        const constructoraLogoImg = document.getElementById('modalConstructoraLogo');
+                        if (data.constructoraNombre) {
+                            document.getElementById('modalConstructoraNombre').textContent = data.constructoraNombre;
+                            if (data.constructoraLogo) {
+                                constructoraLogoImg.src = data.constructoraLogo;
+                                constructoraLogoImg.style.display = 'block';
+                            } else {
+                                constructoraLogoImg.style.display = 'none';
+                            }
+                            constructoraWrap.style.display = 'flex';
+                        } else {
+                            constructoraWrap.style.display = 'none';
+                        }
+
+                        modal.classList.add('active');
+                    } catch (error) {
+                        console.error("Error cargando los detalles:", error);
+                        alert("Hubo un error al cargar la información de la propiedad.");
+                    }
+                });
+            });
+
+            closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('active');
+            });
+        });
     </script>
 
 </body>
