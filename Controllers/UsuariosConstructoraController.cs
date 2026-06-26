@@ -15,6 +15,7 @@ namespace Proyecto_SkyInit.Controllers
         public IActionResult Index(string buscar, string filtroEstado, string ciudad, DateTime? desde)
         {
             var query = _context.Constructoras.AsQueryable();
+            query = query.Where(c => c.Estado == "Activo");
 
             if (!string.IsNullOrEmpty(buscar))
                 query = query.Where(c => c.Nombre.Contains(buscar) || c.Contacto.Contains(buscar));
