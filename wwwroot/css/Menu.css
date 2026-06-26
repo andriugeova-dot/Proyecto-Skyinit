@@ -54,8 +54,8 @@ nav {
     display: flex;
     align-items: center;
     gap: 20px;
-    position: relative; /* ← esto se agregó */
-    z-index: 9999; /* ← esto se agregó */
+    position: relative;
+    z-index: 9999;
     overflow: visible;
 }
 
@@ -120,32 +120,29 @@ nav {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     min-width: 180px;
     z-index: 9999;
-    padding: 8px 0; /* Espacio arriba y abajo del recuadro */
+    padding: 8px 0;
 }
 
-    /* Cuando se abre, lo volvemos un contenedor de columna */
     .user-menu.active {
         display: flex;
         flex-direction: column;
     }
 
-/* El nombre del usuario en la parte superior */
 .user-menu-name {
     padding: 10px 16px;
     font-weight: bold;
-    color: #333333; /* Forzamos color oscuro */
+    color: #333333;
     border-bottom: 1px solid #eeeeee;
     margin-bottom: 4px;
     font-size: 14.5px;
 }
 
-/* Forzamos el diseño de los enlaces y botones DENTRO del menú para sobrescribir el texto blanco */
 .user-menu a,
 .user-menu button {
     display: block;
     width: 100%;
-    padding: 10px 16px !important; /* !important evita que el nav lo sobreescriba */
-    color: #333333 !important; /* TEXTO OSCURO PARA QUE SE VEA */
+    padding: 10px 16px !important; 
+    color: #333333 !important;
     text-align: left;
     background: none;
     border: none;
@@ -155,72 +152,19 @@ nav {
     box-sizing: border-box;
 }
 
-    /* Efecto al pasar el ratón por las opciones */
     .user-menu a:hover,
     .user-menu button:hover {
         background-color: #f8f9fa !important;
-        color: #2e7d32 !important; /* Se pone verde al pasar el ratón */
+        color: #2e7d32 !important;
     }
 
-/* Evita que el formulario de cerrar sesión dañe el diseño */
 .user-menu form {
     margin: 0;
     padding: 0;
     width: 100%;
     display: flex;
 }
-/*.user-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: calc(100% + 8px);
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    min-width: 160px;
-    z-index: 100;
-    overflow: hidden;
-}
 
-.user-menu-name {
-    padding: 10px 14px;
-    font-size: 13px;
-    color: #666;
-    border-bottom: 1px solid #eee;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 160px;
-}
-
-.user-menu a {
-    display: block;
-    padding: 10px 14px;
-    color: #1b5e20;
-    text-decoration: none;
-    font-size: 14px;
-    transition: background 0.2s;
-}
-
-    .user-menu a:hover {
-        background: #f1f8f1;
-    }
-
-    .user-menu a:last-child {
-        color: #c0392b;
-        border-top: 1px solid #eee;
-    }
-
-        .user-menu a:last-child:hover {
-            background: #fdf0ee;
-        }
-
-.user-menu.active {
-    display: block;
-}*/
-/* Contenedor principal de los textos */
 .hero-inner {
     display: flex;
     flex-direction: column;
@@ -289,38 +233,6 @@ nav {
     margin-top: 0;
     margin-bottom: 0;
 }
-
-/* HERO */
-/*.hero {
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    margin-bottom: 80px;
-}
-
-    .hero h1 {
-        font-family: 'Playfair Display',serif;
-        font-size: clamp(2.6rem,5.5vw,4.4rem);
-        font-weight: 700;
-        color: #fff;
-        line-height: 1.12;
-        margin-bottom: 20px;
-        max-width: 640px;
-    }
-
-    .hero p {
-        font-size: 18px;
-    }
-
-.titulo {
-    text-align: center;
-    font-size: 32px;
-    font-family: 'Cooper', sans-serif;
-    color: #2E8B57;
-    margin: 30px 0;
-    margin-bottom: 25px;
-}*/
-
 
 /* CARDS */
 .grid {
@@ -395,7 +307,6 @@ nav {
 .badge-default {
     background-color: #777FF2;
 }
-/* Naranja para empeño/otros */
 
 /* BOTÓN DE FAVORITO CIRCULAR */
 .btn-favorito-nuevo {
@@ -423,8 +334,8 @@ nav {
 
     /* Cuando es favorito, el SVG se pinta de rojo */
     .btn-favorito-nuevo.favorito-activo svg {
-        fill: #e74c3c;
-        stroke: #e74c3c;
+        fill: #28a745;
+        stroke: #28a745;
     }
 
 /* CUERPO DE LA TARJETA (Textos) */
@@ -507,7 +418,24 @@ nav {
     text-align: center;
     max-width: 400px;
     margin: auto;
+    position: relative;
 }
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    color: #555;
+    cursor: pointer;
+}
+
+    .modal-close:hover {
+        color: #2e7d32;
+    }
 
 .acciones {
     margin-top: 15px;
@@ -917,4 +845,99 @@ nav {
     width: 35px;
     height: 35px;
     fill: white;
+}
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+.modal-box {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    max-width: 750px;
+    width: 90%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    position: relative;
+    animation: fadeInScale 0.3s ease;
+}
+
+.modal-box-login {
+    max-width: 420px;
+    text-align: center;
+}
+
+    .modal-box-login .modal-info {
+        padding: 35px 25px 25px;
+    }
+
+    .modal-box-login p {
+        color: #555;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+
+.modal-info {
+    padding: 25px;
+}
+
+    .modal-info h2 {
+        color: #2e7d32;
+        margin-bottom: 15px;
+        font-size: 26px;
+    }
+
+    .modal-info p {
+        margin-bottom: 10px;
+        font-size: 15px;
+        color: #333;
+    }
+
+.acciones-login {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+    .acciones-login .btn-contacto {
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 0;
+    }
+
+.btn-contacto {
+    margin-top: 15px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-contacto:hover {
+        background: #1f5f3d;
+    }
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

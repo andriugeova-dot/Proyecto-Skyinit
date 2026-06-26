@@ -138,12 +138,26 @@
         }
     </section>
 
-    <div id="modalRegistro" class="modal" style="display:none;">
+@*     <div id="modalRegistro" class="modal" style="display:none;" onclick="if(event.target.id==='modalRegistro'){cerrarModalRegistro();}">
         <div class="modal-content">
+            <button type="button" class="modal-close" onclick="cerrarModalRegistro()">X</button>
             <h2>Debes estar registrado</h2>
             <p>Para guardar favoritos debes iniciar sesion</p>
             <div class="acciones">
                 <a asp-controller="Login" asp-action="Index" class="btn">Iniciar Sesion</a>
+            </div>
+        </div>
+    </div>
+ *@
+    <div id="modalRegistro" class="modal-overlay" onclick="cerrarModalRegistro(event)">
+        <div class="modal-box modal-box-login">
+            <button class="modal-close" onclick="cerrarModalRegistro()">X</button>
+            <div class="modal-info">
+                <h2>Debes estar registrado</h2>
+                <p>Para guardar favoritos debes iniciar sesion</p>
+                <div class="acciones-login">
+                    <a asp-controller="Login" asp-action="Index" class="btn-contacto">Iniciar Sesion</a>
+                </div>
             </div>
         </div>
     </div>
@@ -214,10 +228,16 @@
                     btn.classList.toggle("favorito-activo");
                     btn.classList.toggle("favorito-inactivo");
                 } else if (response.status === 401) {
-                    document.getElementById("modalRegistro").style.display = "flex";
+                    document.getElementById("modalRegistro").classList.add("open");
                 }
             });
         });
+
+        function cerrarModalRegistro(event){
+            if (!event || event.target.id === "modalRegistro") {
+            document.getElementById("modalRegistro").classList.remove("open");
+            }
+        }
     </script>
 
     <script>
