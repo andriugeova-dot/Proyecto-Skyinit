@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutUsuariosSolicitudServicios.cshtml";
+}
+@model List<Proyecto_SkyInit.Models.Reparacion>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Usuario - SkyInit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="user-container">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>SkyInit</h2>
+                <span>Panel Usuario</span>
+            </div>
+
+            <nav>
+                <a asp-controller="PanelUsuario" asp-action="Index">🏠 Panel Principal</a>
+                <a asp-controller="UsuarioPerfil" asp-action="Index">👤 Perfil</a>
+                <a asp-controller="PanelUsuario" asp-action="Favoritos">⭐ Favoritos</a>
+                <a asp-controller="UsuariosSolicitudServicios" asp-action="Index">🛠️ Mantenimiento</a>
+                <a asp-controller="Menu" asp-action="Inicio">⬅️ Volver al menú</a>
+                <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section class="hero">
+                <h1>Mis solicitudes de mantenimiento</h1>
+                <p>Aquí puedes ver todas tus solicitudes y su estado actualizado.</p>
+            </section>
+
+            <section class="solicitudes-grid">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var solicitud in Model)
+                    {
+                        <div class="solicitud-card">
+                            <h3>Solicitud #@solicitud.ReparacionID</h3>
+                            <p><strong>Descripción:</strong> @solicitud.Descripcion</p>
+                            <p><strong>Fecha:</strong> @solicitud.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p><strong>Estado:</strong> @solicitud.EstadoReparacion?.Descripcion</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No tienes solicitudes registradas.</p>
+                }
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

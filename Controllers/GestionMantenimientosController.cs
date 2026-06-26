@@ -35,7 +35,6 @@ namespace Proyecto_SkyInit.Controllers
 
             var query = _context.Reparaciones
                 .Include(r => r.Usuario)
-                .Include(r => r.Propiedad)
                 .Include(r => r.EstadoReparacion)
                 .AsQueryable();
 
@@ -58,8 +57,6 @@ namespace Proyecto_SkyInit.Controllers
             ViewBag.Estados = await _context.EstadosReparacion.ToListAsync();
             ViewBag.Usuarios = await _context.Usuarios
                                         .OrderBy(u => u.Nombre).ToListAsync();
-            ViewBag.Propiedades = await _context.Propiedades
-                                        .OrderBy(p => p.Titulo).ToListAsync();
 
             return View(await query
                 .OrderByDescending(r => r.FechaSolicitud)
@@ -70,7 +67,6 @@ namespace Proyecto_SkyInit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(
             int UsuarioID,
-            int? PropiedadID,
             string Descripcion,
             int EstadoReparacionID)
         {
@@ -95,19 +91,10 @@ namespace Proyecto_SkyInit.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Verificar que la propiedad exista (si se proporcionó)
-            if (PropiedadID.HasValue)
-            {
-                var propiedadExiste = await _context.Propiedades
-                    .AnyAsync(p => p.PropiedadID == PropiedadID.Value);
-                if (!propiedadExiste)
-                    PropiedadID = null; // silenciosamente ignorar ID inválido
-            }
-
             var reparacion = new Reparacion
             {
                 UsuarioID = UsuarioID,
-                PropiedadID = PropiedadID,
+                PropiedadID = null,
                 Descripcion = Descripcion.Trim(),
                 EstadoReparacionID = EstadoReparacionID,
                 FechaSolicitud = DateTime.Now
