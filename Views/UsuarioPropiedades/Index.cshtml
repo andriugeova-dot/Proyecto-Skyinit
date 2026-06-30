@@ -269,7 +269,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('modalPropiedad');
-            const closeBtn = document.querySelector('.modal-close');
+            const closeBtn = document.querySelector('#modalPropiedad .modal-close');
             const botonesVerMas = document.querySelectorAll('.link-detalle-propiedad');
 
             const formatoPesos = new Intl.NumberFormat('es-CO', {
@@ -281,7 +281,10 @@
             botonesVerMas.forEach(boton => {
                 boton.addEventListener('click', async (e) => {
                     e.preventDefault();
-
+                    if (boton.dataset.requireSesion === "true"){
+                        document.getElementById("modalRegistro").classList.add("open");
+                        return;
+                    }
                     const propiedadId = boton.dataset.id;
 
                     try {
