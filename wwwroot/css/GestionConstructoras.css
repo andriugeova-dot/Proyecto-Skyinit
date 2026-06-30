@@ -210,8 +210,18 @@ body {
     }
 
 /* --- Tabla General del CRUD --- */
+/*.table {
+    width: 100%;*/ /* Obliga a la tabla a ocupar todo el espacio dentro del cuadro blanco */
+    /*margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}*/
 .table {
-    width: 100%; /* Obliga a la tabla a ocupar todo el espacio dentro del cuadro blanco */
+    width: 100%;
+    table-layout: fixed; 
     margin-top: 20px;
     border-collapse: separate;
     border-spacing: 0;
@@ -220,21 +230,27 @@ body {
     border: 1px solid #e9ecef;
 }
     /* Centrar verticalmente el contenido de la tabla para que se vea ordenado */
-    .table td, .table th {
+   /* .table td, .table th {
         vertical-align: middle;
     }
-
+*/
+    .table td, .table th {
+        vertical-align: middle;
+        padding: 10px 8px; 
+        font-size: 0.85rem; 
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
         /* Limitar el ancho de columnas con mucho texto (como Descripción) */
         .table td.col-larga {
-            max-width: 250px; /* Puedes ajustar este tamaño */
-            white-space: nowrap; /* Evita que el texto baje a la siguiente línea */
-            overflow: hidden; /* Oculta el texto que se sale del ancho */
-            text-overflow: ellipsis; /* Agrega "..." al final del texto cortado */
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
         }
 
     /* Encabezado de la Tabla */
     .table thead.table-dark th {
-        background-color: #1e293b; /* Tono oscuro azulado/grisáceo más moderno */
+        background-color: #1e293b; 
         color: #ffffff;
         font-weight: 600;
         text-transform: uppercase;
@@ -251,23 +267,21 @@ body {
 
 /* Efecto Hover sobre las filas */
 .table-hover tbody tr:hover {
-    background-color: rgba(13, 110, 253, 0.03) !important; /* Destacado azul sutil */
+    background-color: rgba(13, 110, 253, 0.03) !important; 
 }
 
 .table tbody td {
-    padding: 14px 16px;
     color: #495057;
-    font-size: 0.95rem;
     border-bottom: 1px solid #f1f3f5;
-    vertical-align: middle; /* Alineación vertical perfecta */
+    vertical-align: middle; 
 }
 
 /* --- Imagen / Logo de la Constructora --- */
 .logo-constructora {
     width: 44px;
     height: 44px;
-    object-fit: cover; /* Mantiene la proporción de la imagen sin deformarla */
-    border-radius: 50%; /* Transforma el logo en un círculo perfecto */
+    object-fit: cover; 
+    border-radius: 50%; 
     border: 2px solid #dee2e6;
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
