@@ -45,7 +45,8 @@ namespace Proyecto_SkyInit.Controllers
                 Estado = c.Estado,
                 Ciudad = c.Ciudad,
                 Descripcion = c.Descripcion,
-               
+                CantidadProyectos = c.Proyectos.Count(),
+
 
                 Logo = c.Imagenes.FirstOrDefault(i => i.EsLogo).URL
             }).ToList();

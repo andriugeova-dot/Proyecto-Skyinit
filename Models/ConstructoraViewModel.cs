@@ -11,7 +11,8 @@
         public string? Telefono { get; set; }
         public string? Correo { get; set; }
         public string? Estado { get; set; }
-        public int CantidadProyectos { get; set; } 
-        
+        public int CantidadProyectos { get; set; }
+       
+
     }
 }
