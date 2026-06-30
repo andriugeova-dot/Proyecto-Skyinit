@@ -1,6 +1,280 @@
 ﻿@model IEnumerable<Proyecto_SkyInit.Models.Proyecto>
 @{
     Layout = "~/Views/Shared/_LayoutUsuarioProyectos.cshtml";
+
+    var heroImages = Model
+        .SelectMany(p => p.ImagenesProyecto ?? new List<Proyecto_SkyInit.Models.ImagenProyecto>())
+        .Select(i => i.URL)
+        .Where(u => !string.IsNullOrEmpty(u))
+        .Distinct()
+        .Take(6)
+        .ToList();
+    var heroImagesJson = string.Join(",", heroImages.Select(u => $"\"{u}\""));
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos - SkyInit</title>
+    <link rel="stylesheet" href="~/css/UsuarioProyectos.css" asp-append-version="true">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header id="header-proyectos">
+        <div class="topbar">
+            <div class="logo">SkyInit</div>
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu">
+                <a asp-controller="Menu" asp-action="Index">Inicio</a>
+                <a asp-controller="Menu" asp-action="Propiedades">Propiedades</a>
+                <a asp-controller="Menu" asp-action="Proyectos">Proyectos</a>
+                <a asp-controller="Menu" asp-action="Servicios">Servicios</a>
+                <a asp-controller="Menu" asp-action="Constructoras">Constructoras</a>
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <div class="user-profile">
+                        <img src="@(ViewBag.FotoPerfil ?? "/img/default-avatar.svg")"
+                             alt="Perfil"
+                             class="profile-pic"
+                             onclick="toggleUserMenu()" />
+                        <div id="user-menu" class="user-menu">
+                            <div class="user-menu-name">@User.Identity.Name</div>
+                            <a asp-controller="Login" asp-action="Ajustes">⚙️ Ajustes</a>
+                            <a asp-controller="Login" asp-action="Logout">🚪 Cerrar sesión</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a asp-controller="Login" asp-action="Index" class="btn-registrar">Iniciar Sesión</a>
+                }
+            </nav>
+        </div>
+
+        <div class="hero-inner">
+            <div class="hero-eyebrow">Desarrollos inmobiliarios</div>
+            <h1>Proyectos que <em>construyen futuro</em></h1>
+            <p class="hero-sub">Conoce los desarrollos en los que estamos trabajando junto a nuestras constructoras aliadas.</p>
+        </div>
+    </header>
+
+    <section class="contenedor">
+        <div class="header-proyectos-section">
+            <div class="textos-proyectos">
+                <span class="etiqueta-proyectos">Nuestro portafolio</span>
+                <h2 class="titulo-proyectos">Proyectos en desarrollo</h2>
+                <p class="sub-proyectos">Explora el estado, las fechas y la constructora encargada de cada proyecto</p>
+            </div>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="proyectos-grid">
+                @foreach (var proyecto in Model)
+                {
+                    var imgUrl = proyecto.ImagenesProyecto?.FirstOrDefault()?.URL ?? "/images/no-image.png";
+
+                    var estadoDesc = proyecto.EstadoProyecto?.Descripcion ?? "Sin estado";
+                    var estadoLower = estadoDesc.ToLower();
+                    var estadoClass = "badge-default";
+                    if (estadoLower.Contains("construc")) estadoClass = "badge-construccion";
+                    if (estadoLower.Contains("final") || estadoLower.Contains("terminado") || estadoLower.Contains("entregado")) estadoClass = "badge-finalizado";
+
+                    var constructoraNombre = proyecto.Constructora?.Nombre ?? "Constructora no asignada";
+                    var fechaIni = proyecto.FechaInicio?.ToString("dd/MM/yyyy") ?? "Por definir";
+                    var fechaFin = proyecto.FechaFin?.ToString("dd/MM/yyyy") ?? "Por definir";
+                    var descripcion = proyecto.Descripcion ?? "Sin descripción disponible.";
+
+                    var nombreEsc = proyecto.Nombre.Replace("'", "\\'");
+                    var constructoraEsc = constructoraNombre.Replace("'", "\\'");
+                    var estadoEsc = estadoDesc.Replace("'", "\\'");
+                    var descripcionEsc = descripcion.Replace("'", "\\'").Replace("\n", " ");
+
+                    <div class="proyecto-card">
+                        <div class="proyecto-img-container">
+                            <img src="@imgUrl" alt="@proyecto.Nombre" />
+                            <span class="badge-estado @estadoClass">@estadoDesc</span>
+                        </div>
+
+                        <div class="proyecto-body">
+                            <h3 class="proyecto-titulo">@proyecto.Nombre</h3>
+
+                            <div class="proyecto-meta">
+                                <span class="meta-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 21h18"></path>
+                                        <path d="M5 21V7l8-4v18"></path>
+                                        <path d="M19 21V11l-6-4"></path>
+                                    </svg>
+                                    @constructoraNombre
+                                </span>
+                                <span class="meta-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    @fechaIni - @fechaFin
+                                </span>
+                            </div>
+
+                            <p class="proyecto-desc">@descripcion</p>
+
+                            <button type="button" class="btn-ver-mas"
+                                    onclick="abrirModal('@nombreEsc','@constructoraEsc','@estadoEsc','@estadoClass','@fechaIni','@fechaFin','@descripcionEsc','@imgUrl')">
+                                Ver más
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="sin-proyectos">No hay proyectos registrados por el momento.</p>
+        }
+    </section>
+
+    <footer class="footer-section">
+        <div class="contenedor">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h2 class="footer-logo">SkyInit</h2>
+                    <p>Conectamos personas con los inmuebles que merecen. Con más de 12 años de experiencia en el mercado colombiano.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>EXPLORAR</h3>
+                    <ul>
+                        <li><a asp-controller="Menu" asp-action="Propiedades">Propiedades</a></li>
+                        <li><a asp-controller="Menu" asp-action="Proyectos">Proyectos</a></li>
+                        <li><a asp-controller="Menu" asp-action="Constructoras">Constructoras</a></li>
+                        <li><a asp-controller="Menu" asp-action="Servicios">Servicios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>CONTACTO</h3>
+                    <ul class="footer-contacto">
+                        <li>📞 +57 3124143860</li>
+                        <li>✉️ skyinit2026@gmail.com</li>
+                        <li>📍 Duitama, Colombia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SkyInit. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/573124143860?text=Hola,%20estoy%20interesado%20en%20un%20proyecto."
+       class="whatsapp-float" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="whatsapp-icon">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+        </svg>
+    </a>
+
+    <!-- MODAL DETALLE PROYECTO -->
+    <div id="modal" class="modal-overlay" onclick="cerrarModal(event)">
+        <div class="modal-box modal-box-proyecto">
+            <button class="modal-close" onclick="cerrarModal()">&times;</button>
+            <img id="modal-img" src="" alt="Imagen del proyecto" />
+            <div class="modal-info">
+                <span id="modal-estado" class="badge-estado"></span>
+                <h2 id="modal-nombre"></h2>
+                <div class="modal-detalles-grid">
+                    <p><strong>Constructora:</strong> <span id="modal-constructora"></span></p>
+                    <p><strong>Inicio:</strong> <span id="modal-fechaInicio"></span></p>
+                    <p><strong>Fin estimado:</strong> <span id="modal-fechaFin"></span></p>
+                </div>
+                <p id="modal-descripcion" class="modal-descripcion-texto"></p>
+                <a id="modal-btn-contacto" href="#" target="_blank" class="btn-contacto" style="text-decoration:none; display:inline-block;">Contactar asesor</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN REQUERIDO -->
+    <div id="modalRegistro" class="modal-overlay" onclick="cerrarModalRegistro(event)">
+        <div class="modal-box modal-box-login">
+            <button class="modal-close" onclick="cerrarModalRegistro()">X</button>
+            <div class="modal-info">
+                <h2>Debes iniciar sesión</h2>
+                <p>Para ver más detalles de este proyecto debes iniciar sesión en tu cuenta.</p>
+                <div class="acciones-login">
+                    <a asp-controller="Login" asp-action="Index" class="btn-contacto">Iniciar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            const usuarioAutenticado = @Html.Raw(User.Identity!.IsAuthenticated ? "true" : "false");
+
+            function toggleMenu() {
+                document.getElementById("menu").classList.toggle("active");
+            }
+            function toggleUserMenu() {
+                document.getElementById("user-menu").classList.toggle("active");
+            }
+
+            function abrirModal(nombre, constructora, estado, estadoClass, fechaInicio, fechaFin, descripcion, imgUrl) {
+                if (!usuarioAutenticado) {
+                    abrirModalRegistro();
+                    return;
+                }
+                document.getElementById("modal-nombre").textContent = nombre;
+                document.getElementById("modal-constructora").textContent = constructora || "No asignada";
+                document.getElementById("modal-fechaInicio").textContent = fechaInicio;
+                document.getElementById("modal-fechaFin").textContent = fechaFin;
+                document.getElementById("modal-descripcion").textContent = descripcion || "Sin descripción disponible.";
+                document.getElementById("modal-img").src = imgUrl || "";
+                document.getElementById("modal-img").style.display = imgUrl ? "block" : "none";
+
+                const estadoBadge = document.getElementById("modal-estado");
+                estadoBadge.textContent = estado;
+                estadoBadge.className = "badge-estado " + estadoClass;
+                const mensaje = encodeURIComponent(`Hola, estoy interesado en el proyecto ${nombre}.`);
+                document.getElementById("modal-btn-contacto").href = `https://wa.me/573124143860?text=${mensaje}`;
+
+                document.getElementById("modal").classList.add("open");
+            }
+            function cerrarModal(event) {
+                if (!event || event.target.id === "modal") {
+                    document.getElementById("modal").classList.remove("open");
+                }
+            }
+            function abrirModalRegistro() {
+                document.getElementById("modalRegistro").classList.add("open");
+            }
+            function cerrarModalRegistro(event) {
+                if (!event || event.target.id === "modalRegistro") {
+                    document.getElementById("modalRegistro").classList.remove("open");
+                }
+            }
+
+            // Fondo rotativo del hero usando imágenes reales de los proyectos
+            const images = [@Html.Raw(heroImagesJson)];
+            if (images.length > 0) {
+                let index = 0;
+                const header = document.getElementById("header-proyectos");
+                function changeBackground() {
+                    header.style.backgroundImage = `url(${images[index]})`;
+                    index = (index + 1) % images.length;
+                }
+                changeBackground();
+                if (images.length > 1) setInterval(changeBackground, 5000);
+            }
+    </script>
+
+</body>
+</html>
+
+
+@* @model IEnumerable<Proyecto_SkyInit.Models.Proyecto>
+@{
+    Layout = "~/Views/Shared/_LayoutUsuarioProyectos.cshtml";
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -146,4 +420,4 @@
     </script>
 
 </body>
-</html>
+</html> *@

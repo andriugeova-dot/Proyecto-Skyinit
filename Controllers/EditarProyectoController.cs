@@ -33,7 +33,7 @@ namespace Proyecto_SkyInit.Controllers
         // POST: EditarProyecto
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(Proyecto modelo, IFormFile Imagenes)
+        public async Task<IActionResult> Editar(Proyecto modelo, IFormFile? Imagenes)
         {
             if (!ModelState.IsValid)
             {
