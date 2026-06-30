@@ -1,7 +1,4 @@
-﻿@font-face {
-    font-family: 'Georgia', serif;
-    src: url('fonts/CooperBlack.ttf') format('truetype');
-}
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
 * {
     margin: 0;
@@ -9,27 +6,57 @@
     box-sizing: border-box;
 }
 
-header {
-    background: transparent;
-}
-
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #D1C9C7;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F9FCF3;
 }
 
 :root {
     --verde: #2E8B57;
+    --verde-oscuro: #1b5e20;
+    --verde-medio: #2e7d32;
+    --verde-claro: #a5d6a7;
 }
 
+/* ===========================================
+   HEADER / HERO (igual que Menu)
+   =========================================== */
+header {
+    height: 60vh;
+    min-height: 420px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+}
+
+    header::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.55);
+        top: 0;
+        left: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+/* NAVBAR */
 .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
     position: relative;
-    z-index: 2;
-    background: rgba(46, 125, 50, 0.9);
+    z-index: 100;
+    overflow: visible;
+    background: rgba(46, 125, 50, 0.7);
     backdrop-filter: blur(6px);
 }
 
@@ -43,6 +70,9 @@ nav {
     display: flex;
     align-items: center;
     gap: 20px;
+    position: relative;
+    z-index: 9999;
+    overflow: visible;
 }
 
     nav a {
@@ -55,13 +85,13 @@ nav {
     }
 
         nav a:hover {
-            background: #a5d6a7;
-            color: #1b5e20;
+            background: var(--verde-claro);
+            color: var(--verde-oscuro);
         }
 
 .btn-registrar {
     background: #f5f5dc;
-    color: #2e7d32;
+    color: var(--verde-medio);
     font-weight: bold;
 }
 
@@ -73,14 +103,94 @@ nav {
     display: none;
     font-size: 26px;
     cursor: pointer;
+    color: white;
 }
 
+/* PERFIL DE USUARIO */
+.user-profile {
+    position: relative;
+    display: inline-block;
+    z-index: 9999;
+    overflow: visible;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+    .profile-pic:hover {
+        transform: scale(1.1);
+    }
+
+.user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 180px;
+    z-index: 9999;
+    padding: 8px 0;
+}
+
+    .user-menu.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+.user-menu-name {
+    padding: 10px 16px;
+    font-weight: bold;
+    color: #333333;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 4px;
+    font-size: 14.5px;
+}
+
+.user-menu a,
+.user-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px !important;
+    color: #333333 !important;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 14.5px;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+    .user-menu a:hover,
+    .user-menu button:hover {
+        background-color: #f8f9fa !important;
+        color: var(--verde-medio) !important;
+    }
+
+.user-menu form {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+}
+
+/* RESPONSIVE NAV */
 @media (max-width: 900px) {
     nav {
         position: absolute;
         top: 65px;
         right: 0;
-        background: #2e7d32;
+        background: var(--verde-medio);
         flex-direction: column;
         width: 240px;
         display: none;
@@ -95,170 +205,172 @@ nav {
     }
 }
 
-/* HERO */
-.hero {
-    position: relative;
-    height: 280px;
-    overflow: hidden;
-}
-
-    .hero h1 {
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%);
-        color: white;
-        background: rgba(46,139,87,0.7);
-        padding: 10px 20px;
-        border-radius: 6px;
-        z-index: 2;
-    }
-
-.slider {
+/* HERO TEXTO (igual que Menu .hero-inner) */
+.hero-inner {
     display: flex;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+    padding: 0 20px;
+    z-index: 2;
+    margin-bottom: 40px;
 }
 
-.slide {
-    min-width: 100%;
-    transition: opacity 0.5s ease;
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin: 0 auto 24px auto;
 }
 
-    .slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .hero-eyebrow::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--verde-claro);
+        border-radius: 50%;
     }
 
-    .slide:not(.active) {
-        display: none;
+.hero-inner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 700px;
+    margin-top: 0;
+}
+
+    .hero-inner h1 em {
+        color: var(--verde-claro);
+        font-style: normal;
     }
 
+.hero-sub {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0;
+}
 
-/* GRID */
+/* ===========================================
+   CONTENEDOR Y ENCABEZADO DE SECCIÓN
+   =========================================== */
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 50px 0 35px 0;
+    text-align: left;
+}
+
+.section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--verde);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+    .section-eyebrow::before {
+        content: "";
+        display: inline-block;
+        width: 30px;
+        height: 2px;
+        background-color: var(--verde);
+    }
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.section-sub {
+    color: #6c757d;
+    font-size: 1.05rem;
+    margin: 5px 0 0 0;
+}
+
+/* ===========================================
+   GRID DE SERVICIOS (tarjetas estilo Menu)
+   =========================================== */
 .grid {
-    padding: 40px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px 70px 30px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
 }
 
-/* CARD */
+/* CONTENEDOR PRINCIPAL DE LA TARJETA */
 .card {
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
     .card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     }
 
-    .card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-    }
-
-.card-content {
-    padding: 15px;
-}
-
-    .card-content h3 {
-        color: var(--verde);
-        font-family: 'Cooper';
-        font-style: italic;
-    }
-
-    .card-content p {
-        font-size: 14px;
-        margin: 8px 0;
-    }
-
-    .card-content button {
-        background: var(--verde);
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-/* ── Círculo de perfil ── */
-.user-profile {
+.card-img-container {
     position: relative;
-    display: inline-block;
+    width: 100%;
+    height: 210px;
+    overflow: hidden;
 }
 
-.profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    object-fit: cover;
-    border: 2px solid #fff;
-    transition: transform 0.3s;
-}
-
-    .profile-pic:hover {
-        transform: scale(1.1);
+    .card img,
+    .card-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
     }
 
-.user-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 48px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    min-width: 180px;
-    z-index: 100;
-    padding: 10px 0;
+.card:hover .card-img-container img,
+.card:hover img {
+    transform: scale(1.08);
 }
 
-    .user-menu.active {
-        display: block;
-    }
-
-.user-menu-name {
-    padding: 8px 16px;
-    font-weight: bold;
-    color: #2e7d32;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
-}
-
-.user-menu a {
-    display: block;
-    padding: 8px 16px;
-    color: #333;
-    text-decoration: none;
-}
-
-    .user-menu a:hover {
-        background: #f5f5f5;
-    }
-
-/* ── Precio del servicio ── */
-.price-tag {
-    color: var(--verde);
-    font-weight: bold;
-    font-size: 15px;
-    margin: 4px 0 10px;
-}
-
-/* ── Placeholder cuando el servicio no tiene imagen ── */
+/* Placeholder cuando el servicio no tiene imagen */
 .card-icon-placeholder {
     width: 100%;
-    height: 180px;
+    height: 210px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -266,7 +378,104 @@ nav {
     background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
 }
 
-/* ── Estado vacío (sin servicios disponibles) ── */
+/* Insignia de estado del servicio */
+.badge-tipo {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: var(--verde-medio);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+}
+
+/* CUERPO DE LA TARJETA */
+.card-content {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    flex: 1;
+}
+
+    .card-content h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0;
+    }
+
+    .card-content p {
+        font-size: 0.92rem;
+        color: #666;
+        line-height: 1.5;
+        margin: 4px 0 0 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+/* PRECIO */
+.price-tag {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--verde-oscuro);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 10px 0 14px 0;
+}
+
+    .price-tag::after {
+        content: "COP";
+        font-family: 'Segoe UI', sans-serif;
+        color: #888;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+/* BOTÓN SOLICITAR */
+.card-content button,
+.btn-login-required {
+    margin-top: auto;
+    background: var(--verde-medio);
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+    .card-content button:hover {
+        background: var(--verde-oscuro);
+    }
+
+.btn-login-required {
+    background: #ececec;
+    color: #555;
+}
+
+    .btn-login-required:hover {
+        background: var(--verde-medio);
+        color: white;
+    }
+
+/* Estado vacío (sin servicios disponibles) */
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -283,26 +492,191 @@ nav {
         margin-bottom: 10px;
     }
 
-/* ── Botón "Inicia sesión para solicitar" ── */
-.btn-login-required {
-    display: inline-block;
-    background: #ccc;
-    color: #333;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: 0.2s;
+/* ===========================================
+   SECCIÓN DE CONTACTO ADICIONAL (igual que Menu)
+   =========================================== */
+.contacto-adicional {
+    background-color: #f1f8e9;
+    padding: 60px 20px;
 }
 
-    .btn-login-required:hover {
-        background: var(--verde);
+.contacto-box {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.contacto-texto {
+    flex: 2;
+    min-width: 250px;
+}
+
+    .contacto-texto h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: var(--verde-oscuro);
+        margin: 0 0 10px 0;
+    }
+
+    .contacto-texto p {
+        color: #555;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+.contacto-accion {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-principal {
+    background-color: var(--verde-oscuro);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+    .btn-principal:hover {
+        background-color: var(--verde-medio);
         color: white;
     }
 
-/* ── Toast de confirmación ── */
+@media (max-width: 768px) {
+    .contacto-box {
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .contacto-accion {
+        justify-content: center;
+    }
+}
+
+/* ===========================================
+   FOOTER (igual que Menu)
+   =========================================== */
+.footer-section {
+    background-color: var(--verde-oscuro);
+    color: white;
+    padding: 60px 20px 30px 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.footer-col h3 {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    color: var(--verde-claro);
+}
+
+.footer-col p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #c8e6c9;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-col ul li {
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
+        .footer-col ul li a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+            .footer-col ul li a:hover {
+                opacity: 0.7;
+            }
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--verde-claro);
+}
+
+.footer-links a {
+    color: var(--verde-claro);
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+/* Botón flotante WhatsApp */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+        background-color: #128c7e;
+    }
+
+.whatsapp-icon {
+    width: 35px;
+    height: 35px;
+    fill: white;
+}
+
+/* ===========================================
+   TOAST DE CONFIRMACIÓN
+   =========================================== */
 .toast {
     position: fixed;
     bottom: 28px;
@@ -329,7 +703,7 @@ nav {
 }
 
 .toast.success {
-    background: #2e9e6e;
+    background: var(--verde-medio);
     color: white;
 }
 
@@ -338,7 +712,9 @@ nav {
     color: white;
 }
 
-/* ── Modal "Solicitar servicio" ── */
+/* ===========================================
+   MODAL "SOLICITAR SERVICIO"
+   =========================================== */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -366,7 +742,7 @@ nav {
     width: 100%;
     max-width: 480px;
     max-height: 90vh;
-    border-radius: 14px;
+    border-radius: 16px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.25);
     overflow-y: auto;
     position: relative;
@@ -391,18 +767,19 @@ nav {
 }
 
     .modal-close:hover {
-        color: #1b5e20;
+        color: var(--verde-oscuro);
     }
 
 .modal-header {
-    padding: 25px 30px 15px;
+    padding: 28px 30px 15px;
     border-bottom: 1px solid #eee;
 }
 
 .modal-title-wrap h2 {
+    font-family: 'Playfair Display', serif;
     margin: 0 0 4px 0;
     color: var(--verde);
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .modal-title-wrap p {
@@ -464,7 +841,7 @@ nav {
     }
 
 .btn-confirm {
-    background: var(--verde);
+    background: var(--verde-medio);
     color: white;
     border: none;
     padding: 9px 16px;
@@ -474,5 +851,5 @@ nav {
 }
 
     .btn-confirm:hover {
-        background: #246b46;
+        background: var(--verde-oscuro);
     }
