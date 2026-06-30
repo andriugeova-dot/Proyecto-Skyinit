@@ -53,58 +53,71 @@
                 <p class="sub-destacadas">Inmuebles seleccionados por nuestros asesores esta semana</p>
             </div>
         </div>
-        <div class="grid">
-            @foreach (var propiedad in Model)
-            {
-                <div class="card">
-                    @{
-                        var imgUrl = propiedad.Imagenes.FirstOrDefault()?.URL ?? "https://via.placeholder.com/400x250?text=Sin+imagen";
+    <div class="destacadas-carousel">
+        <button type="button" class="carousel-flecha carousel-flecha-prev" id="flechaDestacadasPrev" aria-label="Ver propiedades anteriores">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
 
-                        // Lógica para asignar un color a la etiqueta según la operación
-                        var tipoOperacion = propiedad.TipoOperacion?.Descripcion?.ToLower() ?? "";
-                        var badgeClass = "badge-default"; 
-                        if (tipoOperacion.Contains("venta")) badgeClass = "badge-venta";
-                        if (tipoOperacion.Contains("arriendo")) badgeClass = "badge-arriendo";
+        <div class="carousel-viewport-destacadas">
+            <div class="grid" id="gridDestacadas">
+                @foreach (var propiedad in Model)
+                {
+                    <div class="card">
+                        @{
+                            var imgUrl = propiedad.Imagenes.FirstOrDefault()?.URL ?? "https://via.placeholder.com/400x250?text=Sin+imagen";
 
-                        // Lógica para el sufijo del precio (COP o / mes)
-                        var sufijoPrecio = tipoOperacion.Contains("arriendo") ? "/ mes" : "COP";
-                    }
+                            var tipoOperacion = propiedad.TipoOperacion?.Descripcion?.ToLower() ?? "";
+                            var badgeClass = "badge-default";
+                            if (tipoOperacion.Contains("venta")) badgeClass = "badge-venta";
+                            if (tipoOperacion.Contains("arriendo")) badgeClass = "badge-arriendo";
 
-                    <div class="card-img-container">
-                        <img src="@imgUrl" alt="@propiedad.Titulo" />
+                            var sufijoPrecio = tipoOperacion.Contains("arriendo") ? "/ mes" : "COP";
+                        }
 
-                        <span class="badge-tipo @badgeClass">@propiedad.TipoOperacion?.Descripcion</span>
+                        <div class="card-img-container">
+                            <img src="@imgUrl" alt="@propiedad.Titulo" />
 
-                        <button type="button"
-                                class="btn-favorito-nuevo @(propiedad.EsFavorito ? "favorito-activo" : "")"
-                                data-id="@propiedad.PropiedadID">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                            </svg>
-                        </button>
-                    </div>
+                            <span class="badge-tipo @badgeClass">@propiedad.TipoOperacion?.Descripcion</span>
 
-                    <div class="card-body">
-                        <div class="precio-container">
-                            <span class="precio-valor">@propiedad.Precio.ToString("C0", new System.Globalization.CultureInfo("es-CO"))</span>
-                            <span class="precio-moneda">@sufijoPrecio</span>
+                            <button type="button"
+                                    class="btn-favorito-nuevo @(propiedad.EsFavorito ? "favorito-activo" : "")"
+                                    data-id="@propiedad.PropiedadID">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </button>
                         </div>
 
-                        <h3 class="card-titulo">@propiedad.Titulo</h3>
+                        <div class="card-body">
+                            <div class="precio-container">
+                                <span class="precio-valor">@propiedad.Precio.ToString("C0", new System.Globalization.CultureInfo("es-CO"))</span>
+                                <span class="precio-moneda">@sufijoPrecio</span>
+                            </div>
 
-                        <div class="ubicacion-container">
-                            <svg class="icono-pin" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-                            </svg>
-                            <span class="ubicacion-texto">@(string.IsNullOrEmpty(propiedad.Ciudad) ? propiedad.Direccion : propiedad.Ciudad)</span>
+                            <h3 class="card-titulo">@propiedad.Titulo</h3>
+
+                            <div class="ubicacion-container">
+                                <svg class="icono-pin" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                                </svg>
+                                <span class="ubicacion-texto">@(string.IsNullOrEmpty(propiedad.Ciudad) ? propiedad.Direccion : propiedad.Ciudad)</span>
+                            </div>
+
+                            <a href="javascript:void(0)" class="enlace-absoluto abrir-detalle-destacada" data-id="@propiedad.PropiedadID"></a>
                         </div>
-
-                        <a asp-controller="Propiedades" asp-action="Detalle" asp-route-id="@propiedad.PropiedadID" class="enlace-absoluto"></a>
                     </div>
-                </div>
-            }
-
+                }
+            </div>
         </div>
+
+        <button type="button" class="carousel-flecha carousel-flecha-next" id="flechaDestacadasNext" aria-label="Ver más propiedades">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+    </div>
     </section>
 
     <section class="servicios-section">
@@ -331,6 +344,62 @@
                  }
              }
         </script>
+
+    <script>
+        // Carrusel de propiedades destacadas: muestra de a 3 (2 en tablet, 1 en móvil) y se desplaza con flechas
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.getElementById('gridDestacadas');
+            const viewport = document.querySelector('.carousel-viewport-destacadas');
+            const btnPrev = document.getElementById('flechaDestacadasPrev');
+            const btnNext = document.getElementById('flechaDestacadasNext');
+
+            if (!track || !viewport || !btnPrev || !btnNext) return;
+
+            let posicion = 0;
+
+            function obtenerVisibles() {
+                const tarjeta = track.querySelector('.card');
+                if (!tarjeta) return 1;
+                const gap = parseFloat(getComputedStyle(track).gap) || 0;
+                const anchoTarjeta = tarjeta.getBoundingClientRect().width;
+                return Math.max(1, Math.round((viewport.clientWidth + gap) / (anchoTarjeta + gap)));
+            }
+
+            function actualizarCarrusel() {
+                const tarjetas = track.querySelectorAll('.card');
+                if (!tarjetas.length) return;
+
+                const visibles = obtenerVisibles();
+                const maxPosicion = Math.max(0, tarjetas.length - visibles);
+                posicion = Math.min(posicion, maxPosicion);
+
+                const gap = parseFloat(getComputedStyle(track).gap) || 0;
+                const anchoTarjeta = tarjetas[0].getBoundingClientRect().width;
+                const desplazamiento = posicion * (anchoTarjeta + gap);
+
+                track.style.transform = `translateX(-${desplazamiento}px)`;
+
+                btnPrev.disabled = posicion <= 0;
+                btnNext.disabled = posicion >= maxPosicion;
+            }
+
+            btnPrev.addEventListener('click', () => {
+                posicion = Math.max(0, posicion - obtenerVisibles());
+                actualizarCarrusel();
+            });
+
+            btnNext.addEventListener('click', () => {
+                const tarjetas = track.querySelectorAll('.card');
+                const visibles = obtenerVisibles();
+                const maxPosicion = Math.max(0, tarjetas.length - visibles);
+                posicion = Math.min(maxPosicion, posicion + visibles);
+                actualizarCarrusel();
+            });
+
+            window.addEventListener('resize', actualizarCarrusel);
+            actualizarCarrusel();
+        });
+    </script>
  }
 
 

@@ -32,7 +32,7 @@ namespace Proyecto_SkyInit.Controllers
         // POST: EditarPropiedad/Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(Propiedad propiedad)
+        public async Task<IActionResult> Index(Propiedad propiedad, List<IFormFile> Imagenes)
         {
             if (!ModelState.IsValid)
             {
@@ -44,6 +44,8 @@ namespace Proyecto_SkyInit.Controllers
             {
                 _context.Update(propiedad);
                 await _context.SaveChangesAsync();
+
+                await ActualizarImagenes(propiedad.PropiedadID, Imagenes);
 
                 TempData["Mensaje"] = "Propiedad modificada correctamente.";
                 TempData["TipoMensaje"] = "success";
@@ -57,6 +59,63 @@ namespace Proyecto_SkyInit.Controllers
 
                 throw;
             }
+        }
+
+        // Reemplaza las imágenes de la propiedad por las nuevas subidas (si se subió alguna)
+        private async Task ActualizarImagenes(int propiedadID, List<IFormFile> imagenes)
+        {
+            if (imagenes == null || !imagenes.Any(i => i.Length > 0))
+                return; // No se subieron imágenes nuevas: se conservan las actuales
+
+            var imagenesActuales = _context.ImagenesPropiedad
+                .Where(i => i.PropiedadID == propiedadID)
+                .ToList();
+
+            // Elimina los archivos físicos antiguos
+            foreach (var imagenActual in imagenesActuales)
+            {
+                var rutaFisica = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    imagenActual.URL.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+                if (System.IO.File.Exists(rutaFisica))
+                {
+                    System.IO.File.Delete(rutaFisica);
+                }
+            }
+
+            _context.ImagenesPropiedad.RemoveRange(imagenesActuales);
+
+            var uploadPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "img",
+                "propiedades");
+
+            Directory.CreateDirectory(uploadPath);
+
+            foreach (var img in imagenes)
+            {
+                if (img.Length <= 0)
+                    continue;
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(img.FileName)}";
+                var filePath = Path.Combine(uploadPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await img.CopyToAsync(stream);
+                }
+
+                _context.ImagenesPropiedad.Add(new ImagenPropiedad
+                {
+                    PropiedadID = propiedadID,
+                    URL = $"/img/propiedades/{fileName}"
+                });
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         // POST: EditarPropiedad/Cancelar

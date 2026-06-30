@@ -138,8 +138,12 @@
                                class="form-control" placeholder="Nombre" required />
                         <textarea name="Descripcion" class="form-control"
                               placeholder="Descripción" rows="3" required>@servicio.Descripcion</textarea>
-                        <input type="number" name="Precio" value="@servicio.Precio"
-                               class="form-control" placeholder="Precio" step="0.01" min="0" required />
+                        <input type="number" name="Precio"
+                               value="@((double)servicio.Precio)"
+                               class="form-control"
+                               step="0.01" min="0" required />
+
+
                         <select name="Estado" class="form-select">
                             <option value="Activo" selected="@(servicio.Estado == "Activo")">Activo</option>
                             <option value="Inactivo" selected="@(servicio.Estado == "Inactivo")">Inactivo</option>
@@ -222,7 +226,7 @@
 <script>
     function confirmarEliminar(id, nombre) {
         document.getElementById('nombreServicio').textContent = nombre;
-        document.getElementById('btnConfirmarEliminar').href = '/GestionMantenimientos/Eliminar/' + id;
+        document.getElementById('btnConfirmarEliminar').href = '/GestionServicios/Eliminar/' + id;
         new bootstrap.Modal(document.getElementById('modalEliminar')).show();
     }
 </script>

@@ -18,6 +18,7 @@ namespace Proyecto_SkyInit.Controllers
             CargarFotoPerfil();
             var propiedades = _context.Propiedades
                 .Include(p => p.Imagenes)
+                .Include(p => p.TipoOperacion)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(query))
@@ -45,6 +46,7 @@ namespace Proyecto_SkyInit.Controllers
             CargarFotoPerfil();
             var propiedades = _context.Propiedades
                 .Include(p => p.Imagenes)
+                .Include(p => p.TipoOperacion)
                 .ToList();
 
             if (User.Identity!.IsAuthenticated)
