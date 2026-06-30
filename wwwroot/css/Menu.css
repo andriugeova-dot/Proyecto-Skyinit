@@ -235,11 +235,80 @@ nav {
 }
 
 /* CARDS */
-.grid {
-    display: grid;
+/*.grid {
+    display: flex;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 25px;
     padding: 0 30px;
+}*/
+
+/* CARDS - CARRUSEL DE DESTACADAS */
+.destacadas-carousel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 30px;
+}
+
+.carousel-viewport-destacadas {
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+}
+
+.carousel-flecha {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    color: #1b5e20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+    .carousel-flecha:hover:not(:disabled) {
+        background: #2E8B57;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    .carousel-flecha:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+.grid {
+    display: flex;
+    gap: 25px;
+    transition: transform 0.45s ease;
+}
+
+    .grid .card {
+        flex: 0 0 calc((100% - 50px) / 3);
+        min-width: 0;
+    }
+
+@media (max-width: 992px) {
+    .grid .card {
+        flex: 0 0 calc((100% - 25px) / 2);
+    }
+}
+
+@media (max-width: 600px) {
+    .destacadas-carousel {
+        padding: 0 12px;
+        gap: 8px;
+    }
+
+    .grid .card {
+        flex: 0 0 100%;
+    }
 }
 
 
@@ -456,6 +525,81 @@ nav {
 .modal .btn-registrar {
     background: #f5f5dc;
     color: #2e7d32;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content-propiedad {
+    max-width: 560px;
+    text-align: left;
+}
+
+.modal-img-propiedad {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.modal-detalles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: #444;
+}
+
+.modal-contacto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.modal-agente,
+.modal-constructora {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.modal-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2E8B57;
+}
+
+.modal-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #f4f4f4;
+    padding: 4px;
+}
+
+.modal-contacto-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+}
+
+.modal-contacto-info p {
+    font-weight: bold;
+    color: #2e7d32;
+    margin: 0;
 }
 
 /* RESPONSIVE */

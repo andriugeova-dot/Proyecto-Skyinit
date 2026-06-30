@@ -21,6 +21,12 @@ namespace Proyecto_SkyInit.Controllers
                 .Include(u => u.Favoritos)
                 .ThenInclude(f => f.Propiedad)
                 .FirstOrDefault(u => u.UsuarioID == usuarioId);
+
+            ViewBag.SolicitudesActivas = _context.Reparaciones
+                .Count(r => r.UsuarioID == usuarioId &&
+                            (r.EstadoReparacion.Descripcion == "Pendiente" ||
+                             r.EstadoReparacion.Descripcion == "En proceso"));
+
             return View(usuario);
         }
 

@@ -23,7 +23,7 @@ namespace Proyecto_SkyInit.Controllers
             var propiedades = _context.Propiedades
             .Include(p => p.Imagenes)        
             .Include(p => p.TipoOperacion)   
-            .Take(6)                         
+            .Take(9)                         
             .ToList();
             MarcarFavoritos(propiedades);
 
