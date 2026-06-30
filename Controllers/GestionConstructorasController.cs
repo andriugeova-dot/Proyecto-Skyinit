@@ -39,6 +39,7 @@ namespace Proyecto_SkyInit.Controllers
                 Nombre = c.Nombre,
                 Contacto = c.Contacto,
                 Telefono = c.Telefono,
+                Correo = c.Correo,
                 Estado = c.Estado,
                 Descripcion= c.Descripcion,
                 Ciudad=c.Ciudad,
