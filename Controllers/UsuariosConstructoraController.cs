@@ -2,6 +2,7 @@
 using Proyecto_SkyInit.Data;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_SkyInit.Models;
+using Mysqlx.Crud;
 
 namespace Proyecto_SkyInit.Controllers
 {
@@ -12,13 +13,19 @@ namespace Proyecto_SkyInit.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string buscar, string filtroEstado, string ciudad, DateTime? desde)
+        public IActionResult Index(string buscar, string filtroEstado, string ciudad, DateTime? desde )
         {
+            
+           
+
             var query = _context.Constructoras.AsQueryable();
+
+            // Filtro base (ajusta si deseas que filtre estrictamente solo Activos)
             query = query.Where(c => c.Estado == "Activo");
 
+            // Filtros dinámicos
             if (!string.IsNullOrEmpty(buscar))
-                query = query.Where(c => c.Nombre.Contains(buscar) || c.Contacto.Contains(buscar));
+                query = query.Where(c => c.Nombre.Contains(buscar) || (c.Contacto != null && c.Contacto.Contains(buscar)));
 
             if (!string.IsNullOrEmpty(filtroEstado))
                 query = query.Where(c => c.Estado == filtroEstado);
@@ -26,6 +33,8 @@ namespace Proyecto_SkyInit.Controllers
             if (!string.IsNullOrEmpty(ciudad))
                 query = query.Where(c => c.Ciudad == ciudad);
 
+     
+           
 
             var model = query.Select(c => new ConstructoraViewModel
             {
@@ -36,19 +45,24 @@ namespace Proyecto_SkyInit.Controllers
                 Estado = c.Estado,
                 Ciudad = c.Ciudad,
                 Descripcion = c.Descripcion,
+               
+
                 Logo = c.Imagenes.FirstOrDefault(i => i.EsLogo).URL
             }).ToList();
 
+            // Mantener valores en la vista
             ViewBag.Buscar = buscar;
             ViewBag.FiltroEstado = filtroEstado;
             ViewBag.Ciudad = ciudad;
             ViewBag.Desde = desde;
+           
 
             return View(model);
         }
 
 
-        [HttpGet]
+            [HttpGet]
+
         public async Task<IActionResult> ObtenerDetalles(int id)
         {
             var constructora = await _context.Constructoras
@@ -67,6 +81,8 @@ namespace Proyecto_SkyInit.Controllers
             {
                 nombre = constructora.Nombre ?? "Sin nombre",
                 sede = constructora.Ciudad ?? "Sede Principal",
+
+               
 
                 // ✅ Aquí tomamos el logo desde la relación ImagenesConstructoras
                 logoUrl = constructora.Imagenes.FirstOrDefault(i => i.EsLogo) != null
